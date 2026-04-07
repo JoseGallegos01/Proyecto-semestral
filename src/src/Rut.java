@@ -15,6 +15,6 @@ public class Rut {
         return DV;
     }
 
-    //Aqui iria el of que no se como se hace aun
+    //Aqui iria el of que no se como se hace
 
 }

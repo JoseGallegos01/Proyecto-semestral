@@ -15,6 +15,6 @@ public class Pasaporte {
         return Numero;
     }
 
-    //Aqui iria el of que no se como se hace aun
+    //Aqui iria el of que no se como se hace
 
 }
