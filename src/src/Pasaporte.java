@@ -1,9 +1,9 @@
 public class Pasaporte {
-    private String Numero;
+    private String numero;
     private String Nacionalidad;
 
     public Pasaporte(String numero, String nacionalidad) {
-        this.Numero = numero;
+        this.numero = numero;
         this.Nacionalidad = nacionalidad;
     }
 
@@ -12,7 +12,7 @@ public class Pasaporte {
     }
 
     public String getNumero() {
-        return Numero;
+        return numero;
     }
 
     //Aqui iria el of que no se como se hace

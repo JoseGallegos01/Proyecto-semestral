@@ -1,14 +1,14 @@
 public class Rut {
-    private int Numero;
+    private int numero;
     private char DV;
 
     public Rut(int numero, char DV) {
-        this.Numero = numero;
+        this.numero = numero;
         this.DV = DV;
     }
 
     public int getNumero() {
-        return Numero;
+        return numero;
     }
 
     public char getDV() {
