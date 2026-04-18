@@ -1,20 +1,28 @@
-public class Rut {
+public class Rut implements IdPersona{
     private int numero;
-    private char DV;
+    private char dv;
 
-    public Rut(int numero, char DV) {
+    public Rut(int numero, char dv) {
         this.numero = numero;
-        this.DV = DV;
+        this.dv = dv;
     }
 
     public int getNumero() {
         return numero;
     }
 
-    public char getDV() {
-        return DV;
+    public char getDv() {
+        return dv;
     }
 
-    //Aqui iria el of que no se como se hace
+    @Override
+    public String toString() {
+        return numero + "-" + dv;
+    }
 
+    @Override
+    public boolean equals(Object otro) {
+
+        return false;
+    }
 }

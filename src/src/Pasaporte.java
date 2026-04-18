@@ -1,20 +1,28 @@
-public class Pasaporte {
+public class Pasaporte implements IdPersona {
     private String numero;
-    private String Nacionalidad;
+    private String nacionalidad;
 
     public Pasaporte(String numero, String nacionalidad) {
         this.numero = numero;
-        this.Nacionalidad = nacionalidad;
+        this.nacionalidad = nacionalidad;
     }
 
     public String getNacionalidad() {
-        return Nacionalidad;
+        return nacionalidad;
     }
 
     public String getNumero() {
         return numero;
     }
 
-    //Aqui iria el of que no se como se hace
+    @Override
+    public String toString() {
+        return numero + " " + nacionalidad;
+    }
 
+    @Override
+    public boolean equals(Object otro) {
+
+        return false;
+    }
 }
