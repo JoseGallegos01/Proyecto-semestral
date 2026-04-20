@@ -4,15 +4,17 @@ public class Pasaje {
 
     private venta venta;
     private Viaje viaje;
+    private Pasajero pasajero;
 
-    public Pasaje(long numero, int asiento, venta venta, Viaje viaje) {
+    public Pasaje(long numero, int asiento, venta venta, Viaje viaje, Pasajero pasajero) {
         this.numero = numero;
         this.asiento = asiento;
         this.venta = venta;
         this.viaje = viaje;
+        this.pasajero = pasajero;
     }
 
-    public long getNumero() {
+    public int getNumero() {
         return (int) numero;
     }
 
@@ -26,5 +28,9 @@ public class Pasaje {
 
     public Viaje getViaje() {
         return viaje;
+    }
+
+    public Pasajero getPasajero() {
+        return pasajero;
     }
 }
