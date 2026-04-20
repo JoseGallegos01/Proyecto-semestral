@@ -14,23 +14,13 @@ public class Pasaje {
         this.pasajero = pasajero;
     }
 
-    public int getNumero() {
-        return (int) numero;
-    }
+    public int getNumero() { return (int) numero; }
 
-    public int getAsiento() {
-        return asiento;
-    }
+    public int getAsiento() { return asiento; }
 
-    public venta getVenta() {
-        return venta;
-    }
+    public venta getVenta() { return venta; }
 
-    public Viaje getViaje() {
-        return viaje;
-    }
+    public Viaje getViaje() { return viaje; }
 
-    public Pasajero getPasajero() {
-        return pasajero;
-    }
+    public Pasajero getPasajero() { return pasajero; }
 }
