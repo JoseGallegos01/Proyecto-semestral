@@ -8,19 +8,9 @@ public class Pasajero extends Persona {
         this.fonoContacto = fonoContacto;
     }
 
-    public Nombre getNomContacto() {
-        return nomContacto;
-    }
+    public Nombre getNomContacto() {return nomContacto;}
+    public String getFonoContacto() {return fonoContacto;}
 
-    public void setNomContacto(Nombre nom) {
-        this.nomContacto = nomContacto;
-    }
-
-    public String getFonoContacto() {
-        return fonoContacto;
-    }
-
-    public void setFonoContacto(String fono) {
-        this.fonoContacto = fono;
-    }
+    public void setNomContacto(Nombre nom) {this.nomContacto = nomContacto;}
+    public void setFonoContacto(String fono) {this.fonoContacto = fono;}
 }
