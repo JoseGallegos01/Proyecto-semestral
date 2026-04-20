@@ -24,18 +24,30 @@ public class Main {
             System.out.println("--------------------------------------------------");
             System.out.println("..::Ingrese número de opcion: ");
             opcion = sc.nextInt();
+
             switch (opcion) {
-                case 1: createCliente();
-                case 2: createBus();
+                case 1:
+                    System.out.println("...::::Crear un nuevo cliente:::...");
+                    System.out.println("Rut[1] o Pasaporte[2]");
+                    System.out.println("Sr. [1] o Sra. [2]");
+                    System.out.println("Nombres: ");
+                    System.out.println("Apellido paterno: ");
+                    System.out.println("Apellido materno: ");
+                    System.out.println("Telefono movil: ");
+                    System.out.println("Email: ");
+
+                case 2:
                 case 3:
-                case 4: vendePasajes();
-                case 5: listPasajerosViaje();
-                case 6: listVentas();
+                case 4:
+                case 5:
+                case 6:
                 case 7:
                 case 8:
-                case 9: System.out.println("Adios");
+                case 9: System.out.println("Saliendo...");
                 default: System.out.println("Opcion invalida");
             }
+
+
         }while (opcion!=9);
     }
     private void createCliente(){

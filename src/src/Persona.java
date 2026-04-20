@@ -1,5 +1,3 @@
-import jdk.internal.icu.impl.UBiDiProps;
-
 import java.util.Objects;
 
 public class Persona {
@@ -13,12 +11,25 @@ public class Persona {
         this.nombreCompleto = nombre;
     }
 
-    public IdPersona getIdPersona() { return idPersona; }
-    public Nombre getNombreCompleto() { return nombreCompleto; }
-    public String getTelefono() { return telefono; }
+    public IdPersona getIdPersona() {
+        return idPersona;
+    }
 
-    public void setNombreCompleto(Nombre nombreCompleto) {this.nombreCompleto = nombreCompleto;}
-    public void setTelefono(String telefono) {this.telefono = telefono;}
+    public Nombre getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setNombreCompleto(Nombre nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
     @Override
     public String toString() {
@@ -36,12 +47,6 @@ public class Persona {
         Persona persona = (Persona) otro;
         return Objects.equals(idPersona, persona.idPersona);
     }
+
 }
 
-    @Override
-    public boolean equals(otro : Objects) {
-        if (otro == null || getClass() != otro.getClass()) return false;
-        Persona persona = (Persona) otro;
-        return Objects.equals(idPersona, persona.idPersona) && Objects.equals(nombreCompleto, persona.nombreCompleto) && Objects.equals(telefono, persona.telefono);
-    }
-}
