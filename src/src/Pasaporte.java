@@ -1,6 +1,7 @@
 public class Pasaporte implements IdPersona {
     private String numero;
     private String nacionalidad;
+    //hay que terminar el equals y hacer el metodo of
 
     public Pasaporte(String numero, String nacionalidad) {
         this.numero = numero;

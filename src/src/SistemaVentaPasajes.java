@@ -7,49 +7,30 @@ public class SistemaVentaPasajes {
     ArrayList<Venta> ventas = new ArrayList<>();
     ArrayList<Viaje> viajes = new ArrayList<>();
     public boolean createCliente(IdPersona id, Nombre nom, String fono, String email){
-        for (Cliente c : clientes){
-            if (c.getIdPersona().equals(id)){
-                return false;
-            }
+        if (findCliente(id) == null) {
+            clientes.add(new Cliente(id, nom, email));
+            findCliente(id).setTelefono(fono);
+            return true;
         }
-        clientes.add(new Cliente(id, nom, email));
-        for (Cliente c : clientes){
-            if (c.getIdPersona().equals(id)){
-                c.setTelefono(fono);
-            }
-        }
-        return true;
+        return false;
     }
     public boolean createPasajero(IdPersona id, Nombre nom, String fono, Nombre nombreContacto,
                                   String fonoContacto){
-        for (Pasajero p : pasajeros){
-            if (p.getIdPersona().equals(id)){
-                return false;
-            }
+        if (findPasajero(id) == null) {
+            pasajeros.add(new Pasajero(id, nom, nombreContacto, fono));
+            findPasajero(id).setTelefono(fono);
+            return true;
         }
-        pasajeros.add(new Pasajero(id, nom, nombreContacto, fonoContacto));
-        for (Pasajero p : pasajeros){
-            if (p.getIdPersona().equals(id)){
-                p.setFonoContacto(fonoContacto);
-                p.setNomContacto(nombreContacto);
-            }
-        }
-        return true;
+        return false;
     }
     public boolean createBus(String patente, String marca, String modelo, int NroAsientos){
-        for (Bus b : buses){
-            if (b.getPatente().equals(patente)){
-                return false;
-            }
+        if (findBus(patente) == null) {
+            buses.add(new Bus(patente, NroAsientos));
+            findBus(patente).setMarca(marca);
+            findBus(patente).setModelo(modelo);
+            return true;
         }
-        buses.add(new Bus(patente, NroAsientos));
-        for(Bus b : buses){
-            if (b.getMarca().equals(marca)){
-                b.setModelo(modelo);
-                b.setMarca(marca);
-            }
-        }
-        return true;
+        return false;
     }
 
 

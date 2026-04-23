@@ -3,6 +3,7 @@ import java.time.LocalTime;
 
 public class Viaje {
     //Vicente Salinas
+    //faltan terminar todos los metodos que dependian de la clase pasaje
 
     private LocalDate fecha;
     private LocalTime hora;

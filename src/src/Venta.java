@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Venta {
+    //falta por terminar metodo createPasaje, getpasajes y getmonto
     private String idDocumento;
     private TipoDocumento tipo;
     private LocalDate fecha;
