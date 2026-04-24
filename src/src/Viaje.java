@@ -1,20 +1,25 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+
+
 
 public class Viaje {
     //Vicente Salinas
-    //faltan terminar todos los metodos que dependian de la clase pasaje
 
     private LocalDate fecha;
     private LocalTime hora;
     private int precio;
     private Bus bus;
+    private ArrayList<Pasaje>pasajes;
 
     public Viaje(LocalDate fecha, LocalTime hora, int precio, Bus bus){
         this.fecha = fecha;
         this.hora = hora;
         this.precio = precio;
         this.bus = bus;
+        this.pasajes=new ArrayList<>();
+        bus.addViaje(this);
     }
     public LocalDate getFecha() {
         return fecha;
@@ -34,19 +39,36 @@ public class Viaje {
     public void setBus(Bus bus){
         this.bus = bus;
     }
-
-    //AVANZAR UNA VEZ LA CLASE PASAJE ESTE LISTA
-
-    //public String[][] getAsientos() {}
-        //no se puede avanzar sin la clase Pasaje
-    //public String[][] getListaPasajeros() {}
-        //no se puede avanzar sin la clase Pasaje
-    public boolean existeDisponibilidad() {
-        //no se puede avanzar sin la clase Pasaje
-        return false;
+    public void addPasaje(Pasaje pasaje){
+        pasajes.add(pasaje);
     }
-    public int getNroAsientosDisponibles() {
-        //no se puede avanzar sin la clase Pasaje
-        return 0;
+    public String [][]getAsientos(){
+    int total =bus.getNroAsientos();
+    String [][] asientos = new String [total][2];
+
+    for (int i =0; i<total; i++){
+        asientos[i][0]=(i´1)+"";
+        asientos[i][1]="Libre";
+    }
+    for (Pasaje p:pasajes){
+        int asiento =p.getAsiento();
+        asientos[asiento-1][1]="Ocupado";
+    }
+    return asientos;
+
+    }
+    public String [][]getListaPasajeros(){
+        String [][] lista =new String [pasajes.size()][4];
+
+        for (int i=0; i <pasajes.size();i++){
+            Pasajero p =pasajes.get(i).getPasajero();
+
+            lista [i][0]=p.getId().toString();
+
+
+        }
+
     }
 }
+
+
