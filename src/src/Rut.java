@@ -1,7 +1,8 @@
 public class Rut implements IdPersona{
+    //Cristobal Jeldres
     private int numero;
     private char dv;
-
+    //falta metodo of y equals por terminar
     public Rut(int numero, char dv) {
         this.numero = numero;
         this.dv = dv;
@@ -22,7 +23,9 @@ public class Rut implements IdPersona{
 
     @Override
     public boolean equals(Object otro) {
+        Rut r = (Rut) otro;
 
-        return false;
+        return numero == r.numero &&
+                dv == r.dv;
     }
 }
