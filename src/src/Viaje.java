@@ -47,7 +47,7 @@ public class Viaje {
     String [][] asientos = new String [total][2];
 
     for (int i =0; i<total; i++){
-        asientos[i][0]=(i´1)+"";
+        asientos[i][0]=(i+1)+"";
         asientos[i][1]="Libre";
     }
     for (Pasaje p:pasajes){
@@ -57,18 +57,28 @@ public class Viaje {
     return asientos;
 
     }
-    public String [][]getListaPasajeros(){
-        String [][] lista =new String [pasajes.size()][4];
+    public String [][]getListaPasajeros() {
+        String[][] lista = new String[pasajes.size()][4];
 
-        for (int i=0; i <pasajes.size();i++){
-            Pasajero p =pasajes.get(i).getPasajero();
-
-            lista [i][0]=p.getId().toString();
-
-
+        for (int i = 0; i < pasajes.size(); i++) {
+            Pasajero p = pasajes.get(i).getPasajero();
+            lista[i][0] = p.getIdPersona().toString();
+            lista[i][1] = p.getNombreCompleto().toString();
+            lista[i][2] = String.valueOf(p.getNomContacto());
+            lista[i][3] = p.getFonoContacto();
         }
-
+        return lista;
+    }
+    public boolean existeDisponibilidad(){
+    return getnroAsientosDisponibles()>0;
+    }
+    public int getnroAsientosDisponibles(){
+        return bus.getNroAsientos()-pasajes.size();
     }
 }
+
+
+
+
 
 
