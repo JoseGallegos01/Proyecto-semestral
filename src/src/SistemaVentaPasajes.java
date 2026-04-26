@@ -28,7 +28,7 @@ public class SistemaVentaPasajes {
         return false;
     }
     public boolean createBus(String patente, String marca, String modelo, int NroAsientos){
-        if (findBus(patente) != null) {
+        if (findBus(patente) == null) {
             buses.add(new Bus(patente, NroAsientos));
             findBus(patente).setMarca(marca);
             findBus(patente).setModelo(modelo);
@@ -37,9 +37,11 @@ public class SistemaVentaPasajes {
         return false;
     }
     public boolean createViaje(LocalDate fecha, LocalTime hora, int precio, String patenteBus){
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null){
-            viajes.add((new Viaje(fecha, hora, precio, findBus(patenteBus))));
-            return true;
+        if (findBus(patenteBus) != null) {
+            if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null) {
+                viajes.add((new Viaje(fecha, hora, precio, findBus(patenteBus))));
+                return true;
+            }
         }
         return false;
     }
@@ -98,10 +100,8 @@ public class SistemaVentaPasajes {
     }
 
     public String getNombrePasajero(IdPersona idPasajero){
-        if (findPasajero(idPasajero)!=null){
-
-        }
-        return null;
+        if (findPasajero(idPasajero) == null) return null;
+        return findPasajero(idPasajero).getNombreCompleto().toString();
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero){

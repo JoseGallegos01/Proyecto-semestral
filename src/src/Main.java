@@ -22,7 +22,7 @@ public class Main {
             System.out.println("...:::Menú principal:::...");
             System.out.println("1) Crear Cliente");
             System.out.println("2) Crear Bus");
-            System.out.println("3) Crear pasaje");
+            System.out.println("3) Crear viaje");
             System.out.println("4) Vender pasaje");
             System.out.println("5) Lista de pasajeros");
             System.out.println("6) Lista de ventas");
@@ -32,6 +32,7 @@ public class Main {
             System.out.println("--------------------------------------------------");
             System.out.println("..::Ingrese número de opcion: ");
             opcion = sc.nextInt();
+            sc.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -90,20 +91,29 @@ public class Main {
         if (opcionSrSra==2) tratamiento = Tratamiento.SRA;
         System.out.println("Nombres: ");
         String nombres = sc.nextLine();
+        sc.nextLine();
         System.out.println("Apellido paterno: ");
         String apellido_paterno = sc.nextLine();
         System.out.println("Apellido materno: ");
         String apellido_materno = sc.nextLine();
+        sc.nextLine();
         System.out.println("Telefono movil: ");
         String telefono_movil = sc.nextLine();
+        sc.nextLine();
         System.out.println("Email: ");
         String email = sc.nextLine();
+        sc.nextLine();
         Nombre nombre = new Nombre();
         nombre.setNombres(nombres);
         nombre.setApellidoPaterno(apellido_paterno);
         nombre.setApellidoMaterno(apellido_materno);
         nombre.setTratamiento(tratamiento);
-        sv.createCliente(id, nombre, telefono_movil, email);
+        if (sv.createCliente(id, nombre, telefono_movil, email)){
+            System.out.println("...::::Cliente guardado exitosamente::::...");
+        }
+        else {
+            System.out.println("...::::Ya existe un cliente con el mismo id::::...");
+        }
     }
     private void createBus(){
         System.out.println("...::::Creación de un nuevo bus:::...");
@@ -118,21 +128,25 @@ public class Main {
         if (sv.createBus(patente, marca, modelo, asientos)) {
             System.out.println("...::::Bus guardado exitosamente:::...");
         }
-        else  {
+        else {
             System.out.println("...::::Ya hay un bus con la misma patente registrada::...");
         }
     }
-    private void createViaje(){
+    private void createViaje() {
         System.out.println("...::::Creacion de un nuevo viaje::::...");
-        System.out.println("Fecha [dd/MM/yyy] :");
+        System.out.println("Fecha [dd/MM/yyyy] :");
         String fecha = sc.nextLine();
         System.out.println("Hora [hh:mm] :");
         String hora = sc.nextLine();
         System.out.println("Precio: ");
         int precio = sc.nextInt();
+        sc.nextLine();
         System.out.println("Patente bus: ");
         String patenteBus = sc.nextLine();
-        sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus);
+        if (!sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus)){
+            System.out.println("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
+        }
+        else System.out.println("...::::Viaje guardado exitosamente::::...");
     }
     private void vendePasajes(){
 
@@ -142,6 +156,7 @@ public class Main {
         System.out.println("...::::Listado de pasajeros de un viaje:::");
         System.out.println("Fecha del viaje [dd/MM/yyy] :");
         String fecha = sc.nextLine();
+        sc.nextLine();
         System.out.println("Hora [hh:mm] :");
         String hora = sc.nextLine();
         System.out.println("Patente del bus :");
