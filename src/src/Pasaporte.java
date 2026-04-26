@@ -1,4 +1,5 @@
 public class Pasaporte implements IdPersona {
+    //Cristobal Jeldres
     private String numero;
     private String nacionalidad;
     //hay que terminar el equals y hacer el metodo of
@@ -23,7 +24,9 @@ public class Pasaporte implements IdPersona {
 
     @Override
     public boolean equals(Object otro) {
+        Pasaporte p = (Pasaporte) otro;
 
-        return false;
+        return numero.equals(p.numero) &&
+                nacionalidad.equals(p.nacionalidad);
     }
 }

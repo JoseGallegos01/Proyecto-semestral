@@ -1,12 +1,13 @@
 public class Pasaje {
+    //Cristobal Jeldres
     private long numero;
     private int asiento;
 
-    private venta venta;
+    private Venta venta;
     private Viaje viaje;
     private Pasajero pasajero;
 
-    public Pasaje(long numero, int asiento, venta venta, Viaje viaje, Pasajero pasajero) {
+    public Pasaje(long numero, int asiento, Venta venta, Viaje viaje, Pasajero pasajero) {
         this.numero = numero;
         this.asiento = asiento;
         this.venta = venta;
@@ -14,11 +15,11 @@ public class Pasaje {
         this.pasajero = pasajero;
     }
 
-    public int getNumero() { return (int) numero; }
+    public long getNumero() { return (int) numero; }
 
     public int getAsiento() { return asiento; }
 
-    public venta getVenta() { return venta; }
+    public Venta getVenta() { return venta; }
 
     public Viaje getViaje() { return viaje; }
 
