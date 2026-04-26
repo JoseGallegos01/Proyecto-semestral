@@ -94,6 +94,7 @@ public class SistemaVentaPasajes {
         for (Pasaje pasaje : pasajes){
 
         }
+        return 0;
     }
 
     public String getNombrePasajero(IdPersona idPasajero){
@@ -104,12 +105,12 @@ public class SistemaVentaPasajes {
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero){
-
+        return false;
     }
 
     //falta la relacion de clase de venta
     public String[][] listVentas(){
-
+        return new String[0][0];
     }
 
     public String[][] listViajes(){
@@ -127,13 +128,11 @@ public class SistemaVentaPasajes {
     }
 
 
-    //tengo que esperar a que el metodo de la clase en viaje este listo para finalizarlo
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patenteBus){
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus) != null) {
-            findViaje(fecha.toString(), hora.toString(), patenteBus).getListaPasajeros();
+        if (findViaje(fecha.toString(), hora.toString(), patenteBus) != null){
+            return findViaje(fecha.toString(), hora.toString(), patenteBus).getListaPasajeros();
         }
-        String[][] pasajeros = new String[0][0];
-        return pasajeros;
+        return new String[0][0];
     }
 
 

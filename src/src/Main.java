@@ -1,12 +1,17 @@
-import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
     //Vicente Salinas
+    //tengo que ver donde se guarda el numero del asiento
 
     SistemaVentaPasajes sv = new SistemaVentaPasajes();
     private Scanner sc = new Scanner(System.in);
     int opcion;
+    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     public static void main(String[] args) {
         Main m = new Main();
         m.menu();
@@ -31,20 +36,28 @@ public class Main {
             switch (opcion) {
                 case 1:
                     createCliente();
+                    break;
                 case 2:
                     createBus();
+                    break;
                 case 3:
-
+                    createViaje();
+                    break;
                 case 4:
                     vendePasajes();
+                    break;
                 case 5:
                     listPasajerosViaje();
+                    break;
                 case 6:
                     listVentas();
+                    break;
                 case 7:
                     listPasajes();
+                    break;
                 case 8:
                 case 9: System.out.println("Saliendo...");
+                    break;
                 default: System.out.println("Opcion invalida");
             }
 
@@ -55,7 +68,8 @@ public class Main {
         System.out.println("...::::Crear un nuevo cliente:::...");
         System.out.println("Rut[1] o Pasaporte[2]");
         int opcionRutPasaporte = sc.nextInt();
-        IdPersona id;
+        IdPersona id = null;
+        Tratamiento tratamiento = null;
         if (opcionRutPasaporte==1){
             System.out.println("Ingrese el rut (sin el DV)");
             int rut = sc.nextInt();
@@ -72,19 +86,24 @@ public class Main {
         }
         System.out.println("Sr. [1] o Sra. [2]");
         int opcionSrSra = sc.nextInt();
-        Tratamiento tratamiento;
-        if (opcionSrSra==1)tratamiento = Tratamiento.SR;
-        if (opcionSrSra==2)tratamiento = Tratamiento.SRA;
+        if (opcionSrSra==1) tratamiento = Tratamiento.SR;
+        if (opcionSrSra==2) tratamiento = Tratamiento.SRA;
         System.out.println("Nombres: ");
-        String nombres = sc.next();
+        String nombres = sc.nextLine();
         System.out.println("Apellido paterno: ");
-        String apellido_paterno = sc.next();
+        String apellido_paterno = sc.nextLine();
         System.out.println("Apellido materno: ");
-        String apellido_materno = sc.next();
+        String apellido_materno = sc.nextLine();
         System.out.println("Telefono movil: ");
-        int telefono_movil = sc.nextInt();
+        String telefono_movil = sc.nextLine();
         System.out.println("Email: ");
-        String email = sc.next();
+        String email = sc.nextLine();
+        Nombre nombre = new Nombre();
+        nombre.setNombres(nombres);
+        nombre.setApellidoPaterno(apellido_paterno);
+        nombre.setApellidoMaterno(apellido_materno);
+        nombre.setTratamiento(tratamiento);
+        sv.createCliente(id, nombre, telefono_movil, email);
     }
     private void createBus(){
         System.out.println("...::::Creación de un nuevo bus:::...");
@@ -104,13 +123,40 @@ public class Main {
         }
     }
     private void createViaje(){
-
+        System.out.println("...::::Creacion de un nuevo viaje::::...");
+        System.out.println("Fecha [dd/MM/yyy] :");
+        String fecha = sc.nextLine();
+        System.out.println("Hora [hh:mm] :");
+        String hora = sc.nextLine();
+        System.out.println("Precio: ");
+        int precio = sc.nextInt();
+        System.out.println("Patente bus: ");
+        String patenteBus = sc.nextLine();
+        sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus);
     }
     private void vendePasajes(){
 
     }
-    private void listPasajerosViaje(){
 
+    private void listPasajerosViaje(){
+        System.out.println("...::::Listado de pasajeros de un viaje:::");
+        System.out.println("Fecha del viaje [dd/MM/yyy] :");
+        String fecha = sc.nextLine();
+        System.out.println("Hora [hh:mm] :");
+        String hora = sc.nextLine();
+        System.out.println("Patente del bus :");
+        String patenteBus = sc.nextLine();
+        if (sv.listPasajeros(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime),
+                patenteBus).length == 0 ){
+            System.out.println("...::::No se ha encontrado una lista de pasajeros para el viaje:::...");
+        }
+        else  {
+            System.out.println("Asiento | RUT/PASS | Pasajero | Contacto | Telefono contacto");
+            String[][] listadoPasajerosViaje = sv.listPasajeros(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
+            for (String[] pasajero : listadoPasajerosViaje) {
+                System.out.println(pasajero[0] + " - " + pasajero[1] + " - " + pasajero[2] + " " + pasajero[3]);
+            }
+        }
     }
     private void listVentas(){
 
