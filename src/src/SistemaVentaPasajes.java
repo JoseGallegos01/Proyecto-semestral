@@ -103,11 +103,13 @@ public class SistemaVentaPasajes {
         return findPasajero(idPasajero).getNombreCompleto().toString();
     }
 
+    //metodo incompleto
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero){
         if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null) return false;
         if (findPasajero(idPasajero) == null) return false;
         if (findViaje(fecha.toString(), hora.toString(), patenteBus).getnroAsientosDisponibles() ==0) return false;
 
+        return true;
     }
 
     public String[][] listVentas(){

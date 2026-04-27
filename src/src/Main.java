@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Main {
     //Vicente Salinas
     //tengo que ver donde se guarda el numero del asiento
+    //Debo ver cada detalle del rut
 
     SistemaVentaPasajes sv = new SistemaVentaPasajes();
     private Scanner sc = new Scanner(System.in);
@@ -31,7 +32,8 @@ public class Main {
             System.out.println("6) Lista de ventas");
             System.out.println("7) Lista de viajes");
             System.out.println("8) Consulta viajes disponible por fecha");
-            System.out.println("9) Salir");
+            System.out.println("9) Cargar datos de prueba");
+            System.out.println("10) Salir");
             System.out.println("--------------------------------------------------");
             System.out.println("..::Ingrese número de opcion: ");
             opcion = sc.nextInt();
@@ -60,7 +62,10 @@ public class Main {
                     listViajes();
                     break;
                 case 8:
-                case 9: System.out.println("Saliendo...");
+                    System.out.println("Metodo incompleto");
+                case 9: createTestData();
+                break;
+                case 10: System.out.println("Saliendo...");
                     break;
                 default: System.out.println("Opcion invalida");
             }
@@ -92,18 +97,14 @@ public class Main {
         if (opcionSrSra==2) tratamiento = Tratamiento.SRA;
         System.out.println("Nombres: ");
         String nombres = sc.nextLine();
-        sc.nextLine();
         System.out.println("Apellido paterno: ");
         String apellido_paterno = sc.nextLine();
         System.out.println("Apellido materno: ");
         String apellido_materno = sc.nextLine();
-        sc.nextLine();
         System.out.println("Telefono movil: ");
         String telefono_movil = sc.nextLine();
-        sc.nextLine();
         System.out.println("Email: ");
         String email = sc.nextLine();
-        sc.nextLine();
         Nombre nombre = new Nombre();
         nombre.setNombres(nombres);
         nombre.setApellidoPaterno(apellido_paterno);
@@ -149,6 +150,7 @@ public class Main {
         }
         else System.out.println("...::::Viaje guardado exitosamente::::...");
     }
+    //metodo incompleto
     private void vendePasajes(){
         System.out.println("...::::Venta de pasajes::::...");
         System.out.println("...::::Datos de la venta");
@@ -189,19 +191,32 @@ public class Main {
                 System.out.println("...::::Listado de horarios disponibles: ");
                 String horarios[][] = sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate));
                 for (int i = 0; i < horarios.length; i++) {
-                    System.out.println(horarios[i][0] + " - " + horarios[i][1] + " - " + horarios[i][2] + " - " +
-                            horarios[i][3]);
+                    System.out.println((i+1) + " - " + horarios[i][0] + " - " + horarios[i][1] + " - "
+                            + horarios[i][2] + " - " + horarios[i][3]);
                 }
-                System.out.println("Ingrese la patente del bus del viaje a tomar: ");
-                String patenteBus = sc.nextLine();
-                System.out.println("Ingrese la hora del viaje a tomar: ");
-                String horaViaje = sc.nextLine();
-                String asientosDisponibles[][] = sv.listAsientosDelViaje(LocalDate.parse(fechaViaje, formatterDate),
-                        LocalTime.parse(horaViaje, formatterTime), patenteBus);
-                for (int i = 0; i < asientosDisponibles.length; i++) {
-                    System.out.println(asientosDisponibles[i][0] + "|" + asientosDisponibles[i][1] + "|" + asientosDisponibles[i][3] + "|" + asientosDisponibles[i][2]);
+                System.out.println("Seleccione el viaje en [1 + " + horarios.length + "] : ");
+                int numViaje = sc.nextInt();
+                sc.nextLine();
+                String patenteBus = horarios[numViaje][0];
+                String hora = horarios[numViaje][1];
+                String valor = horarios[numViaje][2];
+                String asientos = horarios[numViaje][3];
+                String listaAsientos[][] = sv.listAsientosDelViaje(LocalDate.parse(fechaViaje, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
+                for (String[] listaAsiento: listaAsientos) {
+                    System.out.println(listaAsiento[0] + " - " + listaAsiento[1] +  " - " + listaAsiento[3] + " - " + listaAsiento[2]);
+                }
+                if (cantidadPasajes>1){
+                    System.out.println("Seleccione los asientos [separe por ,] : ");
+                    int asientosComprandose = sc.nextInt();
+                }
+                else  {
+                    System.out.println("Seleccione el asiento : ");
+                    int asientosComprandose = sc.nextInt();
                 }
 
+            }
+            else {
+                System.out.println("...::::No hay horarios para esa fecha::::...");
             }
         }
         else {
@@ -244,5 +259,18 @@ public class Main {
         for (String[] viaje : listaViajes) {
             System.out.println(viaje[0] + " - " + viaje[1] + " -  " + viaje[2] + " - " + viaje[3] +  " - " + viaje[4]);
         }
+    }
+    private void createTestData(){
+        char dvTest = 2;
+        IdPersona testId = new Rut(22222222, dvTest);
+        Nombre nombreTest = new Nombre();
+        nombreTest.setNombres("John");
+        nombreTest.setTratamiento(Tratamiento.SR);
+        nombreTest.setApellidoPaterno("Doe");
+        nombreTest.setApellidoMaterno("Test");
+        //Pasajero pasajeroTest = new Pasajero(testId, nombreTest, "e", 1);
+        Venta ventaTest = new Venta("1", TipoDocumento.FACTURA, LocalDate.parse("01/01/2026", formatterDate));
+        Bus busTest = new Bus("1111TST", 20);
+
     }
 }
