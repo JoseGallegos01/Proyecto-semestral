@@ -1,4 +1,7 @@
 public class Pasajero extends Persona {
+
+    //Jose Gallegos
+
     private Nombre nomContacto;
     private String fonoContacto;
 

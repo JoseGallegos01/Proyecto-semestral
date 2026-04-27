@@ -2,6 +2,8 @@ import java.util.Objects;
 
 public class Persona {
 
+    //Jose Gallegos
+
     private IdPersona idPersona;
     private Nombre nombreCompleto;
     private String telefono;
