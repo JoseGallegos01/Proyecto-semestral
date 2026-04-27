@@ -10,6 +10,9 @@ public class Main {
     SistemaVentaPasajes sv = new SistemaVentaPasajes();
     private Scanner sc = new Scanner(System.in);
     int opcion;
+    IdPersona id = null;
+    Tratamiento tratamiento = null;
+    TipoDocumento tipoDocumento = null;
     DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     public static void main(String[] args) {
@@ -69,8 +72,6 @@ public class Main {
         System.out.println("...::::Crear un nuevo cliente:::...");
         System.out.println("Rut[1] o Pasaporte[2]");
         int opcionRutPasaporte = sc.nextInt();
-        IdPersona id = null;
-        Tratamiento tratamiento = null;
         if (opcionRutPasaporte==1){
             System.out.println("Ingrese el rut (sin el DV)");
             int rut = sc.nextInt();
@@ -149,9 +150,49 @@ public class Main {
         else System.out.println("...::::Viaje guardado exitosamente::::...");
     }
     private void vendePasajes(){
+        System.out.println("...::::Venta de pasajes::::...");
+        System.out.println("...::::Datos de la venta");
+        System.out.println("Id documento: ");
+        String idDocumento = sc.nextLine();
+        System.out.println("Tipo de documento: [1] Boleta [2] Factura");
+        int opcionTipoDocumento = sc.nextInt();
+        if (opcionTipoDocumento==1) tipoDocumento = TipoDocumento.BOLETA;
+        if (opcionTipoDocumento==2) tipoDocumento = TipoDocumento.FACTURA;
+        System.out.println("Fecha de venta [dd/MM/yyyy] :");
+        String fecha = sc.nextLine();
+        System.out.println("...::::Datos del cliente");
+        System.out.println("Rut [1] o Pasaporte [2]");
+        int opcionRutPasaporte = sc.nextInt();
+        if (opcionRutPasaporte == 1){
+            System.out.println("Rut cliente");
+            int rutCliente = sc.nextInt();
+            System.out.println("DV");
+            char dv = sc.next().charAt(0);
+            id = new Rut(rutCliente, dv);
+        }
+        if (opcionRutPasaporte == 2){
+            System.out.println("Numero pasaporte:");
+            String numeroPasaporte = sc.nextLine();
+            System.out.println("Nacionalidad:");
+            String nacionalidad = sc.nextLine();
+            id = new Pasaporte(numeroPasaporte, nacionalidad);
+        }
+        System.out.println("Nombre cliente: ");
+        String nombreCliente = sc.nextLine();
+        if (sv.iniciaVenta(idDocumento, tipoDocumento, (LocalDate.parse(fecha, formatterDate)), id)){
+            System.out.println("Cantidad de pasajes a comprar:");
+            int cantidadPasajes = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Fecha del viaje:");
+            String fechaViaje = sc.nextLine();
+            sv.getHorariosDisponibles(LocalDate.parse(fechaViaje));
+        }
+        else {
+            System.out.println("...::::Cliente no existe o la venta ya existe::::...");
+        }
 
     }
-
+    //tengo que ver como encontrar el asiento de cada pasajero
     private void listPasajerosViaje(){
         System.out.println("...::::Listado de pasajeros de un viaje:::");
         System.out.println("Fecha del viaje [dd/MM/yyy] :");
@@ -169,12 +210,17 @@ public class Main {
             System.out.println("Asiento | RUT/PASS | Pasajero | Contacto | Telefono contacto");
             String[][] listadoPasajerosViaje = sv.listPasajeros(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
             for (String[] pasajero : listadoPasajerosViaje) {
-                System.out.println(pasajero[0] + " - " + pasajero[1] + " - " + pasajero[2] + " " + pasajero[3]);
+                System.out.println(pasajero[0] + " - " + pasajero[1] + " - " + pasajero[2] + " " + pasajero[3]
+                + " - " + pasajero[4]);
             }
         }
     }
     private void listVentas(){
-
+        String[][] listaVentas = sv.listVentas();
+        for (String[] venta : listaVentas) {
+            System.out.println(venta[0] + " - " + venta[1] + " - " + venta[2] + " - " + venta[3] + " - " + venta[4]
+            + " - " + venta[5] + " - " + venta[6]);
+        }
     }
     private void listPasajes(){
 

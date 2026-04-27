@@ -8,8 +8,6 @@ public class SistemaVentaPasajes {
     ArrayList<Bus> buses = new ArrayList<>();
     ArrayList<Venta> ventas = new ArrayList<>();
     ArrayList<Viaje> viajes = new ArrayList<>();
-    ArrayList<Pasaje> pasajes = new ArrayList<>();
-    ArrayList<Nombre> nombres = new ArrayList<>();
     public boolean createCliente(IdPersona id, Nombre nom, String fono, String email){
         if (findCliente(id) == null) {
             clientes.add(new Cliente(id, nom, email));
@@ -53,6 +51,7 @@ public class SistemaVentaPasajes {
         }
         return false;
     }
+    //metodo incompleto
     public String[][] getHorariosDisponibles(LocalDate fechaViaje){
         int cantidadHorariosDisponibles = 0;
         for (Viaje viaje : viajes){
@@ -92,11 +91,8 @@ public class SistemaVentaPasajes {
     }
 
     public int getMontoVenta(String idDocumento, TipoDocumento tipoDocumento){
-        int monto = 0;
-        for (Pasaje pasaje : pasajes){
-
-        }
-        return 0;
+        if (findVenta(idDocumento, tipoDocumento)==null) return 0;
+        return findVenta(idDocumento, tipoDocumento).getMonto();
     }
 
     public String getNombrePasajero(IdPersona idPasajero){
@@ -105,12 +101,25 @@ public class SistemaVentaPasajes {
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero){
-        return false;
+        if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null) return false;
+        if (findPasajero(idPasajero) == null) return false;
+        if (findViaje(fecha.toString(), hora.toString(), patenteBus).getnroAsientosDisponibles() ==0) return false;
+
     }
 
-    //falta la relacion de clase de venta
     public String[][] listVentas(){
-        return new String[0][0];
+        if (ventas.isEmpty()) return  new String[0][0];
+        String[][] listaVentas = new String[ventas.size()][7];
+        for (int i = 0; i < listaVentas.length; i++){
+            listaVentas[i][0] = ventas.get(i).getIdDocumento();
+            listaVentas[i][1] = ventas.get(i).getTipo().name();
+            listaVentas[i][2] = ventas.get(i).getFecha().toString();
+            listaVentas[i][3] = ventas.get(i).getCliente().getIdPersona().toString();
+            listaVentas[i][4] = ventas.get(i).getCliente().getNombreCompleto().toString();
+            listaVentas[i][5] = String.valueOf(ventas.get(i).getPasajes().length);
+            listaVentas[i][6] = "$" + ventas.get(i).getMonto();
+        }
+        return listaVentas;
     }
 
     public String[][] listViajes(){
