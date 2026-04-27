@@ -245,4 +245,34 @@ public class Main {
             System.out.println(viaje[0] + " - " + viaje[1] + " -  " + viaje[2] + " - " + viaje[3] +  " - " + viaje[4]);
         }
     }
+
+    public static void consultarViajesPorFecha(SistemaVentaPasajes sistema,Scanner sc){
+        System.out.println("Consulta viajes por fecha ");
+
+        System.out.print("Ingrese fecha (dd/mm/aaaa):");
+
+        String fecha =sc.nextLine();
+
+        String [][]viajes=sistema.getHorariosDisponibles(LocalDate.parse(fecha));
+
+        if(viajes.length==0){
+            System.out.println("No hay viajes disponibles para la fecha solicitada");
+            return;
+
+        }
+        System.out.print("n Se encontraron "+viajes.length+"viajes/n" );
+
+        System.out.println("PATENTE HORA PRECIO DISPONIBLES");
+
+        for (int i = 0 ; i<viajes.length;i++) {
+            System.out.println(viajes[i][0] + " " +
+                    viajes[i][0] + " " + viajes[i][1] + " " + viajes[i][2] + " " + viajes[i][3]);
+        }
+
+
+
+
+
+
+    }
 }
