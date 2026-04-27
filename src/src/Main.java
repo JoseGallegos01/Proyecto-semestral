@@ -57,7 +57,7 @@ public class Main {
                     listVentas();
                     break;
                 case 7:
-                    listPasajes();
+                    listViajes();
                     break;
                 case 8:
                 case 9: System.out.println("Saliendo...");
@@ -185,7 +185,24 @@ public class Main {
             sc.nextLine();
             System.out.println("Fecha del viaje:");
             String fechaViaje = sc.nextLine();
-            sv.getHorariosDisponibles(LocalDate.parse(fechaViaje));
+            if (sv.getHorariosDisponibles(LocalDate.parse(fechaViaje)).length!=0){
+                System.out.println("...::::Listado de horarios disponibles: ");
+                String horarios[][] = sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate));
+                for (int i = 0; i < horarios.length; i++) {
+                    System.out.println(horarios[i][0] + " - " + horarios[i][1] + " - " + horarios[i][2] + " - " +
+                            horarios[i][3]);
+                }
+                System.out.println("Ingrese la patente del bus del viaje a tomar: ");
+                String patenteBus = sc.nextLine();
+                System.out.println("Ingrese la hora del viaje a tomar: ");
+                String horaViaje = sc.nextLine();
+                String asientosDisponibles[][] = sv.listAsientosDelViaje(LocalDate.parse(fechaViaje, formatterDate),
+                        LocalTime.parse(horaViaje, formatterTime), patenteBus);
+                for (int i = 0; i < asientosDisponibles.length; i++) {
+                    System.out.println(asientosDisponibles[i][0] + "|" + asientosDisponibles[i][1] + "|" + asientosDisponibles[i][3] + "|" + asientosDisponibles[i][2]);
+                }
+
+            }
         }
         else {
             System.out.println("...::::Cliente no existe o la venta ya existe::::...");
@@ -222,7 +239,10 @@ public class Main {
             + " - " + venta[5] + " - " + venta[6]);
         }
     }
-    private void listPasajes(){
-
+    private void listViajes(){
+        String[][] listaViajes = sv.listViajes();
+        for (String[] viaje : listaViajes) {
+            System.out.println(viaje[0] + " - " + viaje[1] + " -  " + viaje[2] + " - " + viaje[3] +  " - " + viaje[4]);
+        }
     }
 }

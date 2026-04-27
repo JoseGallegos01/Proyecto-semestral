@@ -63,7 +63,10 @@ public class SistemaVentaPasajes {
         int i = 0;
         for (Viaje viaje : viajes){
             if (viaje.getFecha().isEqual(fechaViaje)){
-
+                horarios[i][0] = viaje.getBus().getPatente();
+                horarios[i][1] = viaje.getHora().toString();
+                horarios[i][2] = String.valueOf(viaje.getPrecio());
+                horarios[i][3] = String.valueOf(viaje.getnroAsientosDisponibles());
             }
         }
         return horarios;
@@ -128,8 +131,8 @@ public class SistemaVentaPasajes {
         for (Viaje v : viajes){
             listaViajes[contador][0] = v.getFecha().toString();
             listaViajes[contador][1] = v.getHora().toString();
-            listaViajes[contador][2] = "";
-            listaViajes[contador][3] = v.getAsientos().toString();
+            listaViajes[contador][2] = String.valueOf(v.getPrecio());
+            listaViajes[contador][3] = String.valueOf(v.getnroAsientosDisponibles());
             listaViajes[contador][4] = v.getBus().getPatente();
             contador++;
         }
