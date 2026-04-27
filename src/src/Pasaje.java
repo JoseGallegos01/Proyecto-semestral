@@ -1,5 +1,6 @@
 public class Pasaje {
     //Cristobal Jeldres
+    //En teoria no pide nada mas
     private long numero;
     private int asiento;
 
