@@ -247,7 +247,9 @@ public class Main {
     }
 
     public static void consultarViajesPorFecha(SistemaVentaPasajes sistema,Scanner sc){
+        System.out.println("==============================");
         System.out.println("Consulta viajes por fecha ");
+        System.out.println("==============================");
 
         System.out.print("Ingrese fecha (dd/mm/aaaa):");
 
@@ -262,7 +264,9 @@ public class Main {
         }
         System.out.print("n Se encontraron "+viajes.length+"viajes/n" );
 
-        System.out.println("PATENTE HORA PRECIO DISPONIBLES");
+        System.out.println("PATENTE  HORA  PRECIO  DISPONIBLES");
+        System.out.println("----------------------------------------");
+
 
         for (int i = 0 ; i<viajes.length;i++) {
             System.out.println(viajes[i][0] + " " +
