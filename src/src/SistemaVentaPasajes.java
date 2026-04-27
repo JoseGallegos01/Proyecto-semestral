@@ -52,7 +52,7 @@ public class SistemaVentaPasajes {
         return false;
     }
 
-    //metodo incompleto
+    // Metodo Terminado - Jose Gallegos
     public String[][] getHorariosDisponibles(LocalDate fechaViaje){
         int cantidadHorariosDisponibles = 0;
         for (Viaje viaje : viajes){
@@ -60,14 +60,18 @@ public class SistemaVentaPasajes {
                 cantidadHorariosDisponibles++;
             }
         }
+
         String[][] horarios = new String[cantidadHorariosDisponibles][4];
         int i = 0;
+
         for (Viaje viaje : viajes){
             if (viaje.getFecha().isEqual(fechaViaje)){
                 horarios[i][0] = viaje.getBus().getPatente();
                 horarios[i][1] = viaje.getHora().toString();
                 horarios[i][2] = String.valueOf(viaje.getPrecio());
                 horarios[i][3] = String.valueOf(viaje.getnroAsientosDisponibles());
+
+                i++;
             }
         }
         return horarios;
@@ -93,10 +97,16 @@ public class SistemaVentaPasajes {
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero){
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null) return false;
-        if (findPasajero(idPasajero) == null) return false;
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus).getnroAsientosDisponibles() ==0) return false;
+        Viaje viaje = findViaje(fecha.toString(), hora.toString(), patenteBus);
+        if (viaje == null) return false;
 
+        Pasajero pasajero = findPasajero(idPasajero);
+        if (pasajero == null) return false;
+        if (viaje.getnroAsientosDisponibles() == 0) return false;
+        Pasaje nuevoPasaje = new Pasaje(asiento, pasajero);
+        viaje.addPasaje(nuevoPasaje);
+
+        return true;
     }
 
     public String[][] listVentas(){
