@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class SistemaVentaPasajes {
@@ -8,6 +9,8 @@ public class SistemaVentaPasajes {
     ArrayList<Bus> buses = new ArrayList<>();
     ArrayList<Venta> ventas = new ArrayList<>();
     ArrayList<Viaje> viajes = new ArrayList<>();
+    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     public boolean createCliente(IdPersona id, Nombre nom, String fono, String email){
         if (findCliente(id) == null) {
             clientes.add(new Cliente(id, nom, email));
@@ -20,7 +23,7 @@ public class SistemaVentaPasajes {
                                   String fonoContacto){
         if (findPasajero(id) == null) {
             pasajeros.add(new Pasajero(id, nom, nombreContacto, fono));
-            findPasajero(id).setTelefono(fono);
+            findPasajero(id).setFonoContacto(fonoContacto);
             return true;
         }
         return false;
@@ -37,7 +40,7 @@ public class SistemaVentaPasajes {
     public boolean createViaje(LocalDate fecha, LocalTime hora, int precio, String patenteBus){
         if (findBus(patenteBus) != null) {
             if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null) {
-                viajes.add((new Viaje(fecha, hora, precio, findBus(patenteBus))));
+                viajes.add(new Viaje(fecha, hora, precio, findBus(patenteBus)));
                 return true;
             }
         }
@@ -67,6 +70,7 @@ public class SistemaVentaPasajes {
                 horarios[i][1] = viaje.getHora().toString();
                 horarios[i][2] = String.valueOf(viaje.getPrecio());
                 horarios[i][3] = String.valueOf(viaje.getnroAsientosDisponibles());
+                i++;
             }
         }
         return horarios;
@@ -104,11 +108,14 @@ public class SistemaVentaPasajes {
     }
 
     //metodo incompleto
-    public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero){
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null) return false;
+    public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero, TipoDocumento tipo) {
+        Viaje viajeVenta = findViaje(fecha.toString(), hora.toString(), patenteBus);
+        Venta ventaViaje = findVenta(idDoc, tipo);
+        Pasajero pasajeroVenta = findPasajero(idPasajero);
+        if (viajeVenta == null) return false;
         if (findPasajero(idPasajero) == null) return false;
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus).getnroAsientosDisponibles() ==0) return false;
-
+        if (viajeVenta.getnroAsientosDisponibles() == 0) return false;
+        ventaViaje.createPasaje(asiento, viajeVenta, pasajeroVenta);
         return true;
     }
 
@@ -143,10 +150,9 @@ public class SistemaVentaPasajes {
 
 
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patenteBus){
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus) != null){
-            return findViaje(fecha.toString(), hora.toString(), patenteBus).getListaPasajeros();
-        }
-        return new String[0][0];
+        Viaje viajeListarPasajeros =  findViaje(fecha.toString(), hora.toString(), patenteBus);
+        if (viajeListarPasajeros == null) return new String[0][0];
+        else return viajeListarPasajeros.getListaPasajeros();
     }
 
 
@@ -177,7 +183,9 @@ public class SistemaVentaPasajes {
     }
     private Viaje findViaje(String fecha, String hora, String patenteBus){
         for (Viaje v : viajes){
-            if (v.getHora().toString().equals(hora) && v.getFecha().toString().equals(fecha) && v.getBus().toString().equals(patenteBus)){
+            if (v.getFecha().toString().equals(fecha)
+                    && v.getHora().toString().equals(hora)
+                    && v.getBus().getPatente().equals(patenteBus)){
                 return v;
             }
         }

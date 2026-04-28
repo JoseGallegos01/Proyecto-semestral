@@ -63,6 +63,7 @@ public class Main {
                     break;
                 case 8:
                     System.out.println("Metodo incompleto");
+                    break;
                 case 9: createTestData();
                 break;
                 case 10: System.out.println("Saliendo...");
@@ -71,7 +72,7 @@ public class Main {
             }
 
 
-        }while (opcion!=9);
+        }while (opcion!=10);
     }
     private void createCliente(){
         System.out.println("...::::Crear un nuevo cliente:::...");
@@ -93,6 +94,7 @@ public class Main {
         }
         System.out.println("Sr. [1] o Sra. [2]");
         int opcionSrSra = sc.nextInt();
+        sc.nextLine();
         if (opcionSrSra==1) tratamiento = Tratamiento.SR;
         if (opcionSrSra==2) tratamiento = Tratamiento.SRA;
         System.out.println("Nombres: ");
@@ -158,6 +160,7 @@ public class Main {
         String idDocumento = sc.nextLine();
         System.out.println("Tipo de documento: [1] Boleta [2] Factura");
         int opcionTipoDocumento = sc.nextInt();
+        sc.nextLine();
         if (opcionTipoDocumento==1) tipoDocumento = TipoDocumento.BOLETA;
         if (opcionTipoDocumento==2) tipoDocumento = TipoDocumento.FACTURA;
         System.out.println("Fecha de venta [dd/MM/yyyy] :");
@@ -165,12 +168,15 @@ public class Main {
         System.out.println("...::::Datos del cliente");
         System.out.println("Rut [1] o Pasaporte [2]");
         int opcionRutPasaporte = sc.nextInt();
+        sc.nextLine();
         if (opcionRutPasaporte == 1){
             System.out.println("Rut cliente");
             int rutCliente = sc.nextInt();
+            sc.nextLine();
             System.out.println("DV");
             char dv = sc.next().charAt(0);
             id = new Rut(rutCliente, dv);
+            sc.nextLine();
         }
         if (opcionRutPasaporte == 2){
             System.out.println("Numero pasaporte:");
@@ -179,43 +185,75 @@ public class Main {
             String nacionalidad = sc.nextLine();
             id = new Pasaporte(numeroPasaporte, nacionalidad);
         }
-        System.out.println("Nombre cliente: ");
-        String nombreCliente = sc.nextLine();
         if (sv.iniciaVenta(idDocumento, tipoDocumento, (LocalDate.parse(fecha, formatterDate)), id)){
             System.out.println("Cantidad de pasajes a comprar:");
             int cantidadPasajes = sc.nextInt();
             sc.nextLine();
             System.out.println("Fecha del viaje:");
             String fechaViaje = sc.nextLine();
-            if (sv.getHorariosDisponibles(LocalDate.parse(fechaViaje)).length!=0){
+            if (sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate)).length!=0){
                 System.out.println("...::::Listado de horarios disponibles: ");
                 String horarios[][] = sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate));
                 for (int i = 0; i < horarios.length; i++) {
                     System.out.println((i+1) + " - " + horarios[i][0] + " - " + horarios[i][1] + " - "
                             + horarios[i][2] + " - " + horarios[i][3]);
                 }
-                System.out.println("Seleccione el viaje en [1 + " + horarios.length + "] : ");
+                System.out.println("Seleccione el viaje en [1 ..." + horarios.length + "] : ");
                 int numViaje = sc.nextInt();
                 sc.nextLine();
-                String patenteBus = horarios[numViaje][0];
-                String hora = horarios[numViaje][1];
-                String valor = horarios[numViaje][2];
-                String asientos = horarios[numViaje][3];
+                String patenteBus = horarios[numViaje-1][0];
+                String hora = horarios[numViaje-1][1];
+                String valor = horarios[numViaje-1][2];
+                String asientos = horarios[numViaje-1][3];
                 String listaAsientos[][] = sv.listAsientosDelViaje(LocalDate.parse(fechaViaje, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
                 for (String[] listaAsiento: listaAsientos) {
                     System.out.println(listaAsiento[0] + " - " + listaAsiento[1] +  " - " + listaAsiento[3] + " - " + listaAsiento[2]);
                 }
-                if (cantidadPasajes>1){
-                    System.out.println("Seleccione los asientos [separe por ,] : ");
-                    int asientosComprandose = sc.nextInt();
+                if (cantidadPasajes>1) System.out.println("Ingrese sus asientos [separe por ,]");
+                if (cantidadPasajes==1) System.out.println("Seleccione su asiento");
+                String asientosComprados = sc.nextLine();
+                String[] listaAsientosComprados = asientosComprados.split(",");
+                int asientosCompradosLista[] = new int[listaAsientosComprados.length];
+                for (int i = 0; i < asientosCompradosLista.length; i++) {
+                    asientosCompradosLista[i] = Integer.parseInt(listaAsientosComprados[i]);
                 }
-                else  {
-                    System.out.println("Seleccione el asiento : ");
-                    int asientosComprandose = sc.nextInt();
+                for (int i = 0 ; i<cantidadPasajes ; i++){
+                    if (cantidadPasajes>1) System.out.println("...::::Datos pasajeros " + (i+1));
+                    else System.out.println("...::::Datos pasajero");
+                    System.out.println("Rut[1] o Pasaporte[2]");
+                    int opcionRutPasaportePasajes = sc.nextInt();
+                    sc.nextLine();
+                    if (opcionRutPasaportePasajes==1){
+                        System.out.println("Ingrese el rut (sin el DV)");
+                        int rut = sc.nextInt();
+                        sc.nextLine();
+                        System.out.println("Ingrese el DV del rut");
+                        char dv = sc.next().charAt(0);
+                        id = new Rut(rut, dv);
+                        sc.nextLine();
+                    }
+                    else if (opcionRutPasaportePasajes==2){
+                        System.out.println("Ingrese el numero del pasaporte");
+                        String numero = sc.nextLine();
+                        System.out.println("Ingrese la nacionalidad del pasaporte");
+                        String nacionalidad = sc.nextLine();
+                        id = new Pasaporte(numero, nacionalidad);
+                    }
+                    Nombre nombrePasajero = new Nombre();
+                    Nombre contactoNombrePasajero = new Nombre();
+                    System.out.println("Ingrese nombres: ");
+                    nombrePasajero.setNombres(sc.nextLine());
+                    System.out.println("Nombre contacto del pasajero: ");
+                    contactoNombrePasajero.setNombres(sc.nextLine());
+                    System.out.println("Telefono del pasejero: ");
+                    String telefonoPasajero = sc.nextLine();
+                    System.out.println("Telefono contacto del pasejero: ");
+                    String telefonoContacto = sc.nextLine();
+                    sv.createPasajero(id, nombrePasajero, telefonoPasajero, contactoNombrePasajero, telefonoContacto);
+                    sv.vendePasaje(idDocumento, LocalDate.parse(fechaViaje, formatterDate), LocalTime.parse(hora, formatterTime),
+                            patenteBus, asientosCompradosLista[i], id, tipoDocumento);
                 }
-
-            }
-            else {
+            } else {
                 System.out.println("...::::No hay horarios para esa fecha::::...");
             }
         }
@@ -229,7 +267,6 @@ public class Main {
         System.out.println("...::::Listado de pasajeros de un viaje:::");
         System.out.println("Fecha del viaje [dd/MM/yyy] :");
         String fecha = sc.nextLine();
-        sc.nextLine();
         System.out.println("Hora [hh:mm] :");
         String hora = sc.nextLine();
         System.out.println("Patente del bus :");
@@ -262,15 +299,27 @@ public class Main {
     }
     private void createTestData(){
         char dvTest = 2;
-        IdPersona testId = new Rut(22222222, dvTest);
-        Nombre nombreTest = new Nombre();
-        nombreTest.setNombres("John");
-        nombreTest.setTratamiento(Tratamiento.SR);
-        nombreTest.setApellidoPaterno("Doe");
-        nombreTest.setApellidoMaterno("Test");
-        //Pasajero pasajeroTest = new Pasajero(testId, nombreTest, "e", 1);
-        Venta ventaTest = new Venta("1", TipoDocumento.FACTURA, LocalDate.parse("01/01/2026", formatterDate));
-        Bus busTest = new Bus("1111TST", 20);
-
+        IdPersona testId1 = new Rut(22222222, dvTest);
+        IdPersona testId2 = new Rut(33333333, dvTest);
+        Nombre test1 = new Nombre();
+        Nombre test2 = new Nombre();
+        test1.setNombres("John");
+        test2.setNombres("Jane");
+        test1.setTratamiento(Tratamiento.SR);
+        test2.setTratamiento(Tratamiento.SRA);
+        test1.setApellidoPaterno("Doe");
+        test2.setApellidoMaterno("Doe");
+        sv.createBus("1111Test", "Test", "Test", 20);
+        sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
+                LocalTime.parse("10:30", formatterTime), 300, "1111Test");
+        sv.createCliente(testId1, test1, "+56 9 11111111", "JohnDoe@gmail.com");
+        sv.createCliente(testId2, test2, "+56 9 11111111", "JaneDoe@gmail.com");
+        sv.createPasajero(testId1, test1, "+56 9 11111111",test1, "+56 9 11111111");
+        sv.createPasajero(testId2, test2, "+56 9 11111111",test2, "+56 9 11111111");
+        sv.iniciaVenta("67", TipoDocumento.FACTURA, LocalDate.parse("01/01/2026", formatterDate), testId1);
+        sv.iniciaVenta("68", TipoDocumento.BOLETA, LocalDate.parse("01/01/2026", formatterDate), testId2);
+        sv.vendePasaje("67", LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 1, testId1, TipoDocumento.FACTURA);
+        sv.vendePasaje("68", LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 2, testId1, TipoDocumento.BOLETA);
+        System.out.println("...::::Datos de prueba creados:::...");
     }
 }
