@@ -2,16 +2,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Venta {
-    //falta por terminar metodo createPasaje, getpasajes y getmonto
     ArrayList<Pasaje> pasajes;
     private String idDocumento;
     private TipoDocumento tipo;
     private LocalDate fecha;
     private Cliente cliente;
-    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha) {
+    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, Cliente cliente) {
         this.idDocumento = idDocumento;
         this.tipo = tipo;
         this.fecha = fecha;
+        this.pasajes = new ArrayList<>();
+        this.cliente = cliente;
+
     }
     public String getIdDocumento() {
         return idDocumento;
@@ -25,10 +27,11 @@ public class Venta {
     public Cliente getCliente(){
         return cliente;
     }
-    //Terminare la relacion de clases dsps
+
     public void createPasaje(int asiento, Viaje viaje, Pasajero pasajero){
         Pasaje pasaje = new Pasaje(asiento, this, viaje, pasajero);
         pasajes.add(pasaje);
+        viaje.addPasaje(pasaje);
     }
     public Pasaje[] getPasajes(){
         return pasajes.toArray(new Pasaje[0]);
