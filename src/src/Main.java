@@ -60,7 +60,7 @@ public class Main {
                     listViajes();
                     break;
                 case 8:
-                    System.out.println("Metodo incompleto");
+                    consultarViajesPorFecha();
                     break;
                 case 9: createTestData();
                 break;
@@ -276,12 +276,11 @@ public class Main {
             System.out.println("...::::No se ha encontrado una lista de pasajeros para el viaje:::...");
         }
         else  {
-            System.out.printf("| %-6s | %-15s | %-30s | %-25s | %-15s |%n",
-                    "ASIENTO", "RUT/PASS", "PASAJERO", "CONTACTO", "TELÉFONO");
+            System.out.printf("| %-6s | %-15s | %-30s | %-25s |%n",
+                    "ASIENTO", "RUT/PASS", "PASAJERO", "TELEFONO CONTACTO");
             String[][] listadoPasajerosViaje = sv.listPasajeros(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
             for (String[] pasajero : listadoPasajerosViaje) {
-                System.out.println(pasajero[0] + " | " + pasajero[1] + " | " + pasajero[2] + " | " + pasajero[3]
-                + " | " + pasajero[4]);
+                System.out.println(pasajero[0] + " | " + pasajero[1] + " | " + pasajero[2] + " | " + pasajero[3]);
             }
         }
     }
@@ -303,6 +302,33 @@ public class Main {
                     viaje[0], viaje[1], viaje[2], viaje[3], viaje[4]);
         }
     }
+    public void consultarViajesPorFecha() {
+        System.out.println("==============================");
+        System.out.println("Consulta viajes por fecha ");
+        System.out.println("==============================");
+        System.out.print("Ingrese fecha (dd/MM/yyyy):");
+
+        String fecha = sc.nextLine();
+
+        String[][] viajes = sv.getHorariosDisponibles(LocalDate.parse(fecha, formatterDate));
+
+        if (viajes.length == 0) {
+            System.out.println("No hay viajes disponibles para la fecha solicitada");
+            return;
+
+        }
+        System.out.println("Se encontraron " + viajes.length + " viajes");
+
+        System.out.println("PATENTE  HORA  PRECIO  DISPONIBLES");
+        System.out.println("----------------------------------------");
+
+
+        for (int i = 0; i < viajes.length; i++) {
+            System.out.println(viajes[i][0] + " " +
+                    viajes[i][0] + " " + viajes[i][1] + " " + viajes[i][2] + " " + viajes[i][3]);
+        }
+    }
+
     private void createTestData(){
         char dvTest = 2;
         IdPersona testId1 = new Rut(22222222, dvTest);
