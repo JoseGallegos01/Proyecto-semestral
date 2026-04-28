@@ -262,7 +262,7 @@ public class Main {
         }
 
     }
-    //tengo que ver como encontrar el asiento de cada pasajero
+
     private void listPasajerosViaje(){
         System.out.println("...::::Listado de pasajeros de un viaje:::");
         System.out.println("Fecha del viaje [dd/MM/yyy] :");
