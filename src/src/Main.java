@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class Main {
     //Vicente Salinas
-    //tengo que ver donde se guarda el numero del asiento
-    //Debo ver cada detalle del rut
 
     SistemaVentaPasajes sv = new SistemaVentaPasajes();
     private Scanner sc = new Scanner(System.in);
@@ -298,8 +296,11 @@ public class Main {
     }
     private void listViajes(){
         String[][] listaViajes = sv.listViajes();
+        System.out.printf("| %s | %s | %s | %s | %s |\n",
+                "FECHA", "HORA", "PRECIO", "DISPONIBILIDAD", "PATENTE");
         for (String[] viaje : listaViajes) {
-            System.out.println(viaje[0] + " | " + viaje[1] + " | " + viaje[2] + " | " + viaje[3] +  " | " + viaje[4]);
+            System.out.printf("| %s | %s | %s | %s | %s |\n",
+                    viaje[0], viaje[1], viaje[2], viaje[3], viaje[4]);
         }
     }
     private void createTestData(){
