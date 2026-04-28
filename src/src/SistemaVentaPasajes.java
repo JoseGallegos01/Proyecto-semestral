@@ -109,7 +109,6 @@ public class SistemaVentaPasajes {
         return findPasajero(idPasajero).getNombreCompleto().toString();
     }
 
-    //metodo incompleto
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero, TipoDocumento tipo) {
         Viaje viajeVenta = findViaje(fecha.toString(), hora.toString(), patenteBus);
         Venta ventaViaje = findVenta(idDoc, tipo);
