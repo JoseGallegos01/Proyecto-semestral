@@ -109,19 +109,36 @@ public class SistemaVentaPasajes {
         if (findPasajero(idPasajero) == null) return false;
         if (findViaje(fecha.toString(), hora.toString(), patenteBus).getnroAsientosDisponibles() ==0) return false;
 
+        return true;
     }
 
     public String[][] listVentas(){
-        if (ventas.isEmpty()) return  new String[0][0];
+        if (ventas.isEmpty()) return new String[0][0];
+
         String[][] listaVentas = new String[ventas.size()][7];
+
         for (int i = 0; i < listaVentas.length; i++){
-            listaVentas[i][0] = ventas.get(i).getIdDocumento();
-            listaVentas[i][1] = ventas.get(i).getTipo().name();
-            listaVentas[i][2] = ventas.get(i).getFecha().toString();
-            listaVentas[i][3] = ventas.get(i).getCliente().getIdPersona().toString();
-            listaVentas[i][4] = ventas.get(i).getCliente().getNombreCompleto().toString();
-            listaVentas[i][5] = String.valueOf(ventas.get(i).getPasajes().length);
-            listaVentas[i][6] = "$" + ventas.get(i).getMonto();
+            Venta v = ventas.get(i);
+
+            listaVentas[i][0] = v.getIdDocumento();
+            listaVentas[i][1] = v.getTipo().name();
+            listaVentas[i][2] = v.getFecha().toString();
+
+            if (v.getCliente() != null && v.getCliente().getIdPersona() != null) {
+                listaVentas[i][3] = v.getCliente().getIdPersona().toString();
+                listaVentas[i][4] = v.getCliente().getNombreCompleto().toString();
+            } else {
+                listaVentas[i][3] = "Sin RUT asignado";
+                listaVentas[i][4] = "Sin Nombre asignado";
+            }
+
+            if (v.getPasajes() != null) {
+                listaVentas[i][5] = String.valueOf(v.getPasajes().length);
+            } else {
+                listaVentas[i][5] = "0";
+            }
+
+            listaVentas[i][6] = "$" + v.getMonto();
         }
         return listaVentas;
     }
@@ -174,14 +191,19 @@ public class SistemaVentaPasajes {
         }
         return null;
     }
+
+    //Metodo corregido -Jose Gallegos
     private Viaje findViaje(String fecha, String hora, String patenteBus){
         for (Viaje v : viajes){
-            if (v.getHora().toString().equals(hora) && v.getFecha().toString().equals(fecha) && v.getBus().toString().equals(patenteBus)){
+            if (v.getHora().toString().equals(hora) &&
+                    v.getFecha().toString().equals(fecha) &&
+                    v.getBus().getPatente().equals(patenteBus)){
                 return v;
             }
         }
         return null;
     }
+
     private Pasajero findPasajero(IdPersona idPersona){
         for (Pasajero p : pasajeros){
             if (p.getIdPersona().equals(idPersona)){
