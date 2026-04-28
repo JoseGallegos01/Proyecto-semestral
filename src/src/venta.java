@@ -7,12 +7,12 @@ public class Venta {
     private TipoDocumento tipo;
     private LocalDate fecha;
     private Cliente cliente;
-    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha) {
+    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, Cliente cliente) {
         this.idDocumento = idDocumento;
         this.tipo = tipo;
         this.fecha = fecha;
         this.pasajes = new ArrayList<>();
-
+        this.cliente = cliente;
 
     }
     public String getIdDocumento() {

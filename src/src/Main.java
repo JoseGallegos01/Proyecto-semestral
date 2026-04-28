@@ -194,11 +194,13 @@ public class Main {
             if (sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate)).length!=0){
                 System.out.println("...::::Listado de horarios disponibles: ");
                 String horarios[][] = sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate));
+                System.out.printf("%-3s %-10s %-8s %-8s %-10s%n",
+                        "", "BUS", "SALIDA", "VALOR", "ASIENTOS");
                 for (int i = 0; i < horarios.length; i++) {
-                    System.out.println((i+1) + " - " + horarios[i][0] + " - " + horarios[i][1] + " - "
-                            + horarios[i][2] + " - " + horarios[i][3]);
+                    System.out.println((i+1) + " | " + horarios[i][0] + " | " + horarios[i][1] + " | "
+                            + horarios[i][2] + " | " + horarios[i][3]);
                 }
-                System.out.println("Seleccione el viaje en [1 ..." + horarios.length + "] : ");
+                System.out.println("Seleccione el viaje en [1..." + horarios.length + "] : ");
                 int numViaje = sc.nextInt();
                 sc.nextLine();
                 String patenteBus = horarios[numViaje-1][0];
@@ -207,7 +209,7 @@ public class Main {
                 String asientos = horarios[numViaje-1][3];
                 String listaAsientos[][] = sv.listAsientosDelViaje(LocalDate.parse(fechaViaje, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
                 for (String[] listaAsiento: listaAsientos) {
-                    System.out.println(listaAsiento[0] + " - " + listaAsiento[1] +  " - " + listaAsiento[3] + " - " + listaAsiento[2]);
+                    System.out.println(listaAsiento[0] + " | " + listaAsiento[1] +  " | " + listaAsiento[3] + " | " + listaAsiento[2]);
                 }
                 if (cantidadPasajes>1) System.out.println("Ingrese sus asientos [separe por ,]");
                 if (cantidadPasajes==1) System.out.println("Seleccione su asiento");
@@ -276,25 +278,28 @@ public class Main {
             System.out.println("...::::No se ha encontrado una lista de pasajeros para el viaje:::...");
         }
         else  {
-            System.out.println("Asiento | RUT/PASS | Pasajero | Contacto | Telefono contacto");
+            System.out.printf("| %-6s | %-15s | %-30s | %-25s | %-15s |%n",
+                    "ASIENTO", "RUT/PASS", "PASAJERO", "CONTACTO", "TELÉFONO");
             String[][] listadoPasajerosViaje = sv.listPasajeros(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
             for (String[] pasajero : listadoPasajerosViaje) {
-                System.out.println(pasajero[0] + " - " + pasajero[1] + " - " + pasajero[2] + " " + pasajero[3]
-                + " - " + pasajero[4]);
+                System.out.println(pasajero[0] + " | " + pasajero[1] + " | " + pasajero[2] + " | " + pasajero[3]
+                + " | " + pasajero[4]);
             }
         }
     }
     private void listVentas(){
         String[][] listaVentas = sv.listVentas();
+        System.out.printf("| %-10s | %-10s | %-12s | %-15s | %-30s | %-12s | %-12s |\n",
+                "ID DOC", "TIPO DOC", "FECHA", "RUT", "CLIENTE", "CANT", "TOTAL");
         for (String[] venta : listaVentas) {
-            System.out.println(venta[0] + " - " + venta[1] + " - " + venta[2] + " - " + venta[3] + " - " + venta[4]
-            + " - " + venta[5] + " - " + venta[6]);
+            System.out.printf("| %-10s | %-10s | %-12s | %-15s | %-30s | %-12s | %-12s |\n",
+                    venta[0], venta[1], venta[2], venta[3], venta[4], venta[5], venta[6]);
         }
     }
     private void listViajes(){
         String[][] listaViajes = sv.listViajes();
         for (String[] viaje : listaViajes) {
-            System.out.println(viaje[0] + " - " + viaje[1] + " -  " + viaje[2] + " - " + viaje[3] +  " - " + viaje[4]);
+            System.out.println(viaje[0] + " | " + viaje[1] + " | " + viaje[2] + " | " + viaje[3] +  " | " + viaje[4]);
         }
     }
     private void createTestData(){

@@ -49,7 +49,8 @@ public class SistemaVentaPasajes {
     public boolean iniciaVenta(String idDoc, TipoDocumento tipo, LocalDate fechaVenta, IdPersona idCliente){
         if (findCliente(idCliente) == null) return false;
         if (findVenta(idDoc, tipo) == null){
-            ventas.add(new Venta(idDoc, tipo, fechaVenta));
+            Cliente clienteVenta = findCliente(idCliente);
+            ventas.add(new Venta(idDoc, tipo, fechaVenta, clienteVenta));
             return true;
         }
         return false;
@@ -77,10 +78,11 @@ public class SistemaVentaPasajes {
     }
 
     public String[][] listAsientosDelViaje(LocalDate fecha, LocalTime hora, String patenteBus){
-        //tengo que implementar la manera de marcar los ocupados
         if (findViaje(fecha.toString(), hora.toString(), patenteBus) != null){
             int cantidadasientos = findViaje(fecha.toString(), hora.toString(), patenteBus).getBus().getNroAsientos();
             int contador = 0;
+            cantidadasientos = (int) Math.ceil(cantidadasientos / 4.0);
+            //saque eso de arriba de https://www.w3schools.com/java/ref_math_ceil.asp buscando como hacer lo de las filas
             String[][] asientos = new String[cantidadasientos][4];
             for (int i = 0; i < cantidadasientos; i++){
                 if (contador<=cantidadasientos) asientos[i][0] = String.valueOf(contador++);
@@ -137,12 +139,12 @@ public class SistemaVentaPasajes {
     public String[][] listViajes(){
         int contador = 0;
         String[][] listaViajes = new String[viajes.size()][5];
-        for (Viaje v : viajes){
-            listaViajes[contador][0] = v.getFecha().toString();
-            listaViajes[contador][1] = v.getHora().toString();
-            listaViajes[contador][2] = String.valueOf(v.getPrecio());
-            listaViajes[contador][3] = String.valueOf(v.getnroAsientosDisponibles());
-            listaViajes[contador][4] = v.getBus().getPatente();
+        for (Viaje listaViaje : viajes){
+            listaViajes[contador][0] = LocalDate.parse(listaViaje.getFecha().toString()).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            listaViajes[contador][1] = listaViaje.getHora().toString();
+            listaViajes[contador][2] = String.valueOf(listaViaje.getPrecio());
+            listaViajes[contador][3] = String.valueOf(listaViaje.getnroAsientosDisponibles());
+            listaViajes[contador][4] = listaViaje.getBus().getPatente();
             contador++;
         }
         return listaViajes;
@@ -151,8 +153,8 @@ public class SistemaVentaPasajes {
 
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patenteBus){
         Viaje viajeListarPasajeros =  findViaje(fecha.toString(), hora.toString(), patenteBus);
-        if (viajeListarPasajeros == null) return new String[0][0];
-        else return viajeListarPasajeros.getListaPasajeros();
+        if (viajeListarPasajeros != null) return viajeListarPasajeros.getListaPasajeros();
+        else return new String[0][0];
     }
 
 
