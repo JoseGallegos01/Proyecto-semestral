@@ -1,3 +1,8 @@
+package modelo;
+
+import utilidades.IdPersona;
+import utilidades.Nombre;
+
 import java.util.Objects;
 
 public class Persona {
@@ -20,7 +25,7 @@ public class Persona {
 
     @Override
     public String toString() {
-        return "Persona{" +
+        return "modelo.Persona{" +
                 "idPersona=" + idPersona +
                 ", nombreCompleto=" + nombreCompleto +
                 ", telefono='" + telefono + '\'' +

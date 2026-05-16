@@ -1,3 +1,5 @@
+package modelo;
+
 public class Pasaje {
     //Cristobal Jeldres
     //En teoria no pide nada mas

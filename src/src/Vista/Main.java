@@ -1,7 +1,15 @@
+package Vista;
+
+import Controlador.SistemaVentaPasajes;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import modelo.*;
+import utilidades.*;
+import Controlador.*;
+
 
 public class Main {
     //Vicente Salinas
@@ -22,8 +30,8 @@ public class Main {
         do {
             System.out.println("==================================================");
             System.out.println("...:::Menú principal:::...");
-            System.out.println("1) Crear Cliente");
-            System.out.println("2) Crear Bus");
+            System.out.println("1) Crear modelo.Cliente");
+            System.out.println("2) Crear modelo.Bus");
             System.out.println("3) Crear viaje");
             System.out.println("4) Vender pasaje");
             System.out.println("5) Lista de pasajeros");
@@ -74,7 +82,7 @@ public class Main {
     }
     private void createCliente(){
         System.out.println("...::::Crear un nuevo cliente:::...");
-        System.out.println("Rut[1] o Pasaporte[2]");
+        System.out.println("utilidades.Rut[1] o utilidades.Pasaporte[2]");
         int opcionRutPasaporte = sc.nextInt();
         if (opcionRutPasaporte==1){
             System.out.println("Ingrese el rut (sin el DV)");
@@ -111,7 +119,7 @@ public class Main {
         nombre.setApellidoMaterno(apellido_materno);
         nombre.setTratamiento(tratamiento);
         if (sv.createCliente(id, nombre, telefono_movil, email)){
-            System.out.println("...::::Cliente guardado exitosamente::::...");
+            System.out.println("...::::modelo.Cliente guardado exitosamente::::...");
         }
         else {
             System.out.println("...::::Ya existe un cliente con el mismo id::::...");
@@ -128,7 +136,7 @@ public class Main {
         System.out.println("Numero de asientos: ");
         int asientos = sc.nextInt();
         if (sv.createBus(patente, marca, modelo, asientos)) {
-            System.out.println("...::::Bus guardado exitosamente:::...");
+            System.out.println("...::::modelo.Bus guardado exitosamente:::...");
         }
         else {
             System.out.println("...::::Ya hay un bus con la misma patente registrada::...");
@@ -148,11 +156,11 @@ public class Main {
         if (!sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus)){
             System.out.println("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
         }
-        else System.out.println("...::::Viaje guardado exitosamente::::...");
+        else System.out.println("...::::modelo.Viaje guardado exitosamente::::...");
     }
     //metodo incompleto
     private void vendePasajes(){
-        System.out.println("...::::Venta de pasajes::::...");
+        System.out.println("...::::modelo.Venta de pasajes::::...");
         System.out.println("...::::Datos de la venta");
         System.out.println("Id documento: ");
         String idDocumento = sc.nextLine();
@@ -164,11 +172,11 @@ public class Main {
         System.out.println("Fecha de venta [dd/MM/yyyy] :");
         String fecha = sc.nextLine();
         System.out.println("...::::Datos del cliente");
-        System.out.println("Rut [1] o Pasaporte [2]");
+        System.out.println("utilidades.Rut [1] o utilidades.Pasaporte [2]");
         int opcionRutPasaporte = sc.nextInt();
         sc.nextLine();
         if (opcionRutPasaporte == 1){
-            System.out.println("Rut cliente");
+            System.out.println("utilidades.Rut cliente");
             int rutCliente = sc.nextInt();
             sc.nextLine();
             System.out.println("DV");
@@ -220,7 +228,7 @@ public class Main {
                 for (int i = 0 ; i<cantidadPasajes ; i++){
                     if (cantidadPasajes>1) System.out.println("...::::Datos pasajeros " + (i+1));
                     else System.out.println("...::::Datos pasajero");
-                    System.out.println("Rut[1] o Pasaporte[2]");
+                    System.out.println("utilidades.Rut[1] o utilidades.Pasaporte[2]");
                     int opcionRutPasaportePasajes = sc.nextInt();
                     sc.nextLine();
                     if (opcionRutPasaportePasajes==1){
@@ -243,7 +251,7 @@ public class Main {
                     Nombre contactoNombrePasajero = new Nombre();
                     System.out.println("Ingrese nombres: ");
                     nombrePasajero.setNombres(sc.nextLine());
-                    System.out.println("Nombre contacto del pasajero: ");
+                    System.out.println("utilidades.Nombre contacto del pasajero: ");
                     contactoNombrePasajero.setNombres(sc.nextLine());
                     System.out.println("Telefono del pasejero: ");
                     String telefonoPasajero = sc.nextLine();
@@ -258,7 +266,7 @@ public class Main {
             }
         }
         else {
-            System.out.println("...::::Cliente no existe o la venta ya existe::::...");
+            System.out.println("...::::modelo.Cliente no existe o la venta ya existe::::...");
         }
 
     }
