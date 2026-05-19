@@ -11,6 +11,7 @@ public class Bus {
     private String modelo;
     private int nroAsientos;
     private List <Viaje> viajes;
+    private Empresa empresa;
 
     public Bus(String patente, int nroAsientos) {
         this.patente = patente;
@@ -37,5 +38,11 @@ public class Bus {
     }
     public void addViaje(Viaje viaje){
         viajes.add(viaje);
+    }
+    public Empresa getEmpresa(){
+        return empresa;
+    }
+    public void setEmpresa(Empresa empresa){
+        this.empresa=empresa;
     }
 }
