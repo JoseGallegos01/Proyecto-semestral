@@ -1,9 +1,11 @@
 package Controlador;
 
+import excepciones.SistemaVentaPasajesException;
 import modelo.*;
 import utilidades.*;
 import Vista.*;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -18,47 +20,50 @@ public class SistemaVentaPasajes {
     ArrayList<Viaje> viajes = new ArrayList<>();
     DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
-    public boolean createCliente(IdPersona id, Nombre nom, String fono, String email){
+
+
+    public void createCliente(IdPersona id, Nombre nom, String fono, String email){
+        if (findCliente(id).isPresent()) throw new SistemaVentaPasajesException("Ya existe cliente con el id indicado");
         if (findCliente(id).isEmpty()) {
             clientes.add(new Cliente(id, nom, email));
-            findCliente(id).get().setTelefono(fono);
-            return true;
-        }
-        return false;
+                findCliente(id).get().setTelefono(fono);
+            }
     }
-    public boolean createPasajero(IdPersona id, Nombre nom, String fono, Nombre nombreContacto,
+    public void createPasajero(IdPersona id, Nombre nom, String fono, Nombre nombreContacto,
                                   String fonoContacto){
-        if (findPasajero(id).isEmpty()) {
-            pasajeros.add(new Pasajero(id, nom, nombreContacto, fono));
-            findPasajero(id).get().setFonoContacto(fonoContacto);
-            return true;
-        }
-        return false;
+        if (findPasajero(id).isPresent()) throw new SistemaVentaPasajesException("Ya existe pasajero con el id indicado");
+        pasajeros.add(new Pasajero(id, nom, nombreContacto, fono));
+        findPasajero(id).get().setFonoContacto(fonoContacto);
+
     }
-    public boolean createBus(String patente, String marca, String modelo, int NroAsientos){
+    //METODO A ELIMINAR E IMPLEMENTAR EN CONTROLADOR EMPRESAS
+    public void createBus(String patente, String marca, String modelo, int NroAsientos){
         if (findBus(patente).isEmpty()) {
             buses.add(new Bus(patente, NroAsientos));
             findBus(patente).get().setMarca(marca);
             findBus(patente).get().setModelo(modelo);
-            return true;
         }
-        return false;
     }
-    public boolean createViaje(LocalDate fecha, LocalTime hora, int precio, String patenteBus){
-        if (findBus(patenteBus).isPresent()) {
-            if (findViaje(fecha.toString(), hora.toString(), patenteBus).isEmpty()) {
-                viajes.add(new Viaje(fecha, hora, precio, findBus(patenteBus).get()));
-                return true;
-            }
-        }
-        return false;
+
+    //Metodo incompleto, faltan las siguientes excepciones:
+    //No existe auxiliar con el id indicado en la empresa con el rut indicado
+    //No existe conductor con el id indicado en la empresa con el rut indicado
+    //No existe terminal de salida en la comuna indicada
+    //No existe terminal de llegada en la comuna indicada
+    public void createViaje(LocalDate fecha, LocalTime hora, int precio, String patenteBus){
+        if (findViaje(fecha.toString(), hora.toString(), patenteBus).isPresent()) throw new SistemaVentaPasajesException("Ya existe viaje con fecha, hora y patente de bus indicados");
+        if (findBus(patenteBus).isEmpty()) throw new SistemaVentaPasajesException("No existe bus con la patente indicada");
+        viajes.add(new Viaje(fecha, hora, precio, findBus(patenteBus).get()));
     }
-    public boolean iniciaVenta(String idDoc, TipoDocumento tipo, LocalDate fechaVenta, IdPersona idCliente) {
-        if (findCliente(idCliente).isEmpty()) return false;
-        if (findVenta(idDoc, tipo).isPresent()) return false;
+
+    //Falta codigo para poder implementar:
+    //No existen viajes disponibles en la fecha y con terminales en las comunas de salida y llegada indicados
+    public void iniciaVenta(String idDoc, TipoDocumento tipo, LocalDate fechaVenta, IdPersona idCliente) {
+        if (findVenta(idDoc, tipo).isPresent()) throw new SistemaVentaPasajesException("Ya existe venta con el id y tipo de documento indicados");
+        if (findCliente(idCliente).isEmpty()) throw new SistemaVentaPasajesException("No existe cliente con el id indicado");
+
         Optional<Cliente> clienteVenta = findCliente(idCliente);
         ventas.add(new Venta(idDoc, tipo, fechaVenta, clienteVenta.get()));
-        return true;
     }
 
     public String[][] getHorariosDisponibles(LocalDate fechaViaje){
@@ -114,15 +119,14 @@ public class SistemaVentaPasajes {
         return findPasajero(idPasajero).get().getNombreCompleto().toString();
     }
 
-    public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero, TipoDocumento tipo) {
+    public void vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero, TipoDocumento tipo) {
         Optional<Viaje> viajeVenta = findViaje(fecha.toString(), hora.toString(), patenteBus);
         Optional<Venta> ventaViaje = findVenta(idDoc, tipo);
         Optional<Pasajero> pasajeroVenta = findPasajero(idPasajero);
-        if (viajeVenta.isEmpty()) return false;
-        if (findPasajero(idPasajero).isEmpty()) return false;
-        if (!viajeVenta.get().existeDisponibilidad()) return false;
+        if (viajeVenta.isEmpty()) throw new SistemaVentaPasajesException("No existe viaje con la fecha, hora y patente de bus indicados");
+        if (findPasajero(idPasajero).isEmpty()) throw new SistemaVentaPasajesException("No existe pasajero con el id indicado");
+        if (!viajeVenta.get().existeDisponibilidad()) throw new SistemaVentaPasajesException("No hay disponibilidad");
         ventaViaje.get().createPasaje(asiento, viajeVenta.get(), pasajeroVenta.get());
-        return true;
     }
 
     public String[][] listVentas(){
@@ -158,7 +162,7 @@ public class SistemaVentaPasajes {
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patenteBus){
         Optional<Viaje> viajeListarPasajeros = findViaje(fecha.toString(), hora.toString(), patenteBus);
         if (viajeListarPasajeros.isPresent()) return viajeListarPasajeros.get().getListaPasajeros();
-        else return new String[0][0];
+        else throw new SistemaVentaPasajesException("No existe viaje con la fecha, hora y patente de bus indicados");
     }
 
 
