@@ -34,10 +34,9 @@ public class UISVP {
         do {
             System.out.println("==================================================");
             System.out.println("...:::Menú principal:::...");
-            System.out.println("X) Crear empresa");
-            System.out.println("X) Contratar tripulante");
-            System.out.println("X) Crear empresa");
-
+            System.out.println("1) Crear empresa");
+            System.out.println("2) Contratar tripulante");
+            System.out.println("3) Crear terminal");
             System.out.println("4) Crear Cliente");
             System.out.println("5) Crear Bus");
             System.out.println("6) Crear viaje");
@@ -55,33 +54,33 @@ public class UISVP {
             sc.nextLine();
 
             switch (opcion) {
-                case 1:
+                case 4:
                     createCliente();
                     break;
-                case 2:
+                case 5:
                     createBus();
                     break;
-                case 3:
+                case 6:
                     createViaje();
                     break;
-                case 4:
+                case 7:
                     vendePasajes();
                     break;
-                case 5:
+                case 8:
                     listPasajerosViaje();
                     break;
-                case 6:
+                case 9:
                     listVentas();
                     break;
-                case 7:
+                case 10:
                     listViajes();
                     break;
-                case 8:
-                    consultarViajesPorFecha();
-                    break;
-                case 9: createTestData();
+                //case 8:
+                  //  consultarViajesPorFecha();
+                   // break;
+                case 14: createTestData();
                 break;
-                case 10: System.out.println("Saliendo...");
+                case 15: System.out.println("Saliendo...");
                     break;
                 default: System.out.println("Opcion invalida");
             }
@@ -89,6 +88,22 @@ public class UISVP {
 
         }while (opcion!=10);
     }
+
+    private void createEmpresa(){
+        System.out.println("...::::Creando una nueva empresa::::...");
+        System.out.println("R.U.T");
+        System.out.println("Nombre:");
+        System.out.println("url:");
+    }
+
+    private void contratarTripulante(){
+        System.out.println("...::::Contratando un nuevo tripulante::::...");
+        System.out.println("::::Datos de la empresa:");
+        System.out.println("R.U.T");
+        //debe ir dentro de un condicional lo siguiente supongo
+        //if ()
+    }
+
     private void createCliente(){
         System.out.println("...::::Crear un nuevo cliente:::...");
         System.out.println("utilidades.Rut[1] o utilidades.Pasaporte[2]");
