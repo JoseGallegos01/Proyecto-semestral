@@ -1,3 +1,5 @@
+package utilidades;
+
 public class Pasaporte implements IdPersona {
     //Cristobal Jeldres
     private String numero;

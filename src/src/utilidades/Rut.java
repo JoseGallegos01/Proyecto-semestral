@@ -1,4 +1,6 @@
-public class Rut implements IdPersona{
+package utilidades;
+
+public class Rut implements IdPersona {
     //Cristobal Jeldres
     private int numero;
     private char dv;
