@@ -62,26 +62,26 @@ public class SistemaVentaPasajes {
         return false;
     }
     //metodo incompleto
-    public String[][] getHorariosDisponibles(LocalDate fechaViaje){
-        int cantidadHorariosDisponibles = 0;
-        for (Viaje viaje : viajes){
-            if (viaje.getFecha().isEqual(fechaViaje)){
-                cantidadHorariosDisponibles++;
+    public String[][] getHorariosDisponibles(LocalDate fechaViaje,String comunaOrigen,String comunaDestino,int cantidadPasajes ) {
+        ArrayList<String[]> horarios = new ArrayList<>();
+
+        for (Viaje viaje : viajes) {
+            if (viaje.getFecha().isEqual(fechaViaje) && viaje.getTerminalSalida().getDireccion().getComuna().equalsIgnoreCase(comunaOrigen)
+                    && viaje.getTerminalLlegada().getDireccion().getComuna().equals.IgnoreCase(comunaDestino) && viaje.getnroAsientosDisponibles()
+                    >= cantidadPasajes) {
+                String[] datos = new String[4];
+                datos[0] = viaje.getBus().getPatente();
+                datos[1] = viaje.getHora().toString();
+                datos[2] = String.valueOf(viaje.getPrecio());
+                datos[3] = String.valueOf(viaje.getnroAsientosDisponibles());
+                horarios.add(datos);
             }
         }
-        String[][] horarios = new String[cantidadHorariosDisponibles][4];
-        int i = 0;
-        for (Viaje viaje : viajes){
-            if (viaje.getFecha().isEqual(fechaViaje)){
-                horarios[i][0] = viaje.getBus().getPatente();
-                horarios[i][1] = viaje.getHora().toString();
-                horarios[i][2] = String.valueOf(viaje.getPrecio());
-                horarios[i][3] = String.valueOf(viaje.getnroAsientosDisponibles());
-                i++;
-            }
-        }
-        return horarios;
+        return horarios.toArray(new String[0][0]);
     }
+
+
+
 
     public String[][] listAsientosDelViaje(LocalDate fecha, LocalTime hora, String patenteBus){
         if (findViaje(fecha.toString(), hora.toString(), patenteBus) != null){

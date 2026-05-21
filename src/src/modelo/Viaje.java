@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 public class Viaje {
     //Vicente Salinas
+    //Dayane Sepulveda
 
     private LocalDate fecha;
     private LocalTime hora;
