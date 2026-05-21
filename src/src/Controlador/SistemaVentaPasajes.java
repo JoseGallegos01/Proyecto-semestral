@@ -66,26 +66,25 @@ public class SistemaVentaPasajes {
         ventas.add(new Venta(idDoc, tipo, fechaVenta, clienteVenta.get()));
     }
 
-    public String[][] getHorariosDisponibles(LocalDate fechaViaje){
-        int cantidadHorariosDisponibles = 0;
-        for (Viaje viaje : viajes){
-            if (viaje.getFecha().isEqual(fechaViaje)){
-                cantidadHorariosDisponibles++;
+    public String[][] getHorariosDisponibles(LocalDate fechaViaje,String comunaOrigen,String comunaDestino,int cantidadPasajes ) {
+        ArrayList<String[]> horarios = new ArrayList<>();
+
+        for (Viaje viaje : viajes) {
+            if (viaje.getFecha().isEqual(fechaViaje) && viaje.getTerminalSalida().getDireccion().getComuna().equalsIgnoreCase(comunaOrigen)
+                    && viaje.getTerminalLlegada().getDireccion().getComuna().equalsIgnoreCase(comunaDestino) && viaje.getnroAsientosDisponibles()
+                    >= cantidadPasajes) {
+                String[] datos = new String[4];
+                datos[0] = viaje.getBus().getPatente();
+                datos[1] = viaje.getHora().toString();
+                datos[2] = String.valueOf(viaje.getPrecio());
+                datos[3] = String.valueOf(viaje.getnroAsientosDisponibles());
+                horarios.add(datos);
             }
         }
-        String[][] horarios = new String[cantidadHorariosDisponibles][4];
-        int i = 0;
-        for (Viaje viaje : viajes){
-            if (viaje.getFecha().isEqual(fechaViaje)){
-                horarios[i][0] = viaje.getBus().getPatente();
-                horarios[i][1] = viaje.getHora().toString();
-                horarios[i][2] = String.valueOf(viaje.getPrecio());
-                horarios[i][3] = String.valueOf(viaje.getnroAsientosDisponibles());
-                i++;
-            }
-        }
-        return horarios;
+        return horarios.toArray(new String[0][0]);
     }
+
+
 
     public String[][] listAsientosDelViaje(LocalDate fecha, LocalTime hora, String patenteBus){
         if (findViaje(fecha.toString(), hora.toString(), patenteBus).isPresent()) {
@@ -208,5 +207,38 @@ public class SistemaVentaPasajes {
             }
         }
         return Optional.empty();
+    }
+    public boolean pagaVenta(String idDocumento,TipoDocumento tipoDocumento){
+        Venta venta =findVenta(idDocumento,tipoDocumento);
+        if (venta==null)
+            if (venta.pagaMonto()){
+                return true ;
+            }else{
+                throw new SistemaVentaPasajesException("La venta ya fue pagada");
+            }
+    }
+    public boolean pagaVenta(String idDocumento,TipoDocumento tipoDocumento,String nroTarjeta){
+        Venta venta=findVenta(idDocumento, tipoDocumento);
+        if (venta==null){
+            throw new SistemaVentaPasajesException("No existe venta con el id y tipo de documento indicado ");
+        }
+        if (venta.pagaMonto(nroTarjeta)){
+            return true ;
+        }else{
+            throw new SistemaVentaPasajesException("La venta ya fue pagada");
+        }
+    }
+    public String[][]listEmpresas(){
+        ControladorEmpresas ce=ControladoeEmpresas.getInstance();
+        return ce.listEmpresas();
+
+    }
+    public String[][]listLlegadasSalidasTerminal(String nombreTerminal,LocalDate fecha){
+        ControladorEmpresas ce=ControladorEmpresa.getInstance();
+        return ce.listLlegadasSalidasTerminal(nombreTerminal,fecha);
+    }
+    public String [][]listVentasEmpresa(String rutEmpresa){
+        ControladorEmpresas ce=ControladorEmpresas.getInstance();
+        return ce.listVentasEmpresa(rutEmpresa);
     }
 }
