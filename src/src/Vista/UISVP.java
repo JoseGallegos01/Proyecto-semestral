@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.SortedMap;
 
 import excepciones.SistemaVentaPasajesException;
 import modelo.*;
@@ -63,7 +64,7 @@ public class UISVP {
                     contratarTripulante();
                     break;
                 case 3:
-                    crearTerminal();-
+                    crearTerminal();
                 case 4:
                     createCliente();
                     break;
@@ -124,6 +125,21 @@ public class UISVP {
             System.out.println("Auxiliar[1] o conductor[2]");
             int opcionAuxOCond = sc.nextInt();
             sc.nextLine();
+            System.out.println("Rut[1] o Pasaporte[2]");
+            int opcionRutPasaporte = sc.nextInt();
+            sc.nextLine();
+            if(opcionRutPasaporte == 1){
+                System.out.println("R.U.T:");
+                String rutTripulante = sc.nextLine();
+                id = registrarRut(rutTripulante);
+            }
+            if(opcionRutPasaporte == 2){
+                System.out.println("Ingrese el numero del pasaporte");
+                String numero = sc.nextLine();
+                System.out.println("Ingrese la nacionalidad del pasaporte");
+                String nacionalidad = sc.nextLine();
+                id = new Pasaporte(numero, nacionalidad);
+            }
             System.out.println("Sr[1] o Sra[2]");
             int tipoTratamiento = sc.nextInt();
             sc.nextLine();
@@ -147,10 +163,34 @@ public class UISVP {
             nombre.setApellidoPaterno(apellidoPaterno);
             nombre.setApellidoMaterno(apellidoMaterno);
             nombre.setTratamiento(tratamiento);
-            //if (opcionAuxOCond == 1) ce.hireAuxiliarForEmpresa();
-            //if (opcionAuxOCond == 2) ce.hireConductorForEmpresa();
+            Direccion direccion = new Direccion(calle, numero, comuna);
+            try {
+                //if (opcionAuxOCond == 1) ce.hireAuxiliarForEmpresa(registrarRut(rutEmpresa), id, nombre, direccion);
+                //if (opcionAuxOCond == 2) ce.hireConductorForEmpresa(registrarRut(rutEmpresa), id, nombre, direccion);
+            }catch (SistemaVentaPasajesException e){
+                throw new SistemaVentaPasajesException(e.getMessage());
+            }
         }catch (SistemaVentaPasajesException e){
             System.out.println(e.getMessage());
+        }
+    }
+
+    private void crearTerminal(){
+        System.out.println("...::::Creando un nuevo terminal::::...");
+        System.out.println("Nombre:");
+        String nombre = sc.nextLine();
+        System.out.println("Calle");
+        String calle = sc.nextLine();
+        System.out.println("Numero:");
+        int numero = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Comuna");
+        String comuna = sc.nextLine();
+        Direccion direccion = new Direccion(calle, numero, comuna);
+        try {
+            //ce.createTerminal(nombre, direccion);
+        }catch (SistemaVentaPasajesException e){
+            throw new SistemaVentaPasajesException(e.getMessage());
         }
     }
 
@@ -190,11 +230,11 @@ public class UISVP {
         nombre.setApellidoPaterno(apellido_paterno);
         nombre.setApellidoMaterno(apellido_materno);
         nombre.setTratamiento(tratamiento);
-        if (sv.createCliente(id, nombre, telefono_movil, email)){
-            System.out.println("...::::modelo.Cliente guardado exitosamente::::...");
-        }
-        else {
-            System.out.println("...::::Ya existe un cliente con el mismo id::::...");
+        try{
+            sv.createCliente(id, nombre, telefono_movil, email);
+            System.out.println("...::::Cliente guardado exitosamente::::...");
+        }catch (SistemaVentaPasajesException e){
+            throw new SistemaVentaPasajesException("...::::Ya existe un cliente con el mismo id::::...");
         }
     }
     private void createBus(){
@@ -207,11 +247,11 @@ public class UISVP {
         String modelo = sc.next();
         System.out.println("Numero de asientos: ");
         int asientos = sc.nextInt();
-        if (sv.createBus(patente, marca, modelo, asientos)) {
+        try{
+        sv.createBus(patente, marca, modelo, asientos);
             System.out.println("...::::modelo.Bus guardado exitosamente:::...");
-        }
-        else {
-            System.out.println("...::::Ya hay un bus con la misma patente registrada::...");
+        } catch (SistemaVentaPasajesException e){
+            throw new SistemaVentaPasajesException("...::::Ya hay un bus con la misma patente registrada::...");
         }
     }
     private void createViaje() {
@@ -225,10 +265,12 @@ public class UISVP {
         sc.nextLine();
         System.out.println("Patente bus: ");
         String patenteBus = sc.nextLine();
-        if (!sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus)){
-            System.out.println("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
+        try {
+            sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus);
+            System.out.println("...::::Viaje guardado exitosamente::::...");
+        }catch (SistemaVentaPasajesException e){
+            throw new SistemaVentaPasajesException("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
         }
-        else System.out.println("...::::modelo.Viaje guardado exitosamente::::...");
     }
     //metodo incompleto
     private void vendePasajes(){
@@ -263,7 +305,8 @@ public class UISVP {
             String nacionalidad = sc.nextLine();
             id = new Pasaporte(numeroPasaporte, nacionalidad);
         }
-        if (sv.iniciaVenta(idDocumento, tipoDocumento, (LocalDate.parse(fecha, formatterDate)), id)){
+        try{
+        sv.iniciaVenta(idDocumento, tipoDocumento, (LocalDate.parse(fecha, formatterDate)), id);
             System.out.println("Cantidad de pasajes a comprar:");
             int cantidadPasajes = sc.nextInt();
             sc.nextLine();
@@ -337,8 +380,8 @@ public class UISVP {
                 System.out.println("...::::No hay horarios para esa fecha::::...");
             }
         }
-        else {
-            System.out.println("...::::modelo.Cliente no existe o la venta ya existe::::...");
+        catch (SistemaVentaPasajesException e){
+            throw new SistemaVentaPasajesException("...::::Cliente no existe o la venta ya existe::::...");
         }
 
     }
