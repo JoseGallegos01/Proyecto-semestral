@@ -2,10 +2,13 @@ package Vista;
 
 import Controlador.SistemaVentaPasajes;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import excepciones.SistemaVentaPasajesException;
 import modelo.*;
 import utilidades.*;
 
@@ -13,7 +16,6 @@ import utilidades.*;
 public class UISVP {
     //Vicente Salinas
 
-    SistemaVentaPasajes sv = new SistemaVentaPasajes();
     private Scanner sc = new Scanner(System.in);
     int opcion;
     IdPersona id = null;
@@ -21,7 +23,6 @@ public class UISVP {
     TipoDocumento tipoDocumento = null;
     DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
-
     private static UISVP instance = null;
     public static UISVP getInstance(){
         if(instance == null){
@@ -29,7 +30,8 @@ public class UISVP {
         }
         return instance;
     }
-
+    SistemaVentaPasajes sv = SistemaVentaPasajes.getInstance();
+    //ControladorEmpresas ce = ControladorEmpresas.getInstance();
     public void menu(){
         do {
             System.out.println("==================================================");
@@ -54,6 +56,14 @@ public class UISVP {
             sc.nextLine();
 
             switch (opcion) {
+                case 1:
+                    createEmpresa();
+                    break;
+                case 2:
+                    contratarTripulante();
+                    break;
+                case 3:
+                    crearTerminal();-
                 case 4:
                     createCliente();
                     break;
@@ -92,16 +102,56 @@ public class UISVP {
     private void createEmpresa(){
         System.out.println("...::::Creando una nueva empresa::::...");
         System.out.println("R.U.T");
+        String rutEmpresa =  sc.nextLine();
         System.out.println("Nombre:");
+        String nombre = sc.nextLine();
         System.out.println("url:");
+        String url =  sc.nextLine();
+        try {
+            //ce.createEmpresa(registrarRut(rutEmpresa), nombre, url);
+        }catch (SistemaVentaPasajesException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private void contratarTripulante(){
         System.out.println("...::::Contratando un nuevo tripulante::::...");
         System.out.println("::::Datos de la empresa:");
         System.out.println("R.U.T");
-        //debe ir dentro de un condicional lo siguiente supongo
-        //if ()
+        String rutEmpresa =  sc.nextLine();
+        try {
+            System.out.println("::::Datos tripulante:");
+            System.out.println("Auxiliar[1] o conductor[2]");
+            int opcionAuxOCond = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Sr[1] o Sra[2]");
+            int tipoTratamiento = sc.nextInt();
+            sc.nextLine();
+            if (tipoTratamiento == 1) tratamiento = Tratamiento.SR;
+            if (tipoTratamiento == 2) tratamiento = Tratamiento.SRA;
+            System.out.println("Nombres:");
+            String nombres = sc.nextLine();
+            System.out.println("Apellido Paterno:");
+            String apellidoPaterno = sc.nextLine();
+            System.out.println("Apellido Materno:");
+            String apellidoMaterno = sc.nextLine();
+            System.out.println("Calle:");
+            String calle = sc.nextLine();
+            System.out.println("Numero:");
+            int numero = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Comuna:");
+            String comuna = sc.nextLine();
+            Nombre nombre = new Nombre();
+            nombre.setNombres(nombres);
+            nombre.setApellidoPaterno(apellidoPaterno);
+            nombre.setApellidoMaterno(apellidoMaterno);
+            nombre.setTratamiento(tratamiento);
+            //if (opcionAuxOCond == 1) ce.hireAuxiliarForEmpresa();
+            //if (opcionAuxOCond == 2) ce.hireConductorForEmpresa();
+        }catch (SistemaVentaPasajesException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private void createCliente(){
@@ -109,11 +159,9 @@ public class UISVP {
         System.out.println("utilidades.Rut[1] o utilidades.Pasaporte[2]");
         int opcionRutPasaporte = sc.nextInt();
         if (opcionRutPasaporte==1){
-            System.out.println("Ingrese el rut (sin el DV)");
-            int rut = sc.nextInt();
-            System.out.println("Ingrese el DV del rut");
-            char dv = sc.next().charAt(0);
-            id = new Rut(rut, dv);
+            System.out.println("Ingrese el rut");
+            String rut = sc.nextLine();
+            id = registrarRut(rut);
         }
         else if (opcionRutPasaporte==2){
             System.out.println("Ingrese el numero del pasaporte");
@@ -385,5 +433,14 @@ public class UISVP {
         sv.vendePasaje("67", LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 1, testId1, TipoDocumento.FACTURA);
         sv.vendePasaje("68", LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 2, testId1, TipoDocumento.BOLETA);
         System.out.println("...::::Datos de prueba creados:::...");
+    }
+
+    private IdPersona registrarRut(String rut){
+        String rutCompleto = rut;
+        rutCompleto = rutCompleto.replace(".", "");
+        String[] partes = rutCompleto.split("-");
+        int numero = Integer.parseInt(partes[0]);
+        char dv = partes[1].charAt(0);
+        return id = new Rut(numero, dv);
     }
 }

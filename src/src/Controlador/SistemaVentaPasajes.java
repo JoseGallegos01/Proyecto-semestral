@@ -21,6 +21,13 @@ public class SistemaVentaPasajes {
     DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
 
+    public static SistemaVentaPasajes instance = null;
+    public static SistemaVentaPasajes getInstance() {
+        if (instance == null) {
+            instance = new SistemaVentaPasajes();
+        }
+        return instance;
+    }
 
     public void createCliente(IdPersona id, Nombre nom, String fono, String email){
         if (findCliente(id).isPresent()) throw new SistemaVentaPasajesException("Ya existe cliente con el id indicado");
