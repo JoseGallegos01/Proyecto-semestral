@@ -1,4 +1,3 @@
-//Dayane Sepulveda
 package modelo;
 
 import java.time.LocalDate;
@@ -13,7 +12,6 @@ public class Venta {
     private boolean pagada;
     private String tipoPago;
     private int montoPagado;
-
     public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, Cliente cliente) {
         this.idDocumento = idDocumento;
         this.tipo = tipo;
@@ -23,8 +21,8 @@ public class Venta {
         this.pagada=false;
         this.tipoPago=null;
         this.montoPagado=0;
-    }
 
+    }
     public String getIdDocumento() {
         return idDocumento;
     }
@@ -53,25 +51,23 @@ public class Venta {
         }
         return monto;
     }
-
     public boolean pagaMonto(){
-        if(pagada){
+        if (pagada){
             return false;
         }
         pagada =true;
         tipoPago="Efectivo";
         montoPagado=getMonto();
-        return true ;
+        return true;
     }
     public boolean pagaMonto(String nroTarjeta){
         if (pagada){
             return false;
         }
-        pagada=true ;
+        pagada =true;
         tipoPago="Tarjeta";
         montoPagado=getMonto();
         return true;
-
     }
     public int getMontoPagado(){
         if(pagada){
@@ -81,10 +77,11 @@ public class Venta {
         }
     }
     public String getTipoPago(){
-        if (pagada ){
+        if (pagada){
             return tipoPago;
         }else{
             return null;
         }
     }
+
 }

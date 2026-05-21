@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Bus {
     //Vicente Salinas
-    //Dayane Sepulveda
 
     private String patente;
     private String marca;

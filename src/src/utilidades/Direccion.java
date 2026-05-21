@@ -1,4 +1,5 @@
 package utilidades;
+import modelo.*;
 
 public class Direccion {
     private String calle;
@@ -29,5 +30,6 @@ public class Direccion {
 
     public boolean equals(Object otro){
 
+        return false;
     }
 }
