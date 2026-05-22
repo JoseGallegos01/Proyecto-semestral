@@ -1,5 +1,8 @@
 package Modelo;
 
+import utilidades.IdPersona;
+import utilidades.Nombre;
+import utilidades.Direccion;
 import utilidades.Rut;
 
 public class Empresa {
@@ -40,7 +43,47 @@ public class Empresa {
     }
 
     public modelo.Bus[] getBuses() {
-        this.buses.toArray(new modelo.Bus[0]);
+        return this.buses.toArray(new modelo.Bus[0]);
+    }
+
+    public boolean addConductor(IdPersona id, Nombre nom, Direccion dir) {
+        if (id == null || nom == null || dir == null) {
+            return false;
+        }
+
+        for (Tripulante tripulante : tripulantes) {
+            if(){
+                return false;
+            }
+        }
+
+        Conductor nuevoConductor = new Conductor(id,nom,dir);
+        return this.tripulantes.add(nuevoConductor);
+    }
+
+    public boolean addAuxiliar (IdPersona id, Nombre nom, Direccion dir){
+        if (id == null || nom == null || dir == null) {
+            return false;
+        }
+        for (Tripulante tripulante : tripulantes) {
+            if (){
+                return false;
+            }
+        }
+
+        Auxiliar nuevoAuxiliar = new Auxiliar(id,nom,dir);
+        return this.tripulantes.add(nuevoAuxiliar);
+
+        public Tripulante[] getTripulantes() {
+            return this.tripulantes.toArray(new Tripulante[0]);
+        }
+
+        public modelo.Venta[] getVentas(){
+            java.util.ArrayList<modelo.Venta> ventas = new java.util.ArrayList<>();
+
+
+            return ;
+        }
     }
 
 
