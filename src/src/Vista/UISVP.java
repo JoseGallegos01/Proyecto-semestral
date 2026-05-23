@@ -196,7 +196,7 @@ public class UISVP {
 
     private void createCliente(){
         System.out.println("...::::Crear un nuevo cliente:::...");
-        System.out.println("utilidades.Rut[1] o utilidades.Pasaporte[2]");
+        System.out.println("Rut[1] o Pasaporte[2]");
         int opcionRutPasaporte = sc.nextInt();
         if (opcionRutPasaporte==1){
             System.out.println("Ingrese el rut");
@@ -247,6 +247,9 @@ public class UISVP {
         String modelo = sc.next();
         System.out.println("Numero de asientos: ");
         int asientos = sc.nextInt();
+        System.out.println("Datos de la empresa:");
+        System.out.println("R.U.T: ");
+        String rutEmpresa = sc.next();
         try{
         sv.createBus(patente, marca, modelo, asientos);
             System.out.println("...::::modelo.Bus guardado exitosamente:::...");
@@ -263,8 +266,48 @@ public class UISVP {
         System.out.println("Precio: ");
         int precio = sc.nextInt();
         sc.nextLine();
+        System.out.println("Duracion: (Minutos)");
+        int duracion = sc.nextInt();
+        sc.nextLine();
         System.out.println("Patente bus: ");
         String patenteBus = sc.nextLine();
+        System.out.println("Nro conductores: ");
+        int nroConductores = sc.nextInt();
+        sc.nextLine();
+        System.out.println("...::::Id auxiliar: ");
+        System.out.println("R.U.T[1] o Pasaporte[2]");
+        int idAuxiliar = sc.nextInt();
+        if (idAuxiliar==1){
+            System.out.println("R.U.T");
+            String rutAuxiliar =  sc.nextLine();
+        }
+        if (idAuxiliar==2){
+            System.out.println("Numero del pasaporte: ");
+            int numeroPasaporte = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Nacionalidad del pasaporte: ");
+            String nacionalidadPasaporte = sc.nextLine();
+        }
+        System.out.println("::Id conductor::");
+        for (int i = 0; i < nroConductores; i++){
+            System.out.println("R.U.T[1] o Pasaporte[2]");
+            int idConductor = sc.nextInt();
+            if (idConductor==1){
+                System.out.println("R.U.T");
+                String rutConductor =  sc.nextLine();
+            }
+            if (idConductor==2){
+                System.out.println("Numero del pasaporte: ");
+                int numeroPasaporteConductor = sc.nextInt();
+                sc.nextLine();
+                System.out.println("Nacionalidad del pasaporte: ");
+                String nacionalidadPasaporteConductor = sc.nextLine();
+            }
+        }
+        System.out.println("Comuna salida:");
+        String comunaSalida = sc.nextLine();
+        System.out.println("Comuna llegada:");
+        String comunaLlegada = sc.nextLine();
         try {
             sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus);
             System.out.println("...::::Viaje guardado exitosamente::::...");
@@ -285,18 +328,18 @@ public class UISVP {
         if (opcionTipoDocumento==2) tipoDocumento = TipoDocumento.FACTURA;
         System.out.println("Fecha de venta [dd/MM/yyyy] :");
         String fecha = sc.nextLine();
+        System.out.println("Origen (comuna)");
+        String origen = sc.nextLine();
+        System.out.println("Destino (comuna)");
+        String destino = sc.nextLine();
         System.out.println("...::::Datos del cliente");
         System.out.println("utilidades.Rut [1] o utilidades.Pasaporte [2]");
         int opcionRutPasaporte = sc.nextInt();
         sc.nextLine();
         if (opcionRutPasaporte == 1){
             System.out.println("utilidades.Rut cliente");
-            int rutCliente = sc.nextInt();
-            sc.nextLine();
-            System.out.println("DV");
-            char dv = sc.next().charAt(0);
-            id = new Rut(rutCliente, dv);
-            sc.nextLine();
+            String rutCliente = sc.nextLine();
+            id = registrarRut(rutCliente);
         }
         if (opcionRutPasaporte == 2){
             System.out.println("Numero pasaporte:");
