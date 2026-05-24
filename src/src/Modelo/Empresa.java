@@ -1,4 +1,4 @@
-package Modelo;
+package modelo;
 
 import utilidades.Rut;
 
