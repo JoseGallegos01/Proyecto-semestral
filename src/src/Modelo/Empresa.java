@@ -13,7 +13,7 @@ public class Empresa {
     private java.util.ArrayList<modelo.Bus> buses;
     private java.util.ArrayList<Tripulante> tripulantes;
 
-    public Empresa(Rut rut, String nombre) {
+    public Empresa(Rut rut, String nombre, String url) {
         this.rut = rut;
         this.nombre = nombre;
         this.buses = new java.util.ArrayList<>();
@@ -74,17 +74,17 @@ public class Empresa {
         Auxiliar nuevoAuxiliar = new Auxiliar(id,nom,dir);
         return this.tripulantes.add(nuevoAuxiliar);
 
-        public Tripulante[] getTripulantes() {
-            return this.tripulantes.toArray(new Tripulante[0]);
-        }
 
-        public modelo.Venta[] getVentas(){
-            java.util.ArrayList<modelo.Venta> ventas = new java.util.ArrayList<>();
-
-
-            return ;
-        }
+    }
+    public Tripulante[] getTripulantes() {
+        return this.tripulantes.toArray(new Tripulante[0]);
     }
 
+    public modelo.Venta[] getVentas(){
+        java.util.ArrayList<modelo.Venta> ventas = new java.util.ArrayList<>();
+
+
+        return ;
+    }
 
 }
