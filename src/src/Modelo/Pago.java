@@ -14,16 +14,16 @@ public class Pago {
         return monto;
     }
 
-    public static class Auxiliar extends modelo.Viaje.Tripulante {
+    public static class Auxiliar extends Modelo.Viaje.Tripulante {
 
-        private List<modelo.Viaje> viajes;
+        private List<Modelo.Viaje> viajes;
 
         public Auxiliar(IdPersona id, Nombre nom, Direccion dir){
             super(id, nom, dir);
-            this.viajes = new ArrayList<modelo.Viaje>();
+            this.viajes = new ArrayList<Modelo.Viaje>();
         }
 
-        public void addViaje(modelo.Viaje viaje) {
+        public void addViaje(Modelo.Viaje viaje) {
             this.viajes = new ArrayList<>();
         }
 

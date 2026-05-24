@@ -1,6 +1,5 @@
-package modelo;
+package Modelo;
 
-import modelo.TipoDocumento;
 import utilidades.IdPersona;
 import utilidades.Nombre;
 import utilidades.Direccion;
@@ -11,7 +10,7 @@ public class Empresa {
     private String nombre;
     private String url;
 
-    private java.util.ArrayList<modelo.Bus> buses;
+    private java.util.ArrayList<Modelo.Bus> buses;
     private java.util.ArrayList<Tripulante> tripulantes;
 
     public Empresa(Rut rut, String nombre) {
@@ -37,14 +36,14 @@ public class Empresa {
         this.url = url;
     }
 
-    public void addBus(modelo.Bus bus) {
+    public void addBus(Modelo.Bus bus) {
         if (bus != null) {
             this.buses.add(bus);
         }
     }
 
-    public modelo.Bus[] getBuses() {
-        return this.buses.toArray(new modelo.Bus[0]);
+    public Modelo.Bus[] getBuses() {
+        return this.buses.toArray(new Modelo.Bus[0]);
     }
 
     public boolean addConductor(IdPersona id, Nombre nom, Direccion dir) {

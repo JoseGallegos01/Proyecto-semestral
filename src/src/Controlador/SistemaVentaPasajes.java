@@ -2,7 +2,7 @@ package Controlador;
 
 import Modelo.PagoEfectivo;
 import excepciones.SistemaVentaPasajesException;
-import modelo.*;
+import Modelo.*;
 import utilidades.*;
 
 import java.time.LocalDate;
@@ -221,7 +221,7 @@ public class SistemaVentaPasajes {
         ArrayList<Pasajero> pasajeros = new ArrayList<>();
         ArrayList<PagoEfectivo.Bus> buses = new ArrayList<>();
         ArrayList<Venta> ventas = new ArrayList<>();
-        ArrayList<modelo.Terminal.Viaje> viajes = new ArrayList<>();
+        ArrayList<Modelo.Terminal.Viaje> viajes = new ArrayList<>();
         public boolean createCliente(IdPersona id, Nombre nom, String fono, String email){
             if (findCliente(id) == null) {
                 clientes.add(new Cliente(id, nom, email));
@@ -251,7 +251,7 @@ public class SistemaVentaPasajes {
         public boolean createViaje(LocalDate fecha, LocalTime hora, int precio, String patenteBus){
             if (findBus(patenteBus) != null) {
                 if (findViaje(fecha.toString(), hora.toString(), patenteBus) == null) {
-                    viajes.add((new modelo.Terminal.Viaje(fecha, hora, precio, findBus(patenteBus))));
+                    viajes.add((new Modelo.Terminal.Viaje(fecha, hora, precio, findBus(patenteBus))));
                     return true;
                 }
             }
@@ -268,14 +268,14 @@ public class SistemaVentaPasajes {
         //metodo incompleto
         public String[][] getHorariosDisponibles(LocalDate fechaViaje){
             int cantidadHorariosDisponibles = 0;
-            for (modelo.Terminal.Viaje viaje : viajes){
+            for (Modelo.Terminal.Viaje viaje : viajes){
                 if (viaje.getFecha().isEqual(fechaViaje)){
                     cantidadHorariosDisponibles++;
                 }
             }
             String[][] horarios = new String[cantidadHorariosDisponibles][4];
             int i = 0;
-            for (modelo.Terminal.Viaje viaje : viajes){
+            for (Modelo.Terminal.Viaje viaje : viajes){
                 if (viaje.getFecha().isEqual(fechaViaje)){
                     horarios[i][0] = viaje.getBus().getPatente();
                     horarios[i][1] = viaje.getHora().toString();
@@ -342,7 +342,7 @@ public class SistemaVentaPasajes {
         public String[][] listViajes(){
             int contador = 0;
             String[][] listaViajes = new String[viajes.size()][5];
-            for (modelo.Terminal.Viaje v : viajes){
+            for (Modelo.Terminal.Viaje v : viajes){
                 listaViajes[contador][0] = v.getFecha().toString();
                 listaViajes[contador][1] = v.getHora().toString();
                 listaViajes[contador][2] = String.valueOf(v.getPrecio());
@@ -387,8 +387,8 @@ public class SistemaVentaPasajes {
             }
             return null;
         }
-        private modelo.Terminal.Viaje findViaje(String fecha, String hora, String patenteBus){
-            for (modelo.Terminal.Viaje v : viajes){
+        private Modelo.Terminal.Viaje findViaje(String fecha, String hora, String patenteBus){
+            for (Modelo.Terminal.Viaje v : viajes){
                 if (v.getHora().toString().equals(hora) && v.getFecha().toString().equals(fecha) && v.getBus().toString().equals(patenteBus)){
                     return v;
                 }

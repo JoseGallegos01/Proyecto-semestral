@@ -17,8 +17,8 @@ import java.util.Optional;
         private static ControladorEmpresas instancia;
 
         private ArrayList<Empresa> empresas;
-        private ArrayList<modelo.Bus> bus;
-        private ArrayList<modelo.Terminal> terminales;
+        private ArrayList<Modelo.Bus> bus;
+        private ArrayList<Modelo.Terminal> terminales;
 
 
         public ControladorEmpresas() {
@@ -57,7 +57,7 @@ import java.util.Optional;
                 throw new SistemaVentaPasajesException("El bus con la patente indicada ya existe");
             }
 
-            modelo.Bus bus = new modelo.Bus(patente,marca, modelo, nroAsiento, empresaOptional.get());
+            Modelo.Bus bus = new Modelo.Bus(patente,marca, modelo, nroAsiento, empresaOptional.get());
             this.bus.add(bus);
         }
 
@@ -69,7 +69,7 @@ import java.util.Optional;
                 throw new SistemaVentaPasajesException("El terminal de la comuna indicada ya existe");
             }
 
-            modelo.Terminal terminal = new modelo.Terminal(nombre, direccion);
+            Modelo.Terminal terminal = new Modelo.Terminal(nombre, direccion);
             this.terminales.add(terminal);
         }
 
@@ -116,12 +116,12 @@ import java.util.Optional;
         }
 
         public String[][] listLlegadaSalidaTerminal() {
-            Optional<modelo.Terminal> terminalOptional = findTerminal(nombreTerminal)
+            Optional<Modelo.Terminal> terminalOptional = findTerminal(nombreTerminal)
 
             if (terminalOptional.isEmpty()) {
                 throw new SistemaVentaPasajesException("No existe el terminal con el nombre ingresado");
             }
-            modelo.Terminal terminal = terminalOptional.get();
+            Modelo.Terminal terminal = terminalOptional.get();
             ArrayList<String[]> lista = new ArrayList<>();
 
             Viaje[] salidas = terminal.getSalidas();
@@ -180,7 +180,7 @@ import java.util.Optional;
         }
 
         protected Optional<Modelo.Terminal> findTerminal(String nombre) {
-            for (modelo.Terminal term : terminales) {
+            for (Modelo.Terminal term : terminales) {
                 if (term.getNombre().equalsIgnoreCase(nombre)) {
                     return Optional.of(term);
                 }
@@ -188,8 +188,8 @@ import java.util.Optional;
             return Optional.empty();
         }
 
-        protected Optional<modelo.Terminal> findTerminalPorComuna(String comuna) {
-            for (modelo.Terminal term : terminales) {
+        protected Optional<Modelo.Terminal> findTerminalPorComuna(String comuna) {
+            for (Modelo.Terminal term : terminales) {
                 if (term.getDireccion().getComuna().equalsIgnoreCase(comuna)) {
                     return Optional.of(term);
                 }
@@ -197,8 +197,8 @@ import java.util.Optional;
             return Optional.empty();
         }
 
-        protected Optional<modelo.Bus> findBus(String patente) {
-            for (modelo.Bus b : bus) {
+        protected Optional<Modelo.Bus> findBus(String patente) {
+            for (Modelo.Bus b : bus) {
                 if (b.getPatente().equalsIgnoreCase(patente)) {
                     return Optional.of(b);
                 }

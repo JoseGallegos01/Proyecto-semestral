@@ -1,7 +1,5 @@
 package Modelo;
 
-import modelo.Terminal;
-
 import java.util.ArrayList;
 import java.util.List;
 
