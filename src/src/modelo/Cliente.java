@@ -5,13 +5,9 @@ import utilidades.Nombre;
 
 public class Cliente extends Persona {
     private String email;
-<<<<<<< HEAD:src/src/Cliente.java
     private Venta venta;
 
     //Jose Gallegos
-=======
->>>>>>> origin/Cristobal:src/src/modelo/Cliente.java
-
     public Cliente(IdPersona id, Nombre nom, String email) {
         super(id, nom);
         this.email = email;

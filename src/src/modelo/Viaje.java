@@ -1,4 +1,4 @@
-package modelo;
+package Modelo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -91,18 +91,18 @@ public class Viaje {
         return tripulantes;
     }
     public String [][]getAsientos(){
-    int total =bus.getNroAsientos();
-    String [][] asientos = new String [total][2];
+        int total =bus.getNroAsientos();
+        String [][] asientos = new String [total][2];
 
-    for (int i =0; i<total; i++){
-        asientos[i][0]=(i+1)+"";
-        asientos[i][1]="Libre";
-    }
-    for (Pasaje p:pasajes){
-        int asiento =p.getAsiento();
-        asientos[asiento-1][1]="Ocupado";
-    }
-    return asientos;
+        for (int i =0; i<total; i++){
+            asientos[i][0]=(i+1)+"";
+            asientos[i][1]="Libre";
+        }
+        for (Pasaje p:pasajes){
+            int asiento =p.getAsiento();
+            asientos[asiento-1][1]="Ocupado";
+        }
+        return asientos;
 
     }
     public String [][]getListaPasajeros() {
@@ -118,7 +118,7 @@ public class Viaje {
         return lista;
     }
     public boolean existeDisponibilidad(int nroAsientos){
-    return getnroAsientosDisponibles()>=nroAsientos;
+        return getnroAsientosDisponibles()>=nroAsientos;
     }
     public int getnroAsientosDisponibles(){
         return bus.getNroAsientos()-pasajes.size();
