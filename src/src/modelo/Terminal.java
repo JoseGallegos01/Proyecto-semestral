@@ -1,4 +1,6 @@
-package modelo;
+package Modelo;
+
+import utilidades.Direccion;
 
 import java.util.ArrayList;
 

@@ -1,0 +1,23 @@
+package Modelo;
+
+public  class Tripulante extends Persona {
+
+    private Direccion direccion;
+
+    public Tripulante(IdPersona id, Nombre nom, Direccion dir) {
+        super(id, nom); // Llama al constructor de la clase padre (Persona)
+        this.direccion = dir;
+    }
+
+    public Direccion getDireccion() {
+        return this.direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public abstract void addViaje(Viaje viaje);
+
+    public abstract int getNroViajes();
+}

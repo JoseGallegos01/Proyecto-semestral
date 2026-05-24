@@ -1,4 +1,4 @@
-package modelo;
+package Modelo;
 
 import utilidades.IdPersona;
 import utilidades.Nombre;
@@ -6,6 +6,9 @@ import utilidades.Nombre;
 import java.util.ArrayList;
 
 public class Pasajero extends Persona {
+
+    //Jose Gallegos
+
     private Nombre nomContacto;
     private String fonoContacto;
     private ArrayList<Pasaje> pasajes;

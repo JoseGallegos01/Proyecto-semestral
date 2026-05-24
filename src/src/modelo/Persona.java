@@ -1,11 +1,15 @@
-package modelo;
+package Modelo;
 
 import utilidades.IdPersona;
 import utilidades.Nombre;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Persona {
+
+    //Jose Gallegos
 
     private IdPersona idPersona;
     private Nombre nombreCompleto;
@@ -38,5 +42,23 @@ public class Persona {
         if (otro == null || getClass() != otro.getClass()) return false;
         Persona persona = (Persona) otro;
         return Objects.equals(idPersona, persona.idPersona);
+    }
+
+    public static class Conductor extends modelo.Viaje.Tripulante {
+
+        private List<modelo.Viaje> viajes;
+
+        public Conductor(IdPersona id, Nombre nom, Direccion dir) {
+            super(id, nom, dir);
+            this.viajes = new ArrayList<>();
+        }
+
+        public void addViaje(modelo.Viaje viaje) {
+            this.viajes.add(viaje);
+        }
+
+        public int getNroVIaje() {
+            return this.viajes.size();
+        }
     }
 }
