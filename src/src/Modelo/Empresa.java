@@ -52,7 +52,7 @@ public class Empresa {
         }
 
         for (Tripulante tripulante : tripulantes) {
-            if(){
+            if (tripulante.getId().equals(id)) {
                 return false;
             }
         }
@@ -66,7 +66,7 @@ public class Empresa {
             return false;
         }
         for (Tripulante tripulante : tripulantes) {
-            if (){
+            if (tripulante.getId().equals(id)) {
                 return false;
             }
         }
@@ -81,10 +81,36 @@ public class Empresa {
     }
 
     public modelo.Venta[] getVentas(){
+
         java.util.ArrayList<modelo.Venta> ventas = new java.util.ArrayList<>();
 
+        for (modelo.Bus bus : buses) {
 
-        return ;
+            Viaje[] viajes = bus.getViajes();
+
+            for (Viaje viaje : viajes) {
+
+                modelo.Venta[] ventasViaje = viaje.getVentas();
+
+                for (modelo.Venta venta : ventasViaje) {
+
+                    boolean existe = false;
+
+                    for (modelo.Venta v : ventas) {
+
+                        if (v.equals(venta)) {
+                            existe = true;
+                        }
+                    }
+
+                    if (!existe) {
+                        ventas.add(venta);
+                    }
+                }
+            }
+        }
+
+        return ventas.toArray(new modelo.Venta[0]);
     }
 
 }
