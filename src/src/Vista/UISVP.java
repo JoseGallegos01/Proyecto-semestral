@@ -43,10 +43,15 @@ public class UISVP {
             System.out.println("4) Crear Cliente");
             System.out.println("5) Crear Bus");
             System.out.println("6) Crear viaje");
-            System.out.println("7) Vender pasaje");
-            System.out.println("8) Lista de pasajeros");
-            System.out.println("9) Lista de ventas");
-            System.out.println("10) Lista de viajes");
+            System.out.println("7) Vender pasajes");
+            System.out.println("8) Listar ventas");
+            System.out.println("9) Listar viajes");
+            System.out.println("10) Listar pasajeros de viaje");
+            System.out.println("11) Listar empresas");
+            System.out.println("12) Listar llegadas/salidas del terminal");
+            System.out.println("13) Listar ventas de empresa");
+            System.out.println("14) Cargar datos de prueba");
+            System.out.println("15) salir");
             //creo que la opcion de viajes sera borrada pues no esta en la pauta del avance dos
             //System.out.println("X) Consulta viajes disponible por fecha");
             System.out.println("14) Cargar datos de prueba");
@@ -78,26 +83,36 @@ public class UISVP {
                     vendePasajes();
                     break;
                 case 8:
-                    listPasajerosViaje();
-                    break;
-                case 9:
                     listVentas();
                     break;
-                case 10:
+                case 9:
                     listViajes();
                     break;
+                case 10:
+                    listPasajerosViaje();
+                    break;
                 //case 8:
-                  //  consultarViajesPorFecha();
+                  // consultarViajesPorFecha();
                    // break;
-                case 14: createTestData();
-                break;
+                case 11:
+                    listEmpresas();
+                    break;
+                case 12:
+                    listLlegadasSalidasTerminal();
+                    break;
+                case 13:
+                    listVentasEmpresas();
+                    break;
+                case 14:
+                    createTestData();
+                    break;
                 case 15: System.out.println("Saliendo...");
                     break;
                 default: System.out.println("Opcion invalida");
             }
 
 
-        }while (opcion!=10);
+        }while (opcion!=15);
     }
 
     private void createEmpresa(){
@@ -494,6 +509,18 @@ public class UISVP {
                     viajes[i][0] + " " + viajes[i][1] + " " + viajes[i][2] + " " + viajes[i][3]);
         }
     }
+
+    private void listEmpresas(){
+        //String[] listaEmpresas = ce.listEmpresas();
+
+    }
+    private void listLlegadasSalidasTerminal(){
+
+    }
+    private void listVentasEmpresas(){
+
+    }
+
 
     private void createTestData(){
         char dvTest = 2;
