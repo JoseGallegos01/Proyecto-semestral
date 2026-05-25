@@ -276,7 +276,7 @@ public class UISVP {
         System.out.println("R.U.T: ");
         String rutEmpresa = sc.next();
         try{
-            sv.createBus(patente, marca, modelo, asientos, registrarRut(rutEmpresa));
+            ce.createBus(patente, marca, modelo, asientos, registrarRut(rutEmpresa));
             System.out.println("...::::modelo.Bus guardado exitosamente:::...");
         } catch (SistemaVentaPasajesException e){
             throw new SistemaVentaPasajesException("...::::Ya hay un bus con la misma patente registrada::...");
@@ -582,32 +582,187 @@ public class UISVP {
 
 
     private void createTestData(){
-        private void createTestData() {
-                char dvTest = 2;
-                IdPersona testId1 = new Rut(22222222, dvTest);
-                IdPersona testId2 = new Rut(33333333, dvTest);
-                Nombre test1 = new Nombre();
-                Nombre test2 = new Nombre();
-                test1.setNombres("Alex");
-                test2.setNombres("Sara");
-                test1.setTratamiento(Tratamiento.SR);
-                test2.setTratamiento(Tratamiento.SRA);
-                test1.setApellidoPaterno("Smith");
-                test2.setApellidoMaterno("Smith");
-                ce.createBus("1111Test", "Test", "Test", 20);
-                sv.createViaje(LocalDate.parse("15/04/2026", formatterDate),
-                        LocalTime.parse("10:30", formatterTime), 300, "1111Test");
-                sv.createCliente(testId1, test1, "+56 9 11111111", "AlexSmith@gmail.com");
-                sv.createCliente(testId2, test2, "+56 9 11111111", "SaraSmith@gmail.com");
-                sv.createPasajero(testId1, test1, "+56 9 11111111",test1, "+56 9 11111111");
-                sv.createPasajero(testId2, test2, "+56 9 11111111",test2, "+56 9 11111111");
-                sv.iniciaVenta("67", TipoDocumento.FACTURA, LocalDate.parse("15/04/2026", formatterDate), testId1);
-                sv.iniciaVenta("68", TipoDocumento.BOLETA, LocalDate.parse("15/04/2026", formatterDate), testId2);
-                sv.vendePasaje("67", LocalDate.parse("15/04/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 1, testId1, TipoDocumento.FACTURA);
-                sv.vendePasaje("68", LocalDate.parse("15/04/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 2, testId1, TipoDocumento.BOLETA);
-                System.out.println("...::::Datos de prueba creados:::...");
+        ce.createEmpresa(
+                new Rut(11111111, '1'),
+                "TurBus",
+                "www.turbus.cl"
+        );
 
-        }
+        ce.createEmpresa(
+                new Rut(22222222, '2'),
+                "Pullman Bus",
+                "www.pullmanbus.cl"
+        );
+
+        ce.createTerminal(
+                "Terminal Chillan",
+                new Direccion("Arauco", 101, "Chillan")
+        );
+
+        ce.createTerminal(
+                "Terminal Concepcion",
+                new Direccion("OHiggins", 202, "Concepcion")
+        );
+
+        ce.createTerminal(
+                "Terminal Santiago",
+                new Direccion("Alameda", 303, "Santiago")
+        );
+
+        Nombre nom1 = new Nombre();
+        nom1.setTratamiento(Tratamiento.SR);
+        nom1.setNombres("Juan");
+        nom1.setApellidoPaterno("Perez");
+        nom1.setApellidoMaterno("Gonzalez");
+
+        Nombre nom2 = new Nombre();
+        nom2.setTratamiento(Tratamiento.SR);
+        nom2.setNombres("Pedro");
+        nom2.setApellidoPaterno("Rojas");
+        nom2.setApellidoMaterno("Diaz");
+
+        Nombre nom3 = new Nombre();
+        nom3.setTratamiento(Tratamiento.SRA);
+        nom3.setNombres("Maria");
+        nom3.setApellidoPaterno("Lopez");
+        nom3.setApellidoMaterno("Silva");
+
+        Nombre nom4 = new Nombre();
+        nom4.setTratamiento(Tratamiento.SRA);
+        nom4.setNombres("Ana");
+        nom4.setApellidoPaterno("Torres");
+        nom4.setApellidoMaterno("Muñoz");
+
+        ce.hireConductor(
+                new Rut(11111111, '1'),
+                new Rut(12345678, '9'),
+                nom1,
+                new Direccion("Las Rosas", 11, "Chillan")
+        );
+
+        ce.hireConductor(
+                new Rut(11111111, '1'),
+                new Rut(87654321, 'K'),
+                nom2,
+                new Direccion("Maipu", 22, "Concepcion")
+        );
+
+        ce.hireAuxiliarForEmpresa(
+                new Rut(11111111, '1'),
+                new Rut(11222333, '4'),
+                nom3,
+                new Direccion("Brasil", 33, "Chillan")
+        );
+
+        ce.hireAuxiliarForEmpresa(
+                new Rut(22222222, '2'),
+                new Rut(99888777, '5'),
+                nom4,
+                new Direccion("Prat", 44, "Santiago")
+        );
+
+        ce.createBus(
+                "AA1111",
+                "Mercedes",
+                "Sprinter",
+                40, registrarRut("11111111-1")
+        );
+
+        ce.createBus(
+                "BB2222",
+                "Volvo",
+                "7700",
+                45, registrarRut("22222222-2")
+        );
+
+        Nombre cliente1 = new Nombre();
+        cliente1.setTratamiento(Tratamiento.SR);
+        cliente1.setNombres("Carlos");
+        cliente1.setApellidoPaterno("Mora");
+        cliente1.setApellidoMaterno("Riquelme");
+        Nombre cliente2 = new Nombre();
+        cliente2.setTratamiento(Tratamiento.SRA);
+        cliente2.setNombres("Fernanda");
+        cliente2.setApellidoPaterno("Soto");
+        cliente2.setApellidoMaterno("Vega");
+        sv.createCliente(
+                new Rut(55555555, '5'),
+                cliente1,
+                "+56911111111",
+                "carlos@gmail.com"
+        );
+        sv.createCliente(
+                new Rut(66666666, '6'),
+                cliente2,
+                "+56922222222",
+                "fernanda@gmail.com"
+        );
+        sv.createPasajero(
+                new Rut(55555555, '5'),
+                cliente1,
+                "+56911111111",
+                cliente2,
+                "+56999999999"
+        );
+        sv.createPasajero(
+                new Rut(66666666, '6'),
+                cliente2,
+                "+56922222222",
+                cliente1,
+                "+56988888888"
+        );
+        IdPersona[] tripulantes1 = {
+
+                new Rut(11222333, '4'), // auxiliar
+                new Rut(12345678, '9'),
+                new Rut(87654321, 'K')
+        };
+
+        String[] comunas1 = {
+                "Chillan",
+                "Concepcion"
+        };
+
+        sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
+                LocalTime.parse("10:30", formatterTime),
+                12000,
+                180,
+                "AA1111",
+                tripulantes1,
+                comunas1
+        );
+        sv.iniciaVenta(
+                "B001",
+                TipoDocumento.BOLETA,
+                LocalDate.parse("01/01/2026", formatterDate),
+                new Rut(55555555, '5')
+        );
+
+        sv.iniciaVenta(
+                "F001",
+                TipoDocumento.FACTURA,
+                LocalDate.parse("01/01/2026", formatterDate),
+                new Rut(66666666, '6')
+        );
+        sv.vendePasaje(
+                "B001",
+                LocalDate.parse("01/01/2026", formatterDate),
+                LocalTime.parse("10:30", formatterTime),
+                "AA1111",
+                1,
+                new Rut(55555555, '5'),
+                TipoDocumento.BOLETA
+        );
+
+        sv.vendePasaje(
+                "F001",
+                LocalDate.parse("01/01/2026", formatterDate),
+                LocalTime.parse("10:30", formatterTime),
+                "AA1111",
+                2,
+                new Rut(66666666, '6'),
+                TipoDocumento.FACTURA
+        );
     }
 
     private Rut registrarRut(String rut){

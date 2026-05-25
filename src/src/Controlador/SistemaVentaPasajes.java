@@ -50,18 +50,18 @@ public class SistemaVentaPasajes {
     public void createViaje(LocalDate fecha, LocalTime hora, int precio, int duracion, String patenteBus, IdPersona[] tripulantes, String[] nomComunas) {
         if (findViaje(fecha.toString(), hora.toString(), patenteBus).isPresent())
             throw new SistemaVentaPasajesException("Ya existe viaje con fecha, hora y patente de bus indicados");
-        if (findBus(patenteBus).isEmpty())
+        if (ce.findBus(patenteBus).isEmpty())
             throw new SistemaVentaPasajesException("No existe bus con la patente indicada");
-        Terminal terminalSalida = ce.findTerminal(nomComunas[0]).get();
-        Terminal terminalLlegada = ce.findTerminal(nomComunas[1]).get();
-        Auxiliar auxiliarViaje = ce.findAuxiliar(tripulantes[0], findBus(patenteBus).get().getEmpresa().getRut()).get();
+        Terminal terminalSalida = ce.findTerminalPorComuna(nomComunas[0]).get();
+        Terminal terminalLlegada = ce.findTerminalPorComuna(nomComunas[1]).get();
+        Auxiliar auxiliarViaje = ce.findAuxiliar(tripulantes[0], ce.findBus(patenteBus).get().getEmpresa().getRut()).get();
         ArrayList<Conductor> conductores = new ArrayList<>();
         for (int i = 1; i < tripulantes.length; i++) {
-            Optional<Conductor> c = ce.findConductor(tripulantes[i], findBus(patenteBus).get().getEmpresa().getRut());
+            Optional<Conductor> c = ce.findConductor(tripulantes[i], ce.findBus(patenteBus).get().getEmpresa().getRut());
             conductores.add(c.get());
         }
 
-        viajes.add(new Viaje(fecha, hora, precio, duracion, findBus(patenteBus).get(), auxiliarViaje, conductores, terminalSalida, terminalLlegada));
+        viajes.add(new Viaje(fecha, hora, precio, duracion, ce.findBus(patenteBus).get(), auxiliarViaje, conductores, terminalSalida, terminalLlegada));
     }
 
     //Falta codigo para poder implementar:

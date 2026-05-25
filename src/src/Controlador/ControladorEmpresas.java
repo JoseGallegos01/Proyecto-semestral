@@ -85,7 +85,7 @@ import java.util.Optional;
             }
 
             boolean contratado = empresaOptional.get().addConductor(idPersona, nombre, direccion);
-            if(contratado){
+            if(!contratado){
                 throw new SistemaVentaPasajesException("Ya esta contratado el Conductor/Auxiliar con el id otorgado");
             }
 
@@ -216,6 +216,12 @@ import java.util.Optional;
         protected Optional<Conductor> findConductor(IdPersona id, Rut rutEmpresa) {
             Optional<Empresa> emp = findEmpresa(rutEmpresa);
             if (emp.isPresent()) {
+                for (Tripulante t : emp.get().getTripulantes()) {
+                    if (t instanceof Conductor
+                            && t.getIdPersona().equals(id)) {
+                        return Optional.of((Conductor) t);
+                    }
+                }
             }
             return Optional.empty();
         }
@@ -223,6 +229,12 @@ import java.util.Optional;
         protected Optional<Auxiliar> findAuxiliar(IdPersona id, Rut rutEmpresa) {
             Optional<Empresa> emp = findEmpresa(rutEmpresa);
             if (emp.isPresent()) {
+                for (Tripulante t : emp.get().getTripulantes()) {
+                    if (t instanceof Auxiliar
+                            && t.getIdPersona().equals(id)) {
+                        return Optional.of((Auxiliar) t);
+                    }
+                }
             }
             return Optional.empty();
         }
