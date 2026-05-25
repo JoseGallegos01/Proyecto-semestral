@@ -59,6 +59,8 @@ import java.util.Optional;
             }
 
             Bus bus = new Modelo.Bus(patente, nroAsiento, empresaOptional.get());
+            bus.setMarca(marca);
+            bus.setModelo(modelo);
             this.bus.add(bus);
         }
 

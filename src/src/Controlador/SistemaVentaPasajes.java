@@ -47,9 +47,6 @@ public class SistemaVentaPasajes {
 
     }
 
-
-
-
     public void createViaje(LocalDate fecha, LocalTime hora, int precio, int duracion, String patenteBus, IdPersona[] tripulantes, String[] nomComunas) {
         if (findViaje(fecha.toString(), hora.toString(), patenteBus).isPresent())
             throw new SistemaVentaPasajesException("Ya existe viaje con fecha, hora y patente de bus indicados");
