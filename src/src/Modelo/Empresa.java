@@ -14,7 +14,7 @@ public class Empresa {
     private java.util.ArrayList<Modelo.Bus> buses;
     private java.util.ArrayList<Tripulante> tripulantes;
 
-    public Empresa(Rut rut, String nombre) {
+    public Empresa(Rut rut, String url, String nombre) {
         this.rut = rut;
         this.nombre = nombre;
         this.buses = new ArrayList<>();
@@ -34,8 +34,8 @@ public class Empresa {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public static String setUrl(String url) {
+        return url = url;
     }
 
     public void addBus(Bus bus) {

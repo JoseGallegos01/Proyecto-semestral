@@ -37,13 +37,14 @@ import java.util.Optional;
         }
 
         public void createEmpresa(Rut rut, String nombre, String url) {
-            if(findEmpresa(rut).isPresent()){
-                throw new SistemaVentaPasajesException("El empresa ya existe");
+
+            if(findEmpresa(rut).isPresent()) {
+
+                throw new SistemaVentaPasajesException("La empresa ya existe");
             }
-
-            Empresa empresa = new Empresa(rut, nombre);
+            Empresa empresa = new Empresa(rut, nombre, url);
+            Empresa.setUrl(url);
             this.empresas.add(empresa);
-
         }
 
         public void createBus(String patente, String marca, String modelo, int nroAsiento, Rut rutEmp) {
