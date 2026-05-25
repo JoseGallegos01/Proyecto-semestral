@@ -127,6 +127,7 @@ public class UISVP {
     private void createEmpresa(){
         System.out.println("...::::Creando una nueva empresa::::...");
         System.out.println("R.U.T");
+        System.out.println("(XX.XXX.XXX-X)");
         String rutEmpresa =  sc.nextLine();
         System.out.println("Nombre:");
         String nombre = sc.nextLine();
@@ -143,6 +144,7 @@ public class UISVP {
         System.out.println("...::::Contratando un nuevo tripulante::::...");
         System.out.println("::::Datos de la empresa:");
         System.out.println("R.U.T");
+        System.out.println("(XX.XXX.XXX-X)");
         String rutEmpresa =  sc.nextLine();
         try {
             System.out.println("::::Datos tripulante:");
@@ -368,7 +370,7 @@ public class UISVP {
         int opcionRutPasaporte = sc.nextInt();
         sc.nextLine();
         if (opcionRutPasaporte == 1){
-            System.out.println("utilidades.Rut cliente");
+            System.out.println("Rut cliente");
             String rutCliente = sc.nextLine();
             id = registrarRut(rutCliente);
         }
@@ -417,11 +419,11 @@ public class UISVP {
                 for (int i = 0 ; i<cantidadPasajes ; i++){
                     if (cantidadPasajes>1) System.out.println("...::::Datos pasajeros " + (i+1));
                     else System.out.println("...::::Datos pasajero");
-                    System.out.println("utilidades.Rut[1] o utilidades.Pasaporte[2]");
+                    System.out.println("Rut[1] o Pasaporte[2]");
                     int opcionRutPasaportePasajes = sc.nextInt();
                     sc.nextLine();
                     if (opcionRutPasaportePasajes==1){
-                        System.out.println("Ingrese el rut (sin el DV)");
+                        System.out.println("Ingrese el rut (XX.XXX.XXX-X)");
                         int rut = sc.nextInt();
                         sc.nextLine();
                         System.out.println("Ingrese el DV del rut");
@@ -593,12 +595,12 @@ public class UISVP {
         test2.setTratamiento(Tratamiento.SRA);
         test1.setApellidoPaterno("Doe");
         test2.setApellidoMaterno("Doe");
-       // sv.createBus("1111Test", "Test", "Test", 20);
-     //   sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
-       //         LocalTime.parse("10:30", formatterTime), 300, "1111Test");
-        sv.createCliente(testId1, test1, "+56 9 11111111", "JohnDoe@gmail.com");
-        sv.createCliente(testId2, test2, "+56 9 11111111", "JaneDoe@gmail.com");
-        sv.createPasajero(testId1, test1, "+56 9 11111111",test1, "+56 9 11111111");
+      //  ce.createBus("1111Test", "Test", "Test", 20);
+      // sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
+            //   LocalTime.parse("10:30", formatterTime), 300, 10, "1111Test", 1);
+       // sv.createCliente(testId1, test1, "+56 9 11111111", "JohnDoe@gmail.com");
+        //sv.createCliente(testId2, test2, "+56 9 11111111", "JaneDoe@gmail.com");
+        //sv.createPasajero(testId1, test1, "+56 9 11111111",test1, "+56 9 11111111");
         sv.createPasajero(testId2, test2, "+56 9 11111111",test2, "+56 9 11111111");
         sv.iniciaVenta("67", TipoDocumento.FACTURA, LocalDate.parse("01/01/2026", formatterDate), testId1);
         sv.iniciaVenta("68", TipoDocumento.BOLETA, LocalDate.parse("01/01/2026", formatterDate), testId2);
