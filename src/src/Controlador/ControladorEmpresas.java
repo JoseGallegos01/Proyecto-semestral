@@ -61,6 +61,7 @@ import java.util.Optional;
 
             Bus bus = new Modelo.Bus(patente, nroAsiento, empresaOptional.get());
             this.bus.add(bus);
+            empresaOptional.get().addBus(bus);
         }
 
         public void createTerminal(String nombre, Direccion direccion) {
