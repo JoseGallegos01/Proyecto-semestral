@@ -212,7 +212,7 @@ public class UISVP {
         String comuna = sc.nextLine();
         Direccion direccion = new Direccion(calle, numero, comuna);
         try {
-            //ce.createTerminal(nombre, direccion);
+            ce.createTerminal(nombre, direccion);
         }catch (SistemaVentaPasajesException e){
             throw new SistemaVentaPasajesException(e.getMessage());
         }
@@ -276,7 +276,7 @@ public class UISVP {
         System.out.println("R.U.T: ");
         String rutEmpresa = sc.next();
         try{
-            sv.createBus(patente, marca, modelo, asientos, registrarRut(rutEmpresa));
+            ce.createBus(patente, marca, modelo, asientos, registrarRut(rutEmpresa));
             System.out.println("...::::modelo.Bus guardado exitosamente:::...");
         } catch (SistemaVentaPasajesException e){
             throw new SistemaVentaPasajesException("...::::Ya hay un bus con la misma patente registrada::...");
@@ -608,13 +608,17 @@ public class UISVP {
     }
 
     private Rut registrarRut(String rut){
-        Rut rutRegistrado;
-        String rutCompleto = rut;
-        rutCompleto = rutCompleto.replace(".", "");
-        String[] partes = rutCompleto.split("-");
-        int numero = Integer.parseInt(partes[0]);
-        char dv = partes[1].charAt(0);
-        return rutRegistrado = new Rut(numero, dv);
+        try {
+            Rut rutRegistrado;
+            String rutCompleto = rut;
+            rutCompleto = rutCompleto.replace(".", "");
+            String[] partes = rutCompleto.split("-");
+            int numero = Integer.parseInt(partes[0]);
+            char dv = partes[1].charAt(0);
+            return rutRegistrado = new Rut(numero, dv);
+        }catch (ArrayIndexOutOfBoundsException e){
+            throw new ArrayIndexOutOfBoundsException("RUT con formato erroneo");
+        }
     }
 
     private Pasaporte registrarPasaporte(String numero, String nacionalidad){
