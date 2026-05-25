@@ -31,7 +31,7 @@ import java.util.Optional;
 
         public static ControladorEmpresas getInstance() {
             if (instance == null) {
-                ControladorEmpresas instance = new ControladorEmpresas();
+                instance = new ControladorEmpresas();
             }
             return instance;
         }
@@ -102,7 +102,7 @@ import java.util.Optional;
             if (empresas.size() == 0) {
                 return new String[0][0];
             }
-            String[][] lista = new String[empresas.size()][3];
+            String[][] lista = new String[empresas.size()][6];
 
             for (int i = 0; i < empresas.size(); i++) {
                 Empresa empresa = empresas.get(i);
@@ -110,7 +110,9 @@ import java.util.Optional;
                 lista[i][0] = empresa.getRut().toString();
                 lista[i][1] = empresa.getNombre();
                 lista[i][2] = empresa.getUrl();
-
+                lista[i][3] = String.valueOf(empresa.getTripulantes().length);
+                lista[i][4] = String.valueOf(empresa.getBuses().length);
+                lista[i][5] = String.valueOf(empresa.getVentas().length);
             }
 
             return lista;
