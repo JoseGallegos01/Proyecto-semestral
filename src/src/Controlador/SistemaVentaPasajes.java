@@ -47,16 +47,6 @@ public class SistemaVentaPasajes {
 
     }
 
-    //METODO A ELIMINAR E IMPLEMENTAR EN CONTROLADOR EMPRESAS
-    public void createBus(String patente, String marca, String modelo, int NroAsientos, Rut rut) {
-        if (findBus(patente).isEmpty()) {
-            buses.add(new Bus(patente, NroAsientos, ce.findEmpresa(rut).get()));
-            findBus(patente).get().setMarca(marca);
-            findBus(patente).get().setModelo(modelo);
-        }
-    }
-
-
     public void createViaje(LocalDate fecha, LocalTime hora, int precio, int duracion, String patenteBus, IdPersona[] tripulantes, String[] nomComunas) {
         if (findViaje(fecha.toString(), hora.toString(), patenteBus).isPresent())
             throw new SistemaVentaPasajesException("Ya existe viaje con fecha, hora y patente de bus indicados");

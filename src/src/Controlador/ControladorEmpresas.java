@@ -60,7 +60,10 @@ import java.util.Optional;
             }
 
             Bus bus = new Modelo.Bus(patente, nroAsiento, empresaOptional.get());
+            bus.setMarca(marca);
+            bus.setModelo(modelo);
             this.bus.add(bus);
+            empresaOptional.get().addBus(bus);
         }
 
         public void createTerminal(String nombre, Direccion direccion) {
@@ -78,7 +81,7 @@ import java.util.Optional;
         public void hireConductor(Rut rutEmp, IdPersona idPersona, Nombre nombre, Direccion direccion) {
             Optional<Empresa> empresaOptional = findEmpresa(rutEmp);
             if(empresaOptional.isEmpty()) {
-                throw new SistemaVentaPasajesException("No existe el empresa con el rut ingresado");
+                throw new SistemaVentaPasajesException("No existe la empresa con el rut ingresado");
             }
 
             boolean contratado = empresaOptional.get().addConductor(idPersona, nombre, direccion);

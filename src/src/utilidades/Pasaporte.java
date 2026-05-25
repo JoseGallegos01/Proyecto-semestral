@@ -4,7 +4,7 @@ public class Pasaporte implements IdPersona {
     //Cristobal Jeldres
     private String numero;
     private String nacionalidad;
-    //En teoria esta listo
+    //En teoria no esta listo
 
     public Pasaporte(String numero, String nacionalidad) {
         this.numero = numero;
