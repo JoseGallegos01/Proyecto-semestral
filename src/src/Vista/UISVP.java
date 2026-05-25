@@ -538,8 +538,8 @@ public class UISVP {
         for (String[] e : listaEmpresas) {
             System.out.printf("| %-12s | %-20s | %-30s | %-15s | %-12s | %-12s |%n",
                     e[0],
-                    e[1],
                     e[2],
+                    e[1],
                     e[3],
                     e[4],
                     e[5]);
