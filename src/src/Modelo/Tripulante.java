@@ -1,6 +1,7 @@
 package Modelo;
+import utilidades.*;
 
-public  class Tripulante extends Persona {
+public abstract class Tripulante extends Persona {
 
     private Direccion direccion;
 

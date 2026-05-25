@@ -4,6 +4,7 @@ import utilidades.IdPersona;
 import utilidades.Nombre;
 import utilidades.Direccion;
 import utilidades.Rut;
+import java.util.ArrayList;
 
 public class Empresa {
     private Rut rut;
@@ -16,8 +17,8 @@ public class Empresa {
     public Empresa(Rut rut, String nombre) {
         this.rut = rut;
         this.nombre = nombre;
-        this.buses = new java.util.ArrayList<>();
-        this.tripulantes = new java.util.ArrayList<>();
+        this.buses = new ArrayList<>();
+        this.tripulantes = new ArrayList<>();
     }
 
     public Rut getRut() {
@@ -36,14 +37,14 @@ public class Empresa {
         this.url = url;
     }
 
-    public void addBus(Modelo.Bus bus) {
+    public void addBus(Bus bus) {
         if (bus != null) {
             this.buses.add(bus);
         }
     }
 
-    public Modelo.Bus[] getBuses() {
-        return this.buses.toArray(new Modelo.Bus[0]);
+    public Bus[] getBuses() {
+        return this.buses.toArray(new Bus[0]);
     }
 
     public boolean addConductor(IdPersona id, Nombre nom, Direccion dir) {
@@ -52,7 +53,7 @@ public class Empresa {
         }
 
         for (Tripulante tripulante : tripulantes) {
-            if(){
+            if(tripulante.getIdPersona().equals(id) && tripulante.getDireccion().equals(dir)) {
                 return false;
             }
         }
@@ -61,30 +62,26 @@ public class Empresa {
         return this.tripulantes.add(nuevoConductor);
     }
 
-    public boolean addAuxiliar (IdPersona id, Nombre nom, Direccion dir){
+    public boolean addAuxiliar (IdPersona id, Nombre nom, Direccion dir) {
         if (id == null || nom == null || dir == null) {
             return false;
         }
         for (Tripulante tripulante : tripulantes) {
-            if (){
+            if (tripulante.getIdPersona().equals(id) && tripulante.getDireccion().equals(dir)) {
                 return false;
             }
         }
 
-        Auxiliar nuevoAuxiliar = new Auxiliar(id,nom,dir);
+        Auxiliar nuevoAuxiliar = new Auxiliar(id, nom, dir);
         return this.tripulantes.add(nuevoAuxiliar);
-
-        public Tripulante[] getTripulantes() {
+    }
+    public Tripulante[] getTripulantes() {
             return this.tripulantes.toArray(new Tripulante[0]);
         }
 
-        public TipoDocumento.Venta[] getVentas(){
-            java.util.ArrayList<TipoDocumento.Venta> ventas = new java.util.ArrayList<>();
-
-
-            return ;
+        public Venta[] getVentas(){
+            java.util.ArrayList<Venta> ventas = new java.util.ArrayList<>();
+            return ventas.toArray(new Venta[0]);
         }
     }
 
-
-}

@@ -10,7 +10,6 @@ public class PagoEfectivo extends Pago {
     }
 
     public static class Bus {
-        //Vicente Salinas
 
         private String patente;
         private String marca;
