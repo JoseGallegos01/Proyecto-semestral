@@ -582,29 +582,44 @@ public class UISVP {
 
 
     private void createTestData(){
-        char dvTest = 2;
-        IdPersona testId1 = new Rut(22222222, dvTest);
-        IdPersona testId2 = new Rut(33333333, dvTest);
-        Nombre test1 = new Nombre();
-        Nombre test2 = new Nombre();
-        test1.setNombres("John");
-        test2.setNombres("Jane");
-        test1.setTratamiento(Tratamiento.SR);
-        test2.setTratamiento(Tratamiento.SRA);
-        test1.setApellidoPaterno("Doe");
-        test2.setApellidoMaterno("Doe");
-       // sv.createBus("1111Test", "Test", "Test", 20);
-     //   sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
-       //         LocalTime.parse("10:30", formatterTime), 300, "1111Test");
-        sv.createCliente(testId1, test1, "+56 9 11111111", "JohnDoe@gmail.com");
-        sv.createCliente(testId2, test2, "+56 9 11111111", "JaneDoe@gmail.com");
-        sv.createPasajero(testId1, test1, "+56 9 11111111",test1, "+56 9 11111111");
-        sv.createPasajero(testId2, test2, "+56 9 11111111",test2, "+56 9 11111111");
-        sv.iniciaVenta("67", TipoDocumento.FACTURA, LocalDate.parse("01/01/2026", formatterDate), testId1);
-        sv.iniciaVenta("68", TipoDocumento.BOLETA, LocalDate.parse("01/01/2026", formatterDate), testId2);
-        sv.vendePasaje("67", LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 1, testId1, TipoDocumento.FACTURA);
-        sv.vendePasaje("68", LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("10:30"), "1111Test", 2, testId1, TipoDocumento.BOLETA);
-        System.out.println("...::::Datos de prueba creados:::...");
+        private void createTestData() {
+            char dv1 = '1';
+            char dv2 = '2';
+
+            IdPersona testId1 = new Rut(11111111, dv1);
+            IdPersona testId2 = new Rut(22222222, dv2);
+            Nombre test1 = new Nombre();
+            Nombre test2 = new Nombre();
+
+            test1.setNombres("Aaa");
+            test2.setNombres("Bbb");
+
+            test1.setTratamiento(Tratamiento.SR);
+            test2.setTratamiento(Tratamiento.SRA);
+
+            test1.setApellidoPaterno("Aaa");
+            test2.setApellidoPaterno("Bbb");
+
+            sv.createBus("1111AA", "Marca1", "Mod1", 11);
+            sv.createBus("2222BB", "Marca2", "Mod2", 22);
+
+            sv.createViaje(LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("11:11", formatterTime), 1111, "1111AA");
+            sv.createViaje(LocalDate.parse("02/02/2026", formatterDate), LocalTime.parse("22:22", formatterTime), 2222, "2222BB");
+
+            sv.createCliente(testId1, test1, "+56 9 11111111", "111@gmail.com");
+            sv.createCliente(testId2, test2, "+56 9 22222222", "222@gmail.com");
+
+            sv.createPasajero(testId1, test1, "+56 9 11111111", test1, "+56 9 11111111");
+            sv.createPasajero(testId2, test2, "+56 9 22222222", test2, "+56 9 22222222");
+
+            sv.iniciaVenta("11", TipoDocumento.FACTURA, LocalDate.parse("01/01/2026", formatterDate), testId1);
+            sv.iniciaVenta("22", TipoDocumento.BOLETA, LocalDate.parse("02/02/2026", formatterDate), testId2);
+
+            sv.vendePasaje("11", LocalDate.parse("01/01/2026", formatterDate), LocalTime.parse("11:11", formatterTime), "1111AA", 1, testId1, TipoDocumento.FACTURA);
+            sv.vendePasaje("22", LocalDate.parse("02/02/2026", formatterDate), LocalTime.parse("22:22", formatterTime), "2222BB", 2, testId2, TipoDocumento.BOLETA);
+
+            System.out.println("...::::Datos de prueba creados:::...");
+        }
     }
 
     private Rut registrarRut(String rut){
