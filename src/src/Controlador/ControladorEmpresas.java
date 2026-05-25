@@ -78,7 +78,7 @@ import java.util.Optional;
         public void hireConductor(Rut rutEmp, IdPersona idPersona, Nombre nombre, Direccion direccion) {
             Optional<Empresa> empresaOptional = findEmpresa(rutEmp);
             if(empresaOptional.isEmpty()) {
-                throw new SistemaVentaPasajesException("No existe el empresa con el rut ingresado");
+                throw new SistemaVentaPasajesException("No existe la empresa con el rut ingresado");
             }
 
             boolean contratado = empresaOptional.get().addConductor(idPersona, nombre, direccion);
