@@ -73,6 +73,7 @@ public class UISVP {
                         break;
                     case 3:
                         crearTerminal();
+                        break;
                     case 4:
                         createCliente();
                         break;
@@ -221,6 +222,7 @@ public class UISVP {
         System.out.println("...::::Crear un nuevo cliente:::...");
         System.out.println("Rut[1] o Pasaporte[2]");
         int opcionRutPasaporte = sc.nextInt();
+        sc.nextLine();
         if (opcionRutPasaporte==1){
             System.out.println("Ingrese el rut");
             String rut = sc.nextLine();
