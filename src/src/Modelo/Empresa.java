@@ -17,6 +17,7 @@ public class Empresa {
         this.rut = rut;
         this.nombre = nombre;
         this.buses = new java.util.ArrayList<>();
+        this.url = url;
         this.tripulantes = new java.util.ArrayList<>();
     }
 
