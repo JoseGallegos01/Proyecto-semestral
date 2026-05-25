@@ -44,21 +44,5 @@ public class Persona {
         return Objects.equals(idPersona, persona.idPersona);
     }
 
-    public static class Conductor extends Modelo.Viaje.Tripulante {
 
-        private List<Modelo.Viaje> viajes;
-
-        public Conductor(IdPersona id, Nombre nom, Direccion dir) {
-            super(id, nom, dir);
-            this.viajes = new ArrayList<>();
-        }
-
-        public void addViaje(Modelo.Viaje viaje) {
-            this.viajes.add(viaje);
-        }
-
-        public int getNroVIaje() {
-            return this.viajes.size();
-        }
-    }
 }

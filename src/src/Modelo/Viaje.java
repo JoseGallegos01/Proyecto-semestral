@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import utilidades.*;
 
 
 
 public class Viaje {
-    //Vicente Salinas
 
     private LocalDate fecha;
     private LocalTime hora;
@@ -131,28 +131,6 @@ public class Viaje {
             }
         }
         return ventasUnicas.toArray(new Venta[0]);
-    }
-
-    public static class Tripulante extends Persona {
-
-        private Direccion direccion;
-
-        public Tripulante(IdPersona id, Nombre nom, Direccion dir) {
-            super(id, nom); // Llama al constructor de la clase padre (Persona)
-            this.direccion = dir;
-        }
-
-        public Direccion getDireccion() {
-            return this.direccion;
-        }
-
-        public void setDireccion(Direccion direccion) {
-            this.direccion = direccion;
-        }
-
-        public abstract void addViaje(Viaje viaje);
-
-        public abstract int getNroViajes();
     }
 }
 

@@ -2,9 +2,13 @@ package Vista;
 
 import Controlador.*;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Optional;
 import java.util.Scanner;
 
 import Excepciones.SistemaVentaPasajesException;
@@ -23,6 +27,7 @@ public class UISVP {
     TipoDocumento tipoDocumento = null;
     DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private static UISVP instance = null;
     public static UISVP getInstance(){
         if(instance == null){
@@ -265,7 +270,7 @@ public class UISVP {
         System.out.println("R.U.T: ");
         String rutEmpresa = sc.next();
         try{
-            sv.createBus(patente, marca, modelo, asientos);
+            sv.createBus(patente, marca, modelo, asientos, registrarRut(rutEmpresa));
             System.out.println("...::::modelo.Bus guardado exitosamente:::...");
         } catch (SistemaVentaPasajesException e){
             throw new SistemaVentaPasajesException("...::::Ya hay un bus con la misma patente registrada::...");
@@ -329,7 +334,7 @@ public class UISVP {
         String comunaLlegada = sc.nextLine();
         String[] comunas = {comunaSalida, comunaLlegada};
         try {
-            sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, duracion, patenteBus);
+            sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, duracion, patenteBus, tripulantes, comunas);
             System.out.println("...::::Viaje guardado exitosamente::::...");
         }catch (SistemaVentaPasajesException e){
             throw new SistemaVentaPasajesException("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
@@ -516,14 +521,57 @@ public class UISVP {
     }
 
     private void listEmpresas(){
-        //String[] listaEmpresas = ce.listEmpresas();
+        String[][] listaEmpresas = ce.listEmpresas();
+        System.out.printf("| %-12s | %-20s | %-30s | %-15s | %-12s | %-12s |%n",
+                "RUT EMPRESA",
+                "NOMBRE",
+                "URL",
+                "NRO. TRIPULANTES",
+                "NRO. BUSES",
+                "NRO. VENTAS");
+        for (String[] e : listaEmpresas) {
+            System.out.printf("| %-12s | %-20s | %-30s | %-15s | %-12s | %-12s |%n",
+                    e[0],
+                    e[1],
+                    e[2],
+                    e[3],
+                    e[4],
+                    e[5]);
+        }
 
     }
     private void listLlegadasSalidasTerminal(){
-
+        System.out.println("...:::: Listado de llegadas y salidas de un terminal ::::...");
+        System.out.println("Nombre terminal:");
+        String nombre = sc.nextLine();
+        System.out.println("Fecha: [dd/mm/yyyy]");
+        String fecha = sc.nextLine();
+        LocalDate fechaTerminal = LocalDate.parse(fecha, formatterDate);
+        Date fechaLlegadasSalidas = java.sql.Date.valueOf(fechaTerminal);
+        String[][] llegadasSalidasTerminal = ce.listLlegadaSalidaTerminal(nombre, fechaLlegadasSalidas);
+        System.out.printf(
+                "| %-10s | %-8s | %-10s | %-20s | %-10s |%n",
+                "TIPO",
+                "HORA",
+                "PATENTE",
+                "EMPRESA",
+                "PASAJEROS");
+        for (String[] l : llegadasSalidasTerminal) {
+            System.out.printf(
+                    "| %-10s | %-8s | %-10s | %-20s | %-10s |%n",
+                    l[0],
+                    l[1],
+                    l[2],
+                    l[3],
+                    l[4]
+            );
+        }
     }
     private void listVentasEmpresas(){
-
+        System.out.println("...:::: Listado de ventas de una empresa ::::...");
+        System.out.println("R.U.T");
+        String rut = sc.nextLine();
+        String[][] listVentasEmpresas = ce.listVentasEmpresa(registrarRut(rut));
     }
 
 
@@ -539,9 +587,9 @@ public class UISVP {
         test2.setTratamiento(Tratamiento.SRA);
         test1.setApellidoPaterno("Doe");
         test2.setApellidoMaterno("Doe");
-        sv.createBus("1111Test", "Test", "Test", 20);
-        sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
-                LocalTime.parse("10:30", formatterTime), 300, "1111Test");
+       // sv.createBus("1111Test", "Test", "Test", 20);
+     //   sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
+       //         LocalTime.parse("10:30", formatterTime), 300, "1111Test");
         sv.createCliente(testId1, test1, "+56 9 11111111", "JohnDoe@gmail.com");
         sv.createCliente(testId2, test2, "+56 9 11111111", "JaneDoe@gmail.com");
         sv.createPasajero(testId1, test1, "+56 9 11111111",test1, "+56 9 11111111");

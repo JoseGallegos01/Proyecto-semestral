@@ -80,7 +80,17 @@ public class Empresa {
         }
 
         public Venta[] getVentas(){
-            java.util.ArrayList<Venta> ventas = new java.util.ArrayList<>();
+            ArrayList<Venta> ventas = new java.util.ArrayList<>();
+            for (Bus bus : buses) {
+                for (Viaje viaje : bus.getViajes()) {
+                    for (Venta venta : viaje.getVentas()) {
+                        if (!ventas.contains(venta)) {
+                            ventas.add(venta);
+                        }
+                    }
+                }
+            }
+
             return ventas.toArray(new Venta[0]);
         }
     }

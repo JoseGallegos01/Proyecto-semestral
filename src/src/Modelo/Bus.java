@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bus {
-    //Vicente Salinas
 
     private String patente;
     private String marca;
@@ -16,6 +15,7 @@ public class Bus {
     public Bus(String patente, int nroAsientos, Empresa empresa) {
         this.patente = patente;
         this.nroAsientos = nroAsientos;
+        this.empresa = empresa;
         this.viajes = new ArrayList<>();
     }
     public String getPatente() {
@@ -44,5 +44,8 @@ public class Bus {
     }
     public void setEmpresa(Empresa empresa){
         this.empresa=empresa;
+    }
+    public Viaje[] getViajes() {
+        return viajes.toArray(new Viaje[0]);
     }
 }
