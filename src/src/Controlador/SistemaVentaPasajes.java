@@ -60,12 +60,9 @@ public class SistemaVentaPasajes {
             Optional<Conductor> c = ce.findConductor(tripulantes[i], ce.findBus(patenteBus).get().getEmpresa().getRut());
             conductores.add(c.get());
         }
-
         viajes.add(new Viaje(fecha, hora, precio, duracion, ce.findBus(patenteBus).get(), auxiliarViaje, conductores, terminalSalida, terminalLlegada));
     }
 
-    //Falta codigo para poder implementar:
-    //No existen viajes disponibles en la fecha y con terminales en las comunas de salida y llegada indicados
     public void iniciaVenta(String idDoc, TipoDocumento tipo, LocalDate fechaVenta, IdPersona idCliente) {
         if (findVenta(idDoc, tipo).isPresent())
             throw new SistemaVentaPasajesException("Ya existe venta con el id y tipo de documento indicados");

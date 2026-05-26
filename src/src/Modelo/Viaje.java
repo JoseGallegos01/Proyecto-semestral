@@ -34,6 +34,8 @@ public class Viaje {
         this.terminalLlegada=terminalLlegada;
         this.pasajes=new ArrayList<>();
         bus.addViaje(this);
+        terminalSalida.addSalida(this);
+        terminalLlegada.addLlegada(this);
     }
     public LocalDate getFecha() {
         return fecha;
@@ -54,7 +56,9 @@ public class Viaje {
     public void setBus(Bus bus){
         this.bus = bus;
     }
-    public int getDuracion(){return duracion;}
+    public int getDuracion(){
+        return duracion;
+    }
 
     public void setDuracion(int duracion) {
         this.duracion = duracion;

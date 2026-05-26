@@ -37,9 +37,7 @@ import java.util.Optional;
         }
 
         public void createEmpresa(Rut rut, String nombre, String url) {
-
             if(findEmpresa(rut).isPresent()) {
-
                 throw new SistemaVentaPasajesException("La empresa ya existe");
             }
             Empresa empresa = new Empresa(rut, nombre, url);
@@ -124,16 +122,15 @@ import java.util.Optional;
 
         public String[][] listLlegadaSalidaTerminal(String nombre, Date fecha) {
             Optional<Terminal> terminalOptional = findTerminal(nombre);
-
             if (terminalOptional.isEmpty()) {
                 throw new SistemaVentaPasajesException("No existe el terminal con el nombre ingresado");
             }
-            Modelo.Terminal terminal = terminalOptional.get();
+            Terminal terminal = terminalOptional.get();
             ArrayList<String[]> lista = new ArrayList<>();
 
             Viaje[] salidas = terminal.getSalidas();
             for (Viaje salida : salidas) {
-                if (salida.getFechaHoraTermino().toLocalDate().equals(fecha)) {
+                if (salida.getFecha().equals(fecha)) {
                     String[] fila = new String[6];
                     fila[0] = "Salida";
                     fila[1] = salida.getFechaHoraTermino().toLocalTime().toString();
@@ -149,7 +146,7 @@ import java.util.Optional;
 
             Viaje[] llegadas = terminal.getLlegadas();
             for (Viaje llegada : llegadas) {
-                if(llegada.getFechaHoraTermino().toLocalDate().equals(fecha)){
+                if(llegada.getFechaHoraTermino().equals(fecha)){
                     String[] fila = new String[6];
                     fila[0] = "Llegada";
                     fila[1] = llegada.getFechaHoraTermino().toLocalTime().toString();
@@ -173,7 +170,6 @@ import java.util.Optional;
             if(empresaOptional.isEmpty()) {
                 throw new SistemaVentaPasajesException("No existe la empresa con el rut ingresado");
             }
-
             return new String[0][0];
         }
 

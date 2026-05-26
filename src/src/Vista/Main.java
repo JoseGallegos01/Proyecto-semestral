@@ -3,10 +3,10 @@ package Vista;
 import Excepciones.SistemaVentaPasajesException;
 
 public class Main {
-    public static void main(String[] args) throws RuntimeException {
+    public static void main(String[] args) throws SistemaVentaPasajesException {
         try {
             UISVP.getInstance().menu();
-        }catch (RuntimeException e) {
+        }catch (SistemaVentaPasajesException e) {
             throw e;
         }
     }
