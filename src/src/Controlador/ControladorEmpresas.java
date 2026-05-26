@@ -10,6 +10,7 @@ import utilidades.Nombre;
 import utilidades.Rut;
 import Modelo.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -120,7 +121,7 @@ import java.util.Optional;
             return lista;
         }
 
-        public String[][] listLlegadaSalidaTerminal(String nombre, Date fecha) {
+        public String[][] listLlegadaSalidaTerminal(String nombre, LocalDate fecha) {
             Optional<Terminal> terminalOptional = findTerminal(nombre);
             if (terminalOptional.isEmpty()) {
                 throw new SistemaVentaPasajesException("No existe el terminal con el nombre ingresado");
@@ -170,7 +171,22 @@ import java.util.Optional;
             if(empresaOptional.isEmpty()) {
                 throw new SistemaVentaPasajesException("No existe la empresa con el rut ingresado");
             }
-            return new String[0][0];
+
+            Venta[] ventas = empresaOptional.get().getVentas();
+
+            if(ventas.length == 0) {
+                return new String[0][0];
+            }
+
+            String[][] lista = new String[ventas.length][4];
+
+            for(int i = 0; i < ventas.length; i++) {
+               lista[i][0] = ventas[i].getFecha().toString();
+               lista[i][1] = ventas[i].getTipo().toString();
+               lista[i][2] = String.valueOf(ventas[i].getMontoPagado());
+               lista[i][3] = ventas[i].getTipoPago();
+            }
+            return lista;
         }
 
         protected Optional<Empresa> findEmpresa(Rut rut) {

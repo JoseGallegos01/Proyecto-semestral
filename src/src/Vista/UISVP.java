@@ -2,12 +2,12 @@ package Vista;
 
 import Controlador.*;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -571,7 +571,7 @@ public class UISVP {
         System.out.println("Fecha: [dd/mm/yyyy]");
         String fecha = sc.nextLine();
         LocalDate fechaTerminal = LocalDate.parse(fecha, formatterDate);
-        Date fechaLlegadasSalidas = java.sql.Date.valueOf(fechaTerminal);
+        LocalDate fechaLlegadasSalidas = Date.valueOf(fechaTerminal).toLocalDate();
         String[][] llegadasSalidasTerminal = ce.listLlegadaSalidaTerminal(nombre, fechaLlegadasSalidas);
         System.out.printf(
                 "| %-10s | %-8s | %-10s | %-20s | %-10s |%n",

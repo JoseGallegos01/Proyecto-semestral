@@ -138,6 +138,26 @@ public class SistemaVentaPasajes {
         ventaViaje.get().createPasaje(asiento, viajeVenta.get(), pasajeroVenta.get());
     }
 
+    public void pagaVenta(String idDoc, TipoDocumento tipo){
+        Optional<Venta> venta = findVenta(idDoc, tipo);
+        if(venta.isEmpty()){
+            throw new SistemaVentaPasajesException("No existe venta con el id y tipo indicado");
+        }
+        if(!venta.get().pagaMonto()){
+            throw new SistemaVentaPasajesException("El pago ya fue realizado");
+        }
+    }
+
+    public void pagaVenta(String idDoc, TipoDocumento tipo, long nroTarjeta){
+        Optional<Venta> venta = findVenta(idDoc, tipo);
+        if(venta.isEmpty()){
+            throw new SistemaVentaPasajesException("No existe venta con el id y tipo indicado");
+        }
+        if(!venta.get().pagaMonto(nroTarjeta)){
+            throw new SistemaVentaPasajesException("El pago ya fue realizado");
+        }
+    }
+
     public String[][] listVentas() {
         if (ventas.isEmpty()) return new String[0][0];
         String[][] listaVentas = new String[ventas.size()][7];
