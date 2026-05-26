@@ -804,7 +804,7 @@ public class UISVP {
             char dv = partes[1].charAt(0);
             return rutRegistrado = new Rut(numero, dv);
         }catch (Exception e){
-            throw new SistemaVentaPasajesException(("formato de rut incorrecto"));
+            throw new SistemaVentaPasajesException(("formato de rut incorrecto, debe ser xx.xxx.xxx-x"));
         }
     }
 
