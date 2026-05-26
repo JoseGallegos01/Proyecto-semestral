@@ -614,14 +614,14 @@ public class UISVP {
     private void createTestData(){
         ce.createEmpresa(
                 new Rut(11111111, '1'),
-                "TurBus",
-                "www.turbus.cl"
+                "Test1",
+                "www.test1.cl"
         );
 
         ce.createEmpresa(
                 new Rut(22222222, '2'),
-                "Pullman Bus",
-                "www.pullmanbus.cl"
+                "Test2",
+                "www.test2.cl"
         );
 
         ce.createTerminal(

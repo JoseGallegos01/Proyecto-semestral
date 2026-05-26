@@ -132,13 +132,12 @@ import java.util.Optional;
             Viaje[] salidas = terminal.getSalidas();
             for (Viaje salida : salidas) {
                 if (salida.getFecha().equals(fecha)) {
-                    String[] fila = new String[6];
+                    String[] fila = new String[5];
                     fila[0] = "Salida";
                     fila[1] = salida.getFechaHoraTermino().toLocalTime().toString();
                     fila[2] = salida.getBus().getPatente();
-                    fila[3] = salida.getTerminalLlegada().getDireccion().getComuna();
-                    fila[4] = salida.getBus().getEmpresa().getNombre();
-                    fila[5] = String.valueOf(salida.getListaPasajeros().length);
+                    fila[3] = salida.getBus().getEmpresa().getNombre();
+                    fila[4] = String.valueOf(salida.getListaPasajeros().length);
 
                     lista.add(fila);
                 }
@@ -148,13 +147,12 @@ import java.util.Optional;
             Viaje[] llegadas = terminal.getLlegadas();
             for (Viaje llegada : llegadas) {
                 if(llegada.getFechaHoraTermino().equals(fecha)){
-                    String[] fila = new String[6];
+                    String[] fila = new String[5];
                     fila[0] = "Llegada";
                     fila[1] = llegada.getFechaHoraTermino().toLocalTime().toString();
                     fila[2] = llegada.getBus().getPatente();
-                    fila[3] = llegada.getTerminalSalida().getDireccion().getComuna();
-                    fila[4] = llegada.getBus().getEmpresa().getNombre();
-                    fila[5] = String.valueOf(llegada.getListaPasajeros().length);
+                    fila[3] = llegada.getBus().getEmpresa().getNombre();
+                    fila[4] = String.valueOf(llegada.getListaPasajeros().length);
                     lista.add(fila);
                 }
             }
