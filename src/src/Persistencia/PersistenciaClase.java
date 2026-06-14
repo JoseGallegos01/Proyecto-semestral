@@ -119,6 +119,13 @@ public class PersistenciaClase {
                 linkEmpresa  = scAr.next();
                 ControladorEmpresas.getInstance().createEmpresa(registrarRut(rut), nombreEmpresa, linkEmpresa);
             }
+            //para leer auxiliares y conductores
+            while (lineaLeida!="+"){
+                lineaLeida = scAr.next();
+                if (lineaLeida=="A"){
+
+                }
+            }
         }
     }
 
