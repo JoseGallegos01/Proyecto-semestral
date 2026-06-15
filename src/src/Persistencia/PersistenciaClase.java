@@ -6,15 +6,13 @@ import Excepciones.SistemaVentaPasajesException;
 import Modelo.Cliente;
 import Modelo.Pasajero;
 import Modelo.Persona;
-import utilidades.IdPersona;
-import utilidades.Nombre;
-import utilidades.Rut;
-import utilidades.Tratamiento;
+import utilidades.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
+import utilidades.Direccion;
 
 public class PersistenciaClase {
     ArrayList<Pasajero> listaPasajeros;
@@ -119,13 +117,29 @@ public class PersistenciaClase {
                 ControladorEmpresas.getInstance().createEmpresa(registrarRut(rut), nombreEmpresa, linkEmpresa);
             }
             //para leer auxiliares y conductores
-            while (lineaLeida!="+"){
+            while (!lineaLeida.equals("+") && scAr.hasNext()) {
                 lineaLeida = scAr.next();
-                if (lineaLeida=="A"){
 
+                if (lineaLeida.equals("A") || lineaLeida.equals("CO")) {
+                    String rutPersona = scAr.next();
+                    String nombresPersona = scAr.next();
+                    String calle = scAr.next();
+                    String numeroStr = scAr.next();
+                    String comuna = scAr.next();
+                    String rutEmpresaStr = scAr.next();
+
+                    IdPersona idRegistrado = registrarRut(rutPersona);
+                    Nombre nombreRegistrado = registrarNombre(nombresPersona);
+                    Direccion direccionRegistrada = registrarDireccion(calle, numeroStr, comuna);
+                    Rut rutEmpresa = registrarRut(rutEmpresaStr);
+
+                    if (lineaLeida.equals("A")) {
+                        ControladorEmpresas.getInstance().hireAuxiliarForEmpresa(rutEmpresa, idRegistrado, nombreRegistrado, direccionRegistrada);
+                    } else if (lineaLeida.equals("CO")) {
+                        ControladorEmpresas.getInstance().hireConductor(rutEmpresa, idRegistrado, nombreRegistrado, direccionRegistrada);
+                    }
                 }
             }
-        }
     }
 
     public Object[] readControladores() throws FileNotFoundException{
@@ -182,6 +196,15 @@ public class PersistenciaClase {
         Nombre nombreRegistrado = new Nombre();
         nombreRegistrado.setNombres(nombre);
         return nombreRegistrado;
+    }
+
+    private Direccion registrarDireccion(String calle, String numeroStr, String comuna) {
+        try {
+            int numero = Integer.parseInt(numeroStr);
+            return new Direccion(calle, numero, comuna);
+        } catch (NumberFormatException e) {
+            throw new SistemaVentaPasajesException("El numero de la direccion debe ser un valor numerico valido.");
+        }
     }
 
 }

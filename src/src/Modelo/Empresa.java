@@ -17,6 +17,7 @@ public class Empresa {
     public Empresa(Rut rut, String url, String nombre) {
         this.rut = rut;
         this.nombre = nombre;
+        this.url = url;
         this.buses = new ArrayList<>();
         this.url = url;
         this.tripulantes = new ArrayList<>();

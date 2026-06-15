@@ -13,9 +13,7 @@ public class Conductor extends  Tripulante {
         this.viajes = new ArrayList<>();
     }
 
-    public void addViaje(Viaje viaje) {
-        this.viajes.add(viaje);
-    }
+    public void addViaje(Viaje viaje) {this.viajes.add(viaje);}
 
     @Override
     public int getNroViajes() {
