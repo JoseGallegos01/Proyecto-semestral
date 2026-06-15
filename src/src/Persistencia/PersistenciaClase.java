@@ -11,8 +11,7 @@ import utilidades.Nombre;
 import utilidades.Rut;
 import utilidades.Tratamiento;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
@@ -127,6 +126,25 @@ public class PersistenciaClase {
                 }
             }
         }
+    }
+
+    public Object[] readControladores() throws FileNotFoundException{
+        SistemaVentaPasajes ControladorSistemaVentaPasajesInput = null;
+        ControladorEmpresas ControladorEmpresasInput = null;
+        try{
+            ObjectInputStream inSV = new ObjectInputStream(new FileInputStream("SistemaVentaPasajes.obj"));
+            ObjectInputStream inCE= new ObjectInputStream(new FileInputStream("ControladorEmpresas.obj"));
+            ControladorSistemaVentaPasajesInput = (SistemaVentaPasajes) inSV.readObject();
+            ControladorEmpresasInput = (ControladorEmpresas) inCE.readObject();
+        }
+        catch (FileNotFoundException e){
+            throw new SistemaVentaPasajesException("No se encontro el archivo de los controladores");
+        }catch (IOException e){
+            throw new SistemaVentaPasajesException("No se pudo leer los controladores");
+        }catch (ClassNotFoundException e){
+            throw new SistemaVentaPasajesException("No se encontro la clase");
+        }
+        return new Object[] {ControladorSistemaVentaPasajesInput, ControladorEmpresasInput};
     }
 
     private Optional<Cliente> findCliente(IdPersona id) {
