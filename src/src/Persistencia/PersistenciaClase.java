@@ -11,10 +11,7 @@ import utilidades.*;
 import Modelo.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class PersistenciaClase {
     ArrayList<Pasajero> listaPasajeros;
@@ -200,6 +197,19 @@ public class PersistenciaClase {
             throw new SistemaVentaPasajesException("No se encontro la clase");
         }
         return new Object[] {ControladorSistemaVentaPasajesInput, ControladorEmpresasInput};
+    }
+
+    public void saveControladores(Object[] controladores){
+        SistemaVentaPasajes ControladorSistemaVentaPasajes = Objects.requireNonNull((SistemaVentaPasajes) controladores[0]);
+        ControladorEmpresas ControladorEmpresas = Objects.requireNonNull((ControladorEmpresas) controladores[1]);
+        try{
+            ObjectOutputStream outSVP = new ObjectOutputStream(new FileOutputStream("SistemaVentasPasajes.obj"));
+            ObjectOutputStream outCE = new ObjectOutputStream(new FileOutputStream("ControladorEmpresas.obj"));
+            outSVP.writeObject(ControladorSistemaVentaPasajes);
+            outCE.writeObject(ControladorEmpresas);
+        }catch (IOException e){
+            throw new SistemaVentaPasajesException("No se pudo escribir los controladores");
+        }
     }
 
     private void procesarClientePasajero(String linea, List<Object> lista){
