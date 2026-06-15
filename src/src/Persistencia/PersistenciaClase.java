@@ -217,7 +217,12 @@ public class PersistenciaClase {
         String tipo = datos[0].trim();
 
         Rut rut = registrarRut(datos[1].trim());
-        Nombre nombreCompleto = new Nombre(Tratamiento.valueOf(datos[7].trim()), datos[3].trim(), datos[4].trim(), datos[5].trim());
+        Nombre nombreCompleto = new Nombre();
+        //Nombre nombreCompleto = new Nombre(Tratamiento.valueOf(datos[7].trim()), datos[3].trim(), datos[4].trim(), datos[5].trim());
+        nombreCompleto.setNombres(datos[3].trim());
+        nombreCompleto.setTratamiento(Tratamiento.valueOf(datos[7].trim()));
+        nombreCompleto.setApellidoPaterno(datos[4].trim());
+        nombreCompleto.setApellidoMaterno(datos[5].trim());
         String telefono = datos[6].trim();
 
         if (tipo.equals("C")) {
@@ -227,7 +232,11 @@ public class PersistenciaClase {
             lista.add(cliente);
         } else if (tipo.equals("P")) {
             Tratamiento conTrat = Tratamiento.valueOf(datos[7].trim());
-            Nombre conNombre = new Nombre(conTrat, datos[8].trim(), datos[9].trim(), datos[10].trim());
+            Nombre conNombre = new Nombre();
+            conNombre.setNombres(datos[8].trim());
+            conNombre.setTratamiento(conTrat);
+            conNombre.setApellidoPaterno(datos[9].trim());
+            conNombre.setApellidoMaterno(datos[10].trim());
             String conFono = datos[11].trim();
             Pasajero pasajero = new Pasajero(rut, nombreCompleto, conNombre, conFono);
             pasajero.setTelefono(telefono);
@@ -239,8 +248,12 @@ public class PersistenciaClase {
             lista.add(cliente);
 
             Tratamiento conTrat = Tratamiento.valueOf(datos[8].trim());
-            Nombre conNombre = new Nombre(conTrat, datos[9].trim(), datos[10].trim(), datos[11].trim());
-            String conFono = datos[12].trim();
+            Nombre conNombre = new Nombre();
+            conNombre.setNombres(datos[8].trim());
+            conNombre.setTratamiento(conTrat);
+            conNombre.setApellidoPaterno(datos[9].trim());
+            conNombre.setApellidoMaterno(datos[10].trim());
+            String conFono = datos[11].trim();
 
             Pasajero pasajero = new Pasajero(rut, nombreCompleto, conNombre, conFono);
             pasajero.setTelefono(telefono);
@@ -266,7 +279,11 @@ public class PersistenciaClase {
 
         Rut rutTripulante = registrarRut(datos[1].trim());
         Tratamiento tratamiento = Tratamiento.valueOf(datos[2].trim());
-        Nombre nombreTripulante = new Nombre(tratamiento, datos[3].trim(), datos[4].trim(), datos[5].trim());
+        Nombre nombreTripulante = new Nombre();
+        nombreTripulante.setTratamiento(tratamiento);
+        nombreTripulante.setNombres(datos[3].trim());
+        nombreTripulante.setApellidoPaterno(datos[4].trim());
+        nombreTripulante.setApellidoMaterno(datos[5].trim());
 
         String calle = datos[6].trim();
         int numero = Integer.parseInt(datos[7].trim());
