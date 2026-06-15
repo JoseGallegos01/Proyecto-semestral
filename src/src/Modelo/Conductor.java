@@ -1,10 +1,11 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import utilidades.*;
 
-public class Conductor extends  Tripulante {
+public class Conductor extends  Tripulante implements Serializable {
 
     private List<Viaje> viajes;
 

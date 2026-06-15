@@ -3,7 +3,9 @@ package Modelo;
 import utilidades.IdPersona;
 import utilidades.Nombre;
 
-public class Cliente extends Persona {
+import java.io.Serializable;
+
+public class Cliente extends Persona implements Serializable {
     private String email;
     private Venta venta;
 

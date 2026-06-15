@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import utilidades.*;
 
 
 
-public class Viaje {
+public class Viaje implements Serializable {
 
     private LocalDate fecha;
     private LocalTime hora;

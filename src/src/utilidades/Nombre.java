@@ -1,6 +1,8 @@
 package utilidades;
 
-public class Nombre {
+import java.io.Serializable;
+
+public class Nombre implements Serializable {
     //Vicente Salinas
 
     private Tratamiento tratamiento;

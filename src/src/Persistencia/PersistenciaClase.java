@@ -209,13 +209,15 @@ public class PersistenciaClase {
     }
 
     public void saveControladores(Object[] controladores){
-        SistemaVentaPasajes ControladorSistemaVentaPasajes = Objects.requireNonNull((SistemaVentaPasajes) controladores[0]);
-        ControladorEmpresas ControladorEmpresas = Objects.requireNonNull((ControladorEmpresas) controladores[1]);
         try{
             ObjectOutputStream outSVP = new ObjectOutputStream(new FileOutputStream("SistemaVentasPasajes.obj"));
             ObjectOutputStream outCE = new ObjectOutputStream(new FileOutputStream("ControladorEmpresas.obj"));
-            outSVP.writeObject(ControladorSistemaVentaPasajes);
-            outCE.writeObject(ControladorEmpresas);
+            for (Object c : controladores) {
+                if (c instanceof SistemaVentaPasajes) outSVP.writeObject(c);
+                if (c instanceof ControladorEmpresas) outCE.writeObject(c);
+            }
+            outSVP.close();
+            outCE.close();
         }catch (IOException e){
             throw new SistemaVentaPasajesException("No se pudo escribir los controladores");
         }

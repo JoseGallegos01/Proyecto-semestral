@@ -6,13 +6,15 @@ import Modelo.*;
 import Persistencia.PersistenciaClase;
 import utilidades.*;
 
+import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class SistemaVentaPasajes {
+public class SistemaVentaPasajes implements Serializable {
     ArrayList<Cliente> clientes = new ArrayList<>();
     ArrayList<Pasajero> pasajeros = new ArrayList<>();
     ArrayList<Bus> buses = new ArrayList<>();
@@ -214,8 +216,20 @@ public class SistemaVentaPasajes {
         PersistenciaClase.getInstance().saveControladores(controladores);
     }
 
-    public void readDatosSistema(){
-
+    public void readDatosSistema() throws FileNotFoundException {
+        try {
+            Object[] controladores = PersistenciaClase.getInstance().readControladores();
+            for (Object c : controladores) {
+                if (c instanceof SistemaVentaPasajes) {
+                    instance = (SistemaVentaPasajes) c;
+                }
+                if (c instanceof ControladorEmpresas) {
+                    ControladorEmpresas.getInstance().loadControlador((ControladorEmpresas) c);
+                }
+            }
+        }catch (FileNotFoundException e) {
+            throw new FileNotFoundException("No se encontro el controlador");
+        }
     }
 
     private Optional<Cliente> findCliente(IdPersona id) {

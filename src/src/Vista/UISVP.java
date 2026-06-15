@@ -2,6 +2,7 @@ package Vista;
 
 import Controlador.*;
 
+import java.io.FileNotFoundException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -58,6 +59,8 @@ public class UISVP {
                     System.out.println("13) Listar ventas de empresa");
                     System.out.println("14) Cargar datos de prueba");
                     System.out.println("15) salir");
+                    System.out.println("16) Guardar datos sistema");
+                    System.out.println("17) Carar datos sistema");
                     //creo que la opcion de viajes sera borrada pues no esta en la pauta del avance dos
                     //System.out.println("X) Consulta viajes disponible por fecha");
                     System.out.println("--------------------------------------------------");
@@ -113,6 +116,16 @@ public class UISVP {
                             break;
                         case 15:
                             System.out.println("Saliendo...");
+                            break;
+                        case 16:
+                            saveControladores();
+                            break;
+                        case 17:
+                            try {
+                                loadControladores();
+                            } catch (FileNotFoundException e) {
+                                System.out.println("No se encontro el controlador");
+                            }
                             break;
                         default:
                             System.out.println("Opcion invalida");
@@ -610,7 +623,12 @@ public class UISVP {
         }
     }
 
-
+    private void saveControladores(){
+        sv.saveDatosSistema();
+    }
+    private void loadControladores() throws FileNotFoundException {
+        sv.readDatosSistema();
+    }
 
     private void createTestData(){
         ce.createEmpresa(

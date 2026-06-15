@@ -3,11 +3,12 @@ package Modelo;
 import utilidades.IdPersona;
 import utilidades.Nombre;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Persona {
+public class Persona implements Serializable {
 
     //Jose Gallegos
 

@@ -3,9 +3,10 @@ package Modelo;
 import utilidades.IdPersona;
 import utilidades.Nombre;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Pasajero extends Persona {
+public class Pasajero extends Persona implements Serializable {
 
     //Jose Gallegos
 

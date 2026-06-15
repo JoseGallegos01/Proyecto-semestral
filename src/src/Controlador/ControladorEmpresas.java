@@ -10,12 +10,13 @@ import utilidades.Nombre;
 import utilidades.Rut;
 import Modelo.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
-    public class ControladorEmpresas {
+    public class ControladorEmpresas implements Serializable {
 
         private static ControladorEmpresas instance;
 
@@ -247,6 +248,10 @@ import java.util.Optional;
                 }
             }
             return Optional.empty();
+        }
+
+        public void loadControlador(ControladorEmpresas controlador){
+            instance = controlador;
         }
     }
 
