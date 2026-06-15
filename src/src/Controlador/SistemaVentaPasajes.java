@@ -3,6 +3,7 @@ package Controlador;
 import Modelo.PagoEfectivo;
 import Excepciones.SistemaVentaPasajesException;
 import Modelo.*;
+import Persistencia.PersistenciaClase;
 import utilidades.*;
 
 import java.time.LocalDate;
@@ -17,6 +18,8 @@ public class SistemaVentaPasajes {
     ArrayList<Bus> buses = new ArrayList<>();
     ArrayList<Venta> ventas = new ArrayList<>();
     ArrayList<Viaje> viajes = new ArrayList<>();
+    ArrayList<Empresa> empresas;
+    ArrayList<Modelo.Terminal> terminales;
     DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     ControladorEmpresas ce = ControladorEmpresas.getInstance();
@@ -194,6 +197,26 @@ public class SistemaVentaPasajes {
         else throw new SistemaVentaPasajesException("No existe viaje con la fecha, hora y patente de bus indicados");
     }
 
+    public void readDatosIniciales(){
+        Object[] listaDatos = PersistenciaClase.getInstance().readDatosIniciales();
+        for (Object l : listaDatos) {
+            if (l instanceof Cliente) clientes.add((Cliente) l);
+            if (l instanceof Viaje) viajes.add((Viaje) l);
+            if (l instanceof Pasajero) pasajeros.add((Pasajero) l);
+            if (l instanceof Bus) buses.add((Bus) l);
+            if (l instanceof Empresa) empresas.add((Empresa) l);
+        }
+    }
+
+    public void saveDatosSistema(){
+        ControladorEmpresas  ControladorEmpresas = Controlador.ControladorEmpresas.getInstance();
+        Object[] controladores = {instance, ControladorEmpresas};
+        PersistenciaClase.getInstance().saveControladores(controladores);
+    }
+
+    public void readDatosSistema(){
+
+    }
 
     private Optional<Cliente> findCliente(IdPersona id) {
         for (Cliente c : clientes) {

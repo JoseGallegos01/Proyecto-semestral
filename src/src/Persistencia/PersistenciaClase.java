@@ -17,7 +17,16 @@ public class PersistenciaClase {
     ArrayList<Pasajero> listaPasajeros;
     ArrayList<Cliente> listaClientes;
     ArrayList<Empresa> listaEmpresas;
-//    public Object[] readDatosIniciales() throws FileNotFoundException {
+
+    static PersistenciaClase instance = null;
+
+    public static PersistenciaClase getInstance() {
+        if (instance==null){
+            instance = new PersistenciaClase();
+        }
+        return instance;
+    }
+    //    public Object[] readDatosIniciales() throws FileNotFoundException {
 //        Scanner scAr = new Scanner(new File("SVPDatosIniciales.txt"));
 //        scAr.useDelimiter("\r\n|;");
 //        String lineaLeida = scAr.next();
