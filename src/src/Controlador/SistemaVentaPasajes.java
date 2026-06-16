@@ -212,8 +212,8 @@ public class SistemaVentaPasajes implements Serializable {
 
     public void saveDatosSistema(){
         ControladorEmpresas  ControladorEmpresas = Controlador.ControladorEmpresas.getInstance();
-        System.out.println("se leyo el controlador");
-        Object[] controladores = {this, ControladorEmpresas.getClass()};
+        System.out.println("se guardo el controlador");
+        Object[] controladores = {this, ce};
         PersistenciaClase.getInstance().saveControladores(controladores);
     }
 

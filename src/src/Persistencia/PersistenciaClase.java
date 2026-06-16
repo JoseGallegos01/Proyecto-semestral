@@ -190,13 +190,12 @@ public class PersistenciaClase implements Serializable {
     }
 
     public Object[] readControladores() throws FileNotFoundException {
-        SistemaVentaPasajes ControladorSistemaVentaPasajesInput = null;
-        ControladorEmpresas ControladorEmpresasInput = null;
         try {
             ObjectInputStream inSV = new ObjectInputStream(new FileInputStream("SistemaVentasPasajes.obj"));
             ObjectInputStream inCE = new ObjectInputStream(new FileInputStream("ControladorEmpresas.obj"));
-            ControladorSistemaVentaPasajesInput = ((SistemaVentaPasajes) inSV.readObject());
-            ControladorEmpresasInput = ((ControladorEmpresas) inCE.readObject());
+            inSV.close();
+            inCE.close();
+            return new Object[]{inSV.readObject(), inCE.readObject()};
         } catch (FileNotFoundException e) {
             throw new SistemaVentaPasajesException("No se encontro el archivo de los controladores");
         } catch (IOException e) {
@@ -204,7 +203,6 @@ public class PersistenciaClase implements Serializable {
         } catch (ClassNotFoundException e) {
             throw new SistemaVentaPasajesException("No se encontraron el controlador");
         }
-        return new Object[]{ControladorSistemaVentaPasajesInput, ControladorEmpresasInput};
     }
 
     public void saveControladores(Object[] controladores){
