@@ -629,6 +629,12 @@ public class UISVP {
     private void loadControladores() throws FileNotFoundException {
         sv.readDatosSistema();
     }
+    public void setControladores (Object[] controladores){
+        for (Object c : controladores) {
+            if (c instanceof SistemaVentaPasajes) sv = (SistemaVentaPasajes) c;
+            if (c instanceof ControladorEmpresas) ce = (ControladorEmpresas) c;
+        }
+    }
 
     private void createTestData(){
         ce.createEmpresa(

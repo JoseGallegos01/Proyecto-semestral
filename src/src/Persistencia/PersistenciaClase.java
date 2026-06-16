@@ -189,13 +189,14 @@ public class PersistenciaClase implements Serializable {
         return lista.toArray();
     }
 
-    public Object[] readControladores() throws FileNotFoundException {
+    public Object[] readControladores() {
         try {
             ObjectInputStream inSV = new ObjectInputStream(new FileInputStream("SistemaVentasPasajes.obj"));
             ObjectInputStream inCE = new ObjectInputStream(new FileInputStream("ControladorEmpresas.obj"));
+            Object[] controladores = {inSV.readObject(), inCE.readObject()};
             inSV.close();
             inCE.close();
-            return new Object[]{inSV.readObject(), inCE.readObject()};
+            return controladores;
         } catch (FileNotFoundException e) {
             throw new SistemaVentaPasajesException("No se encontro el archivo de los controladores");
         } catch (IOException e) {

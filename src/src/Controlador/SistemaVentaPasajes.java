@@ -4,6 +4,7 @@ import Modelo.PagoEfectivo;
 import Excepciones.SistemaVentaPasajesException;
 import Modelo.*;
 import Persistencia.PersistenciaClase;
+import Vista.UISVP;
 import utilidades.*;
 
 import java.io.FileNotFoundException;
@@ -220,6 +221,7 @@ public class SistemaVentaPasajes implements Serializable {
     public void readDatosSistema() throws FileNotFoundException {
         try {
             Object[] controladores = PersistenciaClase.getInstance().readControladores();
+            UISVP.getInstance().setControladores(controladores);
             for (Object c : controladores) {
                 if (c instanceof SistemaVentaPasajes) {
                     instance = (SistemaVentaPasajes) c;
@@ -230,8 +232,8 @@ public class SistemaVentaPasajes implements Serializable {
                     System.out.println("2");
                 }
             }
-        }catch (FileNotFoundException e) {
-            throw new FileNotFoundException("No se encontro el controlador");
+        }catch (SistemaVentaPasajesException e) {
+            throw new SistemaVentaPasajesException("No se encontro el controlador");
         }
     }
 
