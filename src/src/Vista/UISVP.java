@@ -60,7 +60,7 @@ public class UISVP {
                     System.out.println("14) Cargar datos de prueba");
                     System.out.println("15) salir");
                     System.out.println("16) Guardar datos sistema");
-                    System.out.println("17) Carar datos sistema");
+                    System.out.println("17) Cargar datos sistema");
                     //creo que la opcion de viajes sera borrada pues no esta en la pauta del avance dos
                     //System.out.println("X) Consulta viajes disponible por fecha");
                     System.out.println("--------------------------------------------------");

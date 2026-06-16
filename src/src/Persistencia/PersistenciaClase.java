@@ -13,7 +13,7 @@ import Modelo.*;
 import java.io.*;
 import java.util.*;
 
-public class PersistenciaClase {
+public class PersistenciaClase implements Serializable {
     ArrayList<Pasajero> listaPasajeros;
     ArrayList<Cliente> listaClientes;
     ArrayList<Empresa> listaEmpresas;
@@ -189,23 +189,22 @@ public class PersistenciaClase {
         return lista.toArray();
     }
 
-    public Object[] readControladores() throws FileNotFoundException{
-        SistemaVentaPasajes ControladorSistemaVentaPasajesInput = null;
-        ControladorEmpresas ControladorEmpresasInput = null;
-        try{
-            ObjectInputStream inSV = new ObjectInputStream(new FileInputStream("SistemaVentaPasajes.obj"));
-            ObjectInputStream inCE= new ObjectInputStream(new FileInputStream("ControladorEmpresas.obj"));
-            ControladorSistemaVentaPasajesInput = (SistemaVentaPasajes) inSV.readObject();
-            ControladorEmpresasInput = (ControladorEmpresas) inCE.readObject();
-        }
-        catch (FileNotFoundException e){
+    public Object[] readControladores() throws FileNotFoundException {
+        ObjectInputStream inSV = null;
+        ObjectInputStream inCE = null;
+        try {
+            inSV = new ObjectInputStream(new FileInputStream("SistemaVentasPasajes.obj"));
+            inCE = new ObjectInputStream(new FileInputStream("ControladorEmpresas.obj"));
+        } catch (FileNotFoundException e) {
             throw new SistemaVentaPasajesException("No se encontro el archivo de los controladores");
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new SistemaVentaPasajesException("No se pudo leer los controladores");
-        }catch (ClassNotFoundException e){
-            throw new SistemaVentaPasajesException("No se encontro la clase");
         }
-        return new Object[] {ControladorSistemaVentaPasajesInput, ControladorEmpresasInput};
+        try {
+            return new Object[]{(SistemaVentaPasajes) inSV.readObject(), (ControladorEmpresas) inCE.readObject()};
+        }catch (Exception e){
+            throw new SistemaVentaPasajesException(("Error en la lectura del archivo de los controladores"));
+        }
     }
 
     public void saveControladores(Object[] controladores){
@@ -219,7 +218,7 @@ public class PersistenciaClase {
             outSVP.close();
             outCE.close();
         }catch (IOException e){
-            throw new SistemaVentaPasajesException("No se pudo escribir los controladores");
+            throw new SistemaVentaPasajesException(e.getMessage());
         }
     }
 

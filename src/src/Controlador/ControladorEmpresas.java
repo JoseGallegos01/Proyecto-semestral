@@ -250,7 +250,7 @@ import java.util.Optional;
             return Optional.empty();
         }
 
-        public void loadControlador(ControladorEmpresas controlador){
+        public static void loadControlador(ControladorEmpresas controlador){
             instance = controlador;
         }
     }

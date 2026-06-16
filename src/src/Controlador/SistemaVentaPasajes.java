@@ -22,8 +22,8 @@ public class SistemaVentaPasajes implements Serializable {
     ArrayList<Viaje> viajes = new ArrayList<>();
     ArrayList<Empresa> empresas;
     ArrayList<Modelo.Terminal> terminales;
-    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
+    static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    static DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     ControladorEmpresas ce = ControladorEmpresas.getInstance();
 
     public static SistemaVentaPasajes instance = null;
@@ -212,7 +212,8 @@ public class SistemaVentaPasajes implements Serializable {
 
     public void saveDatosSistema(){
         ControladorEmpresas  ControladorEmpresas = Controlador.ControladorEmpresas.getInstance();
-        Object[] controladores = {instance, ControladorEmpresas};
+        System.out.println("se leyo el controlador");
+        Object[] controladores = {this, ControladorEmpresas.getClass()};
         PersistenciaClase.getInstance().saveControladores(controladores);
     }
 
@@ -222,9 +223,11 @@ public class SistemaVentaPasajes implements Serializable {
             for (Object c : controladores) {
                 if (c instanceof SistemaVentaPasajes) {
                     instance = (SistemaVentaPasajes) c;
+                    System.out.println("1");
                 }
                 if (c instanceof ControladorEmpresas) {
-                    ControladorEmpresas.getInstance().loadControlador((ControladorEmpresas) c);
+                    ControladorEmpresas.loadControlador((ControladorEmpresas) c);
+                    System.out.println("2");
                 }
             }
         }catch (FileNotFoundException e) {
