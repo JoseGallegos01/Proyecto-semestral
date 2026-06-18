@@ -24,7 +24,7 @@ public class PersistenciaClase implements Serializable {
     ArrayList<Conductor> listaConductors = new ArrayList<>();
     ArrayList<Auxiliar> listaAuxiliars = new ArrayList<>();
     ArrayList<Terminal> listaTerminales = new ArrayList<>();
-    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
 
     static PersistenciaClase instance = null;
@@ -314,9 +314,11 @@ public class PersistenciaClase implements Serializable {
         if (tipo.equals("C")) {
             Conductor conductor = new Conductor(rutTripulante, nombreTripulante, direccion);
             lista.add(conductor);
+            listaConductors.add(conductor);
         } else if (tipo.equals("A")) {
             Auxiliar auxiliar = new Auxiliar(rutTripulante, nombreTripulante, direccion);
             lista.add(auxiliar);
+            listaAuxiliars.add(auxiliar);
         }
     }
 
@@ -343,7 +345,10 @@ public class PersistenciaClase implements Serializable {
         Rut rutEmpresa = registrarRut(datos[4].trim());
         int nroAsientos = Integer.parseInt(datos[3].trim());
         Bus bus = new Bus(patente, nroAsientos, findEmpresa(rutEmpresa).get());
+        bus.setMarca(marca);
+        bus.setModelo(modelo);
         lista.add(bus);
+        listaBuses.add(bus);
     }
 
     private void procesarViaje(String linea, List<Object> lista){
@@ -360,18 +365,18 @@ public class PersistenciaClase implements Serializable {
         String terminalOrigen = datos[7].trim();
         String terminalDestino = datos[8].trim();
         ArrayList<Conductor> conductores = new ArrayList<>();
-        IdPersona[] tripulantes = new IdPersona[1];
+        IdPersona[] tripulantes = new IdPersona[2];
         tripulantes[0] = registrarRut(rutAuxiliar);
         tripulantes[1] = registrarRut(rutConductor);
-        Terminal[] terminales = new Terminal[1];
+        Terminal[] terminales = new Terminal[2];
         terminales[0] = findTerminal(terminalOrigen).get();
         terminales[1] = findTerminal(terminalDestino).get();
-        Optional<Conductor> c = findConductor(tripulantes[1], findBus(patenteBus).get().getEmpresa().getRut());
-            conductores.add(c.get());
+        conductores.add(findConductor(tripulantes[1]).get());
         Viaje viaje = new Viaje(LocalDate.parse(fechaStr, formatterDate), LocalTime.parse(horaStr, formatterTime),
-                precio, duracion, findBus(patenteBus).get(), findAuxiliar(tripulantes[0],
-                findBus(patenteBus).get().getEmpresa().getRut()).get(), conductores,terminales[0], terminales[1]
+                precio, duracion, findBus(patenteBus).get(),
+                findAuxiliar(tripulantes[0]).get(), conductores, terminales[0], terminales[1]
                 );
+        System.out.println("5");
         lista.add(viaje);
     }
 
@@ -420,38 +425,32 @@ public class PersistenciaClase implements Serializable {
         return Optional.empty();
     }
     protected Optional<Modelo.Bus> findBus(String patente) {
-        for (Modelo.Bus b : listaBuses) {
+        for (Bus b : listaBuses) {
             if (b.getPatente().equalsIgnoreCase(patente)) {
                 return Optional.of(b);
             }
         }
         return Optional.empty();
     }
-    protected Optional<Conductor> findConductor(IdPersona id, Rut rutEmpresa) {
-        Optional<Empresa> emp = findEmpresa(rutEmpresa);
-        if (emp.isPresent()) {
-            for (Tripulante t : emp.get().getTripulantes()) {
-                if (t instanceof Conductor
-                        && t.getIdPersona().equals(id)) {
-                    return Optional.of((Conductor) t);
-                }
+
+
+    protected Optional<Conductor> findConductor(IdPersona id) {
+        for (Conductor c : listaConductors) {
+            if (c.getIdPersona().equals(id)) {
+                return Optional.of(c);
+            }
+        }
+        return Optional.empty();
+    }
+    protected Optional<Auxiliar> findAuxiliar(IdPersona id) {
+        for (Auxiliar a : listaAuxiliars) {
+            if (a.getIdPersona().equals(id)) {
+                return Optional.of(a);
             }
         }
         return Optional.empty();
     }
 
-    protected Optional<Auxiliar> findAuxiliar(IdPersona id, Rut rutEmpresa) {
-        Optional<Empresa> emp = findEmpresa(rutEmpresa);
-        if (emp.isPresent()) {
-            for (Tripulante t : emp.get().getTripulantes()) {
-                if (t instanceof Auxiliar
-                        && t.getIdPersona().equals(id)) {
-                    return Optional.of((Auxiliar) t);
-                }
-            }
-        }
-        return Optional.empty();
-    }
     protected Optional<Terminal> findTerminal(String nombre) {
         for (Modelo.Terminal term : listaTerminales) {
             if (term.getNombre().equalsIgnoreCase(nombre)) {
