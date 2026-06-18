@@ -243,49 +243,71 @@ public class SistemaVentaPasajes implements Serializable {
     }
 
     private Optional<Cliente> findCliente(IdPersona id) {
-        for (Cliente c : clientes) {
-            if (c.getIdPersona().equals(id)) {
-                return Optional.of(c);
-            }
-        }
-        return Optional.empty();
+        Optional<Cliente> clienteEncontrado = clientes.stream().filter(c -> c.getIdPersona().equals(id)).findFirst();
+        return clienteEncontrado;
+//        for (Cliente c : clientes) {
+//            if (c.getIdPersona().equals(id)) {
+//                return Optional.of(c);
+//            }
+//        }
+//        return Optional.empty();
     }
 
     private Optional<Venta> findVenta(String idDocumento, TipoDocumento tipoDocumento) {
-        for (Venta v : ventas) {
-            if (v.getIdDocumento().equals(idDocumento) && v.getTipo().equals(tipoDocumento)) {
-                return Optional.of(v);
-            }
-        }
-        return Optional.empty();
+        Optional<Venta> ventaEncontrada = ventas.stream().
+                filter(v -> v.getIdDocumento().equals(idDocumento)).findFirst().
+                filter(venta -> venta.getTipo().equals(tipoDocumento));
+        return ventaEncontrada;
+//        for (Venta v : ventas) {
+//            if (v.getIdDocumento().equals(idDocumento) && v.getTipo().equals(tipoDocumento)) {
+//                return Optional.of(v);
+//            }
+//        }
+//        return Optional.empty();
     }
 
     private Optional<Bus> findBus(String patente) {
-        for (Bus b : buses) {
-            if (b.getPatente().equals(patente)) {
-                return Optional.of(b);
-            }
-        }
-        return Optional.empty();
+        Optional<Bus> busEncontrado = buses.stream().filter(b -> b.getPatente().equals(patente)).findFirst();
+        return busEncontrado;
+//        for (Bus b : buses) {
+//            if (b.getPatente().equals(patente)) {
+//                return Optional.of(b);
+//            }
+//        }
+//        return Optional.empty();
     }
 
     private Optional<Viaje> findViaje(String fecha, String hora, String patenteBus) {
-        for (Viaje v : viajes) {
-            if (v.getFecha().toString().equals(fecha)
-                    && v.getHora().toString().equals(hora)
-                    && v.getBus().getPatente().equals(patenteBus)) {
-                return Optional.of(v);
-            }
-        }
-        return Optional.empty();
+        Optional<Viaje> viajeOptional = viajes.stream()
+                .filter(viaje -> viaje.getHora()
+                        .equals(LocalDate.parse(fecha, formatterDate)))
+                .filter(viaje -> viaje.getHora()
+                        .equals(LocalTime.parse(hora, formatterTime)))
+                .filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
+        return viajeOptional;
+//        for (Viaje v : viajes) {
+//            if (v.getFecha().toString().equals(fecha)
+//                    && v.getHora().toString().equals(hora)
+//                    && v.getBus().getPatente().equals(patenteBus)) {
+//                return Optional.of(v);
+//            }
+//        }
+//        return Optional.empty();
     }
 
     private Optional<Pasajero> findPasajero(IdPersona idPersona) {
-        for (Pasajero p : pasajeros) {
-            if (p.getIdPersona().equals(idPersona)) {
-                return Optional.of(p);
-            }
+        Optional<Pasajero> pasajeroEncontrado = pasajeros.stream()
+                .filter(pasajero -> pasajero
+                        .getIdPersona().equals(idPersona)).findAny();
+        if (pasajeroEncontrado.isPresent()) {
+            return pasajeroEncontrado;
         }
         return Optional.empty();
+//        for (Pasajero p : pasajeros) {
+//            if (p.getIdPersona().equals(idPersona)) {
+//                return Optional.of(p);
+//            }
+//        }
+//        return Optional.empty();
     }
 }
