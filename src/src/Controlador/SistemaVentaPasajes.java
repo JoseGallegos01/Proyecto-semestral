@@ -204,9 +204,14 @@ public class SistemaVentaPasajes implements Serializable {
         Object[] listaDatos = PersistenciaClase.getInstance().readDatosIniciales();
         ArrayList<Object> objetosDeControladorEmpresas = new ArrayList<>();
         for (Object l : listaDatos) {
-            if (l instanceof Cliente) clientes.add((Cliente) l);
+            if (l instanceof Cliente) {
+                clientes.add((Cliente) l);
+                System.out.println(((Cliente) l).getVenta().getIdDocumento());
+
+            }
             if (l instanceof Viaje) viajes.add((Viaje) l);
             if (l instanceof Pasajero) pasajeros.add((Pasajero) l);
+
             if (l instanceof Terminal) objetosDeControladorEmpresas.add((Terminal) l);
             if (l instanceof Empresa)  objetosDeControladorEmpresas.add((Empresa) l);
             if (l instanceof Bus) objetosDeControladorEmpresas.add((Bus) l);

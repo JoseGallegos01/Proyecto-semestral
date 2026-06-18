@@ -13,6 +13,7 @@ import Modelo.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
@@ -238,6 +239,10 @@ import java.util.Optional;
         }
 
         protected Optional<Auxiliar> findAuxiliar(IdPersona id, Rut rutEmpresa) {
+//            Optional<Auxiliar> auxiliarEncontrado = null;
+//            if  (empresas.stream().anyMatch(empresa -> empresa.getRut().equals(rutEmpresa))) {
+//                empresas.stream().findFirst().filter(empresa -> empresa.getTripulantes()).stream().filter()
+//            }
             Optional<Empresa> emp = findEmpresa(rutEmpresa);
             if (emp.isPresent()) {
                 for (Tripulante t : emp.get().getTripulantes()) {
@@ -248,6 +253,7 @@ import java.util.Optional;
                 }
             }
             return Optional.empty();
+//            return auxiliarEncontrado;
         }
 
         public static void loadControlador(ControladorEmpresas controlador){
