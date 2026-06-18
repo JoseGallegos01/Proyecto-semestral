@@ -261,7 +261,7 @@ import java.util.Optional;
                 if (o instanceof Empresa) empresas.add((Empresa) o);
                 if (o instanceof Terminal) terminales.add((Terminal) o);
                 if (o instanceof Bus) bus.add((Bus) o);
-                if (o instanceof Rut)  rutEmpresas.add((Rut) o);
+                if (o instanceof Rut) rutEmpresas.add((Rut) o);
                 if (o instanceof Tripulante) tripulantes.add((Tripulante) o);
             }
             for (Tripulante t : tripulantes) {
@@ -272,6 +272,9 @@ import java.util.Optional;
                     hireAuxiliarForEmpresa(rutEmpresas.get(contador), t.getIdPersona(), t.getNombreCompleto(), t.getDireccion());
                 }
                 contador++;
+            }
+            for (Bus b : bus) {
+                b.getEmpresa().addBus(b);
             }
         }
     }

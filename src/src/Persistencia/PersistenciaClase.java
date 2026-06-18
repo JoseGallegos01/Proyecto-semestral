@@ -11,12 +11,21 @@ import utilidades.*;
 import Modelo.*;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PersistenciaClase implements Serializable {
     ArrayList<Pasajero> listaPasajeros;
     ArrayList<Cliente> listaClientes;
-    ArrayList<Empresa> listaEmpresas;
+    ArrayList<Empresa> listaEmpresas = new ArrayList<>();
+    ArrayList<Bus> listaBuses = new ArrayList<>();
+    ArrayList<Conductor> listaConductors = new ArrayList<>();
+    ArrayList<Auxiliar> listaAuxiliars = new ArrayList<>();
+    ArrayList<Terminal> listaTerminales = new ArrayList<>();
+    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
 
     static PersistenciaClase instance = null;
 
@@ -240,13 +249,13 @@ public class PersistenciaClase implements Serializable {
             cliente.setTelefono(telefono);
             lista.add(cliente);
         } else if (tipo.equals("P")) {
-            Tratamiento conTrat = Tratamiento.valueOf(datos[8].trim());
+            Tratamiento conTrat = Tratamiento.valueOf(datos[7].trim());
             Nombre conNombre = new Nombre();
-            conNombre.setNombres(datos[9].trim());
+            conNombre.setNombres(datos[8].trim());
             conNombre.setTratamiento(conTrat);
-            conNombre.setApellidoPaterno(datos[10].trim());
-            conNombre.setApellidoMaterno(datos[11].trim());
-            String conFono = datos[12].trim();
+            conNombre.setApellidoPaterno(datos[9].trim());
+            conNombre.setApellidoMaterno(datos[10].trim());
+            String conFono = datos[11].trim();
             Pasajero pasajero = new Pasajero(rut, nombreCompleto, conNombre, conFono);
             pasajero.setTelefono(telefono);
             lista.add(pasajero);
@@ -280,6 +289,7 @@ public class PersistenciaClase implements Serializable {
 
         Empresa empresa = new Empresa(rutEmpresa, nombre, url);
         lista.add(empresa);
+        listaEmpresas.add(empresa);
     }
 
     private void procesarTripulante(String linea, List<Object> lista){
@@ -321,6 +331,7 @@ public class PersistenciaClase implements Serializable {
         Direccion direccion = new Direccion(calle, numero, comuna);
         Terminal terminal = new Terminal(nombre, direccion);
         lista.add(terminal);
+        listaTerminales.add(terminal);
     }
 
     private void procesarBus(String linea, List<Object> lista){
@@ -348,6 +359,20 @@ public class PersistenciaClase implements Serializable {
         String rutConductor = datos[6].trim();
         String terminalOrigen = datos[7].trim();
         String terminalDestino = datos[8].trim();
+        ArrayList<Conductor> conductores = new ArrayList<>();
+        IdPersona[] tripulantes = new IdPersona[1];
+        tripulantes[0] = registrarRut(rutAuxiliar);
+        tripulantes[1] = registrarRut(rutConductor);
+        Terminal[] terminales = new Terminal[1];
+        terminales[0] = findTerminal(terminalOrigen).get();
+        terminales[1] = findTerminal(terminalDestino).get();
+        Optional<Conductor> c = findConductor(tripulantes[1], findBus(patenteBus).get().getEmpresa().getRut());
+            conductores.add(c.get());
+        Viaje viaje = new Viaje(LocalDate.parse(fechaStr, formatterDate), LocalTime.parse(horaStr, formatterTime),
+                precio, duracion, findBus(patenteBus).get(), findAuxiliar(tripulantes[0],
+                findBus(patenteBus).get().getEmpresa().getRut()).get(), conductores,terminales[0], terminales[1]
+                );
+        lista.add(viaje);
     }
 
     private Optional<Cliente> findCliente(IdPersona id) {
@@ -390,6 +415,56 @@ public class PersistenciaClase implements Serializable {
         for (Empresa emp : listaEmpresas) {
             if (emp.getRut().equals(rut)) {
                 return Optional.of(emp);
+            }
+        }
+        return Optional.empty();
+    }
+    protected Optional<Modelo.Bus> findBus(String patente) {
+        for (Modelo.Bus b : listaBuses) {
+            if (b.getPatente().equalsIgnoreCase(patente)) {
+                return Optional.of(b);
+            }
+        }
+        return Optional.empty();
+    }
+    protected Optional<Conductor> findConductor(IdPersona id, Rut rutEmpresa) {
+        Optional<Empresa> emp = findEmpresa(rutEmpresa);
+        if (emp.isPresent()) {
+            for (Tripulante t : emp.get().getTripulantes()) {
+                if (t instanceof Conductor
+                        && t.getIdPersona().equals(id)) {
+                    return Optional.of((Conductor) t);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    protected Optional<Auxiliar> findAuxiliar(IdPersona id, Rut rutEmpresa) {
+        Optional<Empresa> emp = findEmpresa(rutEmpresa);
+        if (emp.isPresent()) {
+            for (Tripulante t : emp.get().getTripulantes()) {
+                if (t instanceof Auxiliar
+                        && t.getIdPersona().equals(id)) {
+                    return Optional.of((Auxiliar) t);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+    protected Optional<Terminal> findTerminal(String nombre) {
+        for (Modelo.Terminal term : listaTerminales) {
+            if (term.getNombre().equalsIgnoreCase(nombre)) {
+                return Optional.of(term);
+            }
+        }
+        return Optional.empty();
+    }
+
+    protected Optional<Terminal> findTerminalPorComuna(String comuna) {
+        for (Modelo.Terminal term : listaTerminales) {
+            if (term.getDireccion().getComuna().equalsIgnoreCase(comuna)) {
+                return Optional.of(term);
             }
         }
         return Optional.empty();
