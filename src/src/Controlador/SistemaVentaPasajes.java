@@ -200,15 +200,20 @@ public class SistemaVentaPasajes implements Serializable {
         else throw new SistemaVentaPasajesException("No existe viaje con la fecha, hora y patente de bus indicados");
     }
 
-    public void readDatosIniciales(){
+    public void readDatosIniciales() {
         Object[] listaDatos = PersistenciaClase.getInstance().readDatosIniciales();
+        ArrayList<Object> objetosDeControladorEmpresas = new ArrayList<>();
         for (Object l : listaDatos) {
             if (l instanceof Cliente) clientes.add((Cliente) l);
             if (l instanceof Viaje) viajes.add((Viaje) l);
             if (l instanceof Pasajero) pasajeros.add((Pasajero) l);
-            if (l instanceof Bus) buses.add((Bus) l);
-            if (l instanceof Empresa) empresas.add((Empresa) l);
+            if (l instanceof Terminal) objetosDeControladorEmpresas.add((Terminal) l);
+            if (l instanceof Empresa)  objetosDeControladorEmpresas.add((Empresa) l);
+            if (l instanceof Bus) objetosDeControladorEmpresas.add((Bus) l);
+            if (l instanceof Tripulante) objetosDeControladorEmpresas.add((Tripulante) l);
+            if (l instanceof Rut) objetosDeControladorEmpresas.add((Rut) l);
         }
+        ce.setDatosIniciales(objetosDeControladorEmpresas.toArray(new Object[0]));
     }
 
     public void saveDatosSistema(){

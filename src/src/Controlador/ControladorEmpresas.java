@@ -253,5 +253,26 @@ import java.util.Optional;
         public static void loadControlador(ControladorEmpresas controlador){
             instance = controlador;
         }
+        protected void setDatosIniciales(Object[] objetos){
+            ArrayList<Rut> rutEmpresas = new ArrayList<>();
+            ArrayList<Tripulante> tripulantes = new ArrayList<>();
+            int contador = 0;
+            for (Object o : objetos){
+                if (o instanceof Empresa) empresas.add((Empresa) o);
+                if (o instanceof Terminal) terminales.add((Terminal) o);
+                if (o instanceof Bus) bus.add((Bus) o);
+                if (o instanceof Rut)  rutEmpresas.add((Rut) o);
+                if (o instanceof Tripulante) tripulantes.add((Tripulante) o);
+            }
+            for (Tripulante t : tripulantes) {
+                if (t instanceof Conductor){
+                    hireConductor(rutEmpresas.get(contador), t.getIdPersona(), t.getNombreCompleto(), t.getDireccion());
+                }
+                if (t instanceof Auxiliar){
+                    hireAuxiliarForEmpresa(rutEmpresas.get(contador), t.getIdPersona(), t.getNombreCompleto(), t.getDireccion());
+                }
+                contador++;
+            }
+        }
     }
 

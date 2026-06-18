@@ -23,4 +23,5 @@ public abstract class Tripulante extends Persona implements Serializable {
     public abstract void addViaje(Viaje viaje);
 
     public abstract int getNroViajes();
+
 }

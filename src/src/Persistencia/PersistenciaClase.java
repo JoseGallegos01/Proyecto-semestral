@@ -229,7 +229,7 @@ public class PersistenciaClase implements Serializable {
         Nombre nombreCompleto = new Nombre();
         //Nombre nombreCompleto = new Nombre(Tratamiento.valueOf(datos[7].trim()), datos[3].trim(), datos[4].trim(), datos[5].trim());
         nombreCompleto.setNombres(datos[3].trim());
-        nombreCompleto.setTratamiento(Tratamiento.valueOf(datos[7].trim()));
+        nombreCompleto.setTratamiento(Tratamiento.valueOf(datos[2].trim()));
         nombreCompleto.setApellidoPaterno(datos[4].trim());
         nombreCompleto.setApellidoMaterno(datos[5].trim());
         String telefono = datos[6].trim();
@@ -240,13 +240,13 @@ public class PersistenciaClase implements Serializable {
             cliente.setTelefono(telefono);
             lista.add(cliente);
         } else if (tipo.equals("P")) {
-            Tratamiento conTrat = Tratamiento.valueOf(datos[7].trim());
+            Tratamiento conTrat = Tratamiento.valueOf(datos[8].trim());
             Nombre conNombre = new Nombre();
-            conNombre.setNombres(datos[8].trim());
+            conNombre.setNombres(datos[9].trim());
             conNombre.setTratamiento(conTrat);
-            conNombre.setApellidoPaterno(datos[9].trim());
-            conNombre.setApellidoMaterno(datos[10].trim());
-            String conFono = datos[11].trim();
+            conNombre.setApellidoPaterno(datos[10].trim());
+            conNombre.setApellidoMaterno(datos[11].trim());
+            String conFono = datos[12].trim();
             Pasajero pasajero = new Pasajero(rut, nombreCompleto, conNombre, conFono);
             pasajero.setTelefono(telefono);
             lista.add(pasajero);
@@ -258,11 +258,11 @@ public class PersistenciaClase implements Serializable {
 
             Tratamiento conTrat = Tratamiento.valueOf(datos[8].trim());
             Nombre conNombre = new Nombre();
-            conNombre.setNombres(datos[8].trim());
+            conNombre.setNombres(datos[9].trim());
             conNombre.setTratamiento(conTrat);
-            conNombre.setApellidoPaterno(datos[9].trim());
-            conNombre.setApellidoMaterno(datos[10].trim());
-            String conFono = datos[11].trim();
+            conNombre.setApellidoPaterno(datos[10].trim());
+            conNombre.setApellidoMaterno(datos[11].trim());
+            String conFono = datos[12].trim();
 
             Pasajero pasajero = new Pasajero(rut, nombreCompleto, conNombre, conFono);
             pasajero.setTelefono(telefono);
@@ -274,7 +274,7 @@ public class PersistenciaClase implements Serializable {
     private void procesarEmpresa(String linea, List<Object> lista){
         String[] datos = linea.split(";");
 
-        Rut rutEmpresa = registrarRut(datos[1].trim());
+        Rut rutEmpresa = registrarRut(datos[0].trim());
         String nombre = datos[1].trim();
         String url = datos[2].trim();
 
@@ -298,6 +298,8 @@ public class PersistenciaClase implements Serializable {
         int numero = Integer.parseInt(datos[7].trim());
         String comuna = datos[8].trim();
         Direccion direccion = new Direccion(calle, numero, comuna);
+        Rut rutEmpresa = registrarRut(datos[9].trim());
+        lista.add(rutEmpresa);
 
         if (tipo.equals("C")) {
             Conductor conductor = new Conductor(rutTripulante, nombreTripulante, direccion);

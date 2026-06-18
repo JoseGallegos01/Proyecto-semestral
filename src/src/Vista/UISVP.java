@@ -112,7 +112,7 @@ public class UISVP {
                             listVentasEmpresas();
                             break;
                         case 14:
-                            createTestData();
+                            cargarDatosIniciales();
                             break;
                         case 15:
                             System.out.println("Saliendo...");
@@ -634,6 +634,10 @@ public class UISVP {
             if (c instanceof SistemaVentaPasajes) sv = (SistemaVentaPasajes) c;
             if (c instanceof ControladorEmpresas) ce = (ControladorEmpresas) c;
         }
+    }
+
+    private void cargarDatosIniciales(){
+        sv.readDatosIniciales();
     }
 
     private void createTestData(){
