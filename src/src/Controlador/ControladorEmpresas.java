@@ -182,7 +182,7 @@ import java.util.stream.Collectors;
 
 
 
-        protected Optional<Empresa> findEmpresa(Rut rut) {
+        protected Optional<Empresa> findEmpresa(Rut rut ) {
             return empresas.stream()
                     .filter(emp ->emp.getRut().equals(rut))
                     .findFirst();
