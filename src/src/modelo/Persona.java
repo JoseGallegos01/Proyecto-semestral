@@ -1,11 +1,16 @@
-package modelo;
+package Modelo;
 
 import utilidades.IdPersona;
 import utilidades.Nombre;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Persona {
+public class Persona implements Serializable {
+
+    //Jose Gallegos
 
     private IdPersona idPersona;
     private Nombre nombreCompleto;
@@ -39,4 +44,6 @@ public class Persona {
         Persona persona = (Persona) otro;
         return Objects.equals(idPersona, persona.idPersona);
     }
+
+
 }

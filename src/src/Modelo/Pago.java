@@ -1,6 +1,11 @@
 package Modelo;
 
-public class Pago {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import utilidades.*;
+
+public class Pago implements Serializable {
     private int monto;
 
     public Pago(int monto) {
@@ -10,4 +15,5 @@ public class Pago {
     public int getMonto() {
         return monto;
     }
+
 }

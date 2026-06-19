@@ -1,7 +1,8 @@
 package utilidades;
-import modelo.*;
 
-public class Direccion {
+import java.io.Serializable;
+
+public class Direccion implements Serializable {
     private String calle;
     private int numero;
     private String comuna;
@@ -25,11 +26,20 @@ public class Direccion {
     }
 
     public String toString(){
-        return
+        return calle + " " + numero + ", " + comuna;
     }
 
-    public boolean equals(Object otro){
+    public boolean equals(Object otro) {
+        if (this == otro) {
+            return true;
+        }
 
-        return false;
+        if (otro == null || getClass() != otro.getClass()) {
+            return false;
+        }
+
+        Direccion direccion = (Direccion) otro;
+
+        return this.numero == direccion.numero && this.calle.equals(direccion.calle) && this.comuna.equals(direccion.comuna);
     }
 }

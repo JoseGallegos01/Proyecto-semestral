@@ -1,6 +1,8 @@
-package modelo;
+package Modelo;
 
-public class Pasaje {
+import java.io.Serializable;
+
+public class Pasaje implements Serializable {
     //Cristobal Jeldres
     //En teoria no pide nada mas
     private long numero;
