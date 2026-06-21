@@ -9,8 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.SortedMap;
 
-import excepciones.SistemaVentaPasajesException;
-import modelo.*;
+import Modelo.TipoDocumento;
+import Excepciones.SVPException;
+import Modelo.*;
 import utilidades.*;
 
 
@@ -110,7 +111,7 @@ public class UISVP {
         String url =  sc.nextLine();
         try {
             //ce.createEmpresa(registrarRut(rutEmpresa), nombre, url);
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }
     }
@@ -167,10 +168,10 @@ public class UISVP {
             try {
                 //if (opcionAuxOCond == 1) ce.hireAuxiliarForEmpresa(registrarRut(rutEmpresa), id, nombre, direccion);
                 //if (opcionAuxOCond == 2) ce.hireConductorForEmpresa(registrarRut(rutEmpresa), id, nombre, direccion);
-            }catch (SistemaVentaPasajesException e){
-                throw new SistemaVentaPasajesException(e.getMessage());
+            }catch (SVPException e){
+                throw new SVPException(e.getMessage());
             }
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }
     }
@@ -189,8 +190,8 @@ public class UISVP {
         Direccion direccion = new Direccion(calle, numero, comuna);
         try {
             //ce.createTerminal(nombre, direccion);
-        }catch (SistemaVentaPasajesException e){
-            throw new SistemaVentaPasajesException(e.getMessage());
+        }catch (SVPException e){
+            throw new SVPException(e.getMessage());
         }
     }
 
@@ -233,8 +234,8 @@ public class UISVP {
         try{
             sv.createCliente(id, nombre, telefono_movil, email);
             System.out.println("...::::Cliente guardado exitosamente::::...");
-        }catch (SistemaVentaPasajesException e){
-            throw new SistemaVentaPasajesException("...::::Ya existe un cliente con el mismo id::::...");
+        }catch (SVPException e){
+            throw new SVPException("...::::Ya existe un cliente con el mismo id::::...");
         }
     }
     private void createBus(){
@@ -250,8 +251,8 @@ public class UISVP {
         try{
         sv.createBus(patente, marca, modelo, asientos);
             System.out.println("...::::modelo.Bus guardado exitosamente:::...");
-        } catch (SistemaVentaPasajesException e){
-            throw new SistemaVentaPasajesException("...::::Ya hay un bus con la misma patente registrada::...");
+        } catch (SVPException e){
+            throw new SVPException("...::::Ya hay un bus con la misma patente registrada::...");
         }
     }
     private void createViaje() {
@@ -268,8 +269,8 @@ public class UISVP {
         try {
             sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, patenteBus);
             System.out.println("...::::Viaje guardado exitosamente::::...");
-        }catch (SistemaVentaPasajesException e){
-            throw new SistemaVentaPasajesException("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
+        }catch (SVPException e){
+            throw new SVPException("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
         }
     }
     //metodo incompleto
@@ -380,8 +381,8 @@ public class UISVP {
                 System.out.println("...::::No hay horarios para esa fecha::::...");
             }
         }
-        catch (SistemaVentaPasajesException e){
-            throw new SistemaVentaPasajesException("...::::Cliente no existe o la venta ya existe::::...");
+        catch (SVPException e){
+            throw new SVPException("...::::Cliente no existe o la venta ya existe::::...");
         }
 
     }
