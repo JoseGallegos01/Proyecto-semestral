@@ -3,8 +3,10 @@ package Vista;
 import Controlador.*;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.Date;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -28,7 +30,7 @@ public class UISVP {
     IdPersona id = null;
     Tratamiento tratamiento = null;
     TipoDocumento tipoDocumento = null;
-    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private static UISVP instance = null;
@@ -53,15 +55,18 @@ public class UISVP {
                     System.out.println("6) Crear viaje");
                     System.out.println("7) Vender pasajes");
                     System.out.println("8) Listar ventas");
+                    System.out.println("9) Pagar ventas");
                     System.out.println("9) Listar viajes");
                     System.out.println("10) Listar pasajeros de viaje");
                     System.out.println("11) Listar empresas");
                     System.out.println("12) Listar llegadas/salidas del terminal");
                     System.out.println("13) Listar ventas de empresa");
-                    System.out.println("14) Cargar datos de prueba");
-                    System.out.println("15) salir");
+                    System.out.println("14) Generar pasajes venta");
+                    System.out.println("15) Leer datos iniciales");
                     System.out.println("16) Guardar datos sistema");
                     System.out.println("17) Cargar datos sistema");
+                    System.out.println("18) salir");
+
                     //creo que la opcion de viajes sera borrada pues no esta en la pauta del avance dos
                     //System.out.println("X) Consulta viajes disponible por fecha");
                     System.out.println("--------------------------------------------------");
@@ -113,10 +118,10 @@ public class UISVP {
                             listVentasEmpresas();
                             break;
                         case 14:
-                            cargarDatosIniciales();
+                            System.out.println("Por implementar...");
                             break;
                         case 15:
-                            System.out.println("Saliendo...");
+                            cargarDatosIniciales();
                             break;
                         case 16:
                             saveControladores();
@@ -127,6 +132,9 @@ public class UISVP {
                             } catch (FileNotFoundException e) {
                                 System.out.println("No se encontro el controlador");
                             }
+                            break;
+                        case 18:
+                            System.out.println("Saliendo...");
                             break;
                         default:
                             System.out.println("Opcion invalida");
@@ -391,10 +399,10 @@ public class UISVP {
             if (opcionTipoDocumento == 2) tipoDocumento = TipoDocumento.FACTURA;
             System.out.println("Fecha de venta [dd/MM/yyyy] :");
             String fecha = sc.nextLine();
-//            System.out.println("Origen (comuna)");
-//            String origen = sc.nextLine();
-//            System.out.println("Destino (comuna)");
-//            String destino = sc.nextLine();
+            System.out.println("Origen (comuna)");
+            String origen = sc.nextLine();
+            System.out.println("Destino (comuna)");
+            String destino = sc.nextLine();
             System.out.println("...::::Datos del cliente");
             System.out.println("Rut [1] o Pasaporte [2]");
             int opcionRutPasaporte = sc.nextInt();
@@ -411,16 +419,18 @@ public class UISVP {
                 String nacionalidad = sc.nextLine();
                 id = new Pasaporte(numeroPasaporte, nacionalidad);
             }
-            sv.iniciaVenta(idDocumento, tipoDocumento, LocalDate.parse(fecha, formatterDate), id);
             System.out.println("Cantidad de pasajes a comprar:");
             int cantidadPasajes = sc.nextInt();
             sc.nextLine();
+            sv.iniciaVenta(idDocumento, tipoDocumento,
+                    LocalDate.parse(fecha, formatterDate),
+                    id, LocalDate.parse(fecha, formatterDate), destino, origen, cantidadPasajes);
             System.out.println("Fecha del viaje:");
             String fechaViaje = sc.nextLine();
-            if (sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate)).length == 0)
+            if (sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate), origen, destino, cantidadPasajes).length == 0)
                 throw new SistemaVentaPasajesException("No se encontraron viajes disponibles");
             System.out.println("...::::Listado de horarios disponibles: ");
-            String horarios[][] = sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate));
+            String[][] horarios= sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate), origen, destino, cantidadPasajes);
             System.out.printf("%-3s %-10s %-8s %-8s %-10s%n",
                     "", "BUS", "SALIDA", "VALOR", "ASIENTOS");
             for (int i = 0; i < horarios.length; i++) {
@@ -644,32 +654,32 @@ public class UISVP {
                     viaje[0], viaje[1], viaje[2], viaje[3], viaje[4]);
         }
     }
-    public void consultarViajesPorFecha() {
-        System.out.println("==============================");
-        System.out.println("Consulta viajes por fecha ");
-        System.out.println("==============================");
-        System.out.print("Ingrese fecha (dd/MM/yyyy):");
-
-        String fecha = sc.nextLine();
-
-        String[][] viajes = sv.getHorariosDisponibles(LocalDate.parse(fecha, formatterDate));
-
-        if (viajes.length == 0) {
-            System.out.println("No hay viajes disponibles para la fecha solicitada");
-            return;
-
-        }
-        System.out.println("Se encontraron " + viajes.length + " viajes");
-
-        System.out.println("PATENTE  HORA  PRECIO  DISPONIBLES");
-        System.out.println("----------------------------------------");
-
-
-        for (int i = 0; i < viajes.length; i++) {
-            System.out.println(viajes[i][0] + " " +
-                    viajes[i][0] + " " + viajes[i][1] + " " + viajes[i][2] + " " + viajes[i][3]);
-        }
-    }
+//    public void consultarViajesPorFecha() {
+//        System.out.println("==============================");
+//        System.out.println("Consulta viajes por fecha ");
+//        System.out.println("==============================");
+//        System.out.print("Ingrese fecha (dd/MM/yyyy):");
+//
+//        String fecha = sc.nextLine();
+//
+//        String[][] viajes = sv.getHorariosDisponibles(LocalDate.parse(fecha, formatterDate));
+//
+//        if (viajes.length == 0) {
+//            System.out.println("No hay viajes disponibles para la fecha solicitada");
+//            return;
+//
+//        }
+//        System.out.println("Se encontraron " + viajes.length + " viajes");
+//
+//        System.out.println("PATENTE  HORA  PRECIO  DISPONIBLES");
+//        System.out.println("----------------------------------------");
+//
+//
+//        for (int i = 0; i < viajes.length; i++) {
+//            System.out.println(viajes[i][0] + " " +
+//                    viajes[i][0] + " " + viajes[i][1] + " " + viajes[i][2] + " " + viajes[i][3]);
+//        }
+//    }
 
     private void listEmpresas(){
         String[][] listaEmpresas = ce.listEmpresas();
@@ -738,7 +748,14 @@ public class UISVP {
     }
 
     private void saveControladores(){
-        sv.saveDatosSistema();
+        try {
+            sv.saveDatosSistema();
+        }catch(SistemaVentaPasajesException e){
+            System.out.println("No se puede abrir o crear el archivo SVPObjetos.obj");
+        }
+        catch (Exception e){
+            System.out.println("No se puede grabar en el archivo SVPObjetos.obj");
+        }
     }
     private void loadControladores() throws FileNotFoundException {
         sv.readDatosSistema();
@@ -751,191 +768,195 @@ public class UISVP {
     }
 
     private void cargarDatosIniciales(){
-        sv.readDatosIniciales();
+        try {
+            sv.readDatosIniciales();
+        }catch (Exception e){
+            System.out.println("No existe o no se puede abrir el archivo SVPDatosIniciales.txt");
+        }
     }
 
-    private void createTestData(){
-        ce.createEmpresa(
-                new Rut(11111111, '1'),
-                "Test1",
-                "www.test1.cl"
-        );
-
-        ce.createEmpresa(
-                new Rut(22222222, '2'),
-                "Test2",
-                "www.test2.cl"
-        );
-
-        ce.createTerminal(
-                "Terminal Chillan",
-                new Direccion("Arauco", 101, "Chillan")
-        );
-
-        ce.createTerminal(
-                "Terminal Concepcion",
-                new Direccion("OHiggins", 202, "Concepcion")
-        );
-
-        ce.createTerminal(
-                "Terminal Santiago",
-                new Direccion("Alameda", 303, "Santiago")
-        );
-
-        Nombre nom1 = new Nombre();
-        nom1.setTratamiento(Tratamiento.SR);
-        nom1.setNombres("Juan");
-        nom1.setApellidoPaterno("Perez");
-        nom1.setApellidoMaterno("Gonzalez");
-
-        Nombre nom2 = new Nombre();
-        nom2.setTratamiento(Tratamiento.SR);
-        nom2.setNombres("Pedro");
-        nom2.setApellidoPaterno("Rojas");
-        nom2.setApellidoMaterno("Diaz");
-
-        Nombre nom3 = new Nombre();
-        nom3.setTratamiento(Tratamiento.SRA);
-        nom3.setNombres("Maria");
-        nom3.setApellidoPaterno("Lopez");
-        nom3.setApellidoMaterno("Silva");
-
-        Nombre nom4 = new Nombre();
-        nom4.setTratamiento(Tratamiento.SRA);
-        nom4.setNombres("Ana");
-        nom4.setApellidoPaterno("Torres");
-        nom4.setApellidoMaterno("Muñoz");
-
-        ce.hireConductor(
-                new Rut(11111111, '1'),
-                new Rut(12345678, '9'),
-                nom1,
-                new Direccion("Las Rosas", 11, "Chillan")
-        );
-
-        ce.hireConductor(
-                new Rut(11111111, '1'),
-                new Rut(87654321, 'K'),
-                nom2,
-                new Direccion("Maipu", 22, "Concepcion")
-        );
-
-        ce.hireAuxiliarForEmpresa(
-                new Rut(11111111, '1'),
-                new Rut(11222333, '4'),
-                nom3,
-                new Direccion("Brasil", 33, "Chillan")
-        );
-
-        ce.hireAuxiliarForEmpresa(
-                new Rut(22222222, '2'),
-                new Rut(99888777, '5'),
-                nom4,
-                new Direccion("Prat", 44, "Santiago")
-        );
-
-        ce.createBus(
-                "AA1111",
-                "Mercedes",
-                "Sprinter",
-                40, registrarRut("11111111-1")
-        );
-
-        ce.createBus(
-                "BB2222",
-                "Volvo",
-                "7700",
-                45, registrarRut("22222222-2")
-        );
-
-        Nombre cliente1 = new Nombre();
-        cliente1.setTratamiento(Tratamiento.SR);
-        cliente1.setNombres("Carlos");
-        cliente1.setApellidoPaterno("Mora");
-        cliente1.setApellidoMaterno("Riquelme");
-        Nombre cliente2 = new Nombre();
-        cliente2.setTratamiento(Tratamiento.SRA);
-        cliente2.setNombres("Fernanda");
-        cliente2.setApellidoPaterno("Soto");
-        cliente2.setApellidoMaterno("Vega");
-        sv.createCliente(
-                new Rut(55555555, '5'),
-                cliente1,
-                "+56911111111",
-                "carlos@gmail.com"
-        );
-        sv.createCliente(
-                new Rut(66666666, '6'),
-                cliente2,
-                "+56922222222",
-                "fernanda@gmail.com"
-        );
-        sv.createPasajero(
-                new Rut(55555555, '5'),
-                cliente1,
-                "+56911111111",
-                cliente2,
-                "+56999999999"
-        );
-        sv.createPasajero(
-                new Rut(66666666, '6'),
-                cliente2,
-                "+56922222222",
-                cliente1,
-                "+56988888888"
-        );
-        IdPersona[] tripulantes1 = {
-                new Rut(11222333, '4'), // auxiliar
-                new Rut(12345678, '9'),
-                new Rut(87654321, 'K')
-        };
-
-        String[] comunas1 = {
-                "Chillan",
-                "Concepcion"
-        };
-
-        sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
-                LocalTime.parse("10:30", formatterTime),
-                12000,
-                180,
-                "AA1111",
-                tripulantes1,
-                comunas1
-        );
-        sv.iniciaVenta(
-                "B001",
-                TipoDocumento.BOLETA,
-                LocalDate.parse("01/01/2026", formatterDate),
-                new Rut(55555555, '5')
-        );
-
-        sv.iniciaVenta(
-                "F001",
-                TipoDocumento.FACTURA,
-                LocalDate.parse("01/01/2026", formatterDate),
-                new Rut(66666666, '6')
-        );
-        sv.vendePasaje(
-                "B001",
-                LocalDate.parse("01/01/2026", formatterDate),
-                LocalTime.parse("10:30", formatterTime),
-                "AA1111",
-                1,
-                new Rut(55555555, '5'),
-                TipoDocumento.BOLETA
-        );
-
-        sv.vendePasaje(
-                "F001",
-                LocalDate.parse("01/01/2026", formatterDate),
-                LocalTime.parse("10:30", formatterTime),
-                "AA1111",
-                2,
-                new Rut(66666666, '6'),
-                TipoDocumento.FACTURA
-        );
-    }
+//    private void createTestData(){
+//        ce.createEmpresa(
+//                new Rut(11111111, '1'),
+//                "Test1",
+//                "www.test1.cl"
+//        );
+//
+//        ce.createEmpresa(
+//                new Rut(22222222, '2'),
+//                "Test2",
+//                "www.test2.cl"
+//        );
+//
+//        ce.createTerminal(
+//                "Terminal Chillan",
+//                new Direccion("Arauco", 101, "Chillan")
+//        );
+//
+//        ce.createTerminal(
+//                "Terminal Concepcion",
+//                new Direccion("OHiggins", 202, "Concepcion")
+//        );
+//
+//        ce.createTerminal(
+//                "Terminal Santiago",
+//                new Direccion("Alameda", 303, "Santiago")
+//        );
+//
+//        Nombre nom1 = new Nombre();
+//        nom1.setTratamiento(Tratamiento.SR);
+//        nom1.setNombres("Juan");
+//        nom1.setApellidoPaterno("Perez");
+//        nom1.setApellidoMaterno("Gonzalez");
+//
+//        Nombre nom2 = new Nombre();
+//        nom2.setTratamiento(Tratamiento.SR);
+//        nom2.setNombres("Pedro");
+//        nom2.setApellidoPaterno("Rojas");
+//        nom2.setApellidoMaterno("Diaz");
+//
+//        Nombre nom3 = new Nombre();
+//        nom3.setTratamiento(Tratamiento.SRA);
+//        nom3.setNombres("Maria");
+//        nom3.setApellidoPaterno("Lopez");
+//        nom3.setApellidoMaterno("Silva");
+//
+//        Nombre nom4 = new Nombre();
+//        nom4.setTratamiento(Tratamiento.SRA);
+//        nom4.setNombres("Ana");
+//        nom4.setApellidoPaterno("Torres");
+//        nom4.setApellidoMaterno("Muñoz");
+//
+//        ce.hireConductor(
+//                new Rut(11111111, '1'),
+//                new Rut(12345678, '9'),
+//                nom1,
+//                new Direccion("Las Rosas", 11, "Chillan")
+//        );
+//
+//        ce.hireConductor(
+//                new Rut(11111111, '1'),
+//                new Rut(87654321, 'K'),
+//                nom2,
+//                new Direccion("Maipu", 22, "Concepcion")
+//        );
+//
+//        ce.hireAuxiliarForEmpresa(
+//                new Rut(11111111, '1'),
+//                new Rut(11222333, '4'),
+//                nom3,
+//                new Direccion("Brasil", 33, "Chillan")
+//        );
+//
+//        ce.hireAuxiliarForEmpresa(
+//                new Rut(22222222, '2'),
+//                new Rut(99888777, '5'),
+//                nom4,
+//                new Direccion("Prat", 44, "Santiago")
+//        );
+//
+//        ce.createBus(
+//                "AA1111",
+//                "Mercedes",
+//                "Sprinter",
+//                40, registrarRut("11111111-1")
+//        );
+//
+//        ce.createBus(
+//                "BB2222",
+//                "Volvo",
+//                "7700",
+//                45, registrarRut("22222222-2")
+//        );
+//
+//        Nombre cliente1 = new Nombre();
+//        cliente1.setTratamiento(Tratamiento.SR);
+//        cliente1.setNombres("Carlos");
+//        cliente1.setApellidoPaterno("Mora");
+//        cliente1.setApellidoMaterno("Riquelme");
+//        Nombre cliente2 = new Nombre();
+//        cliente2.setTratamiento(Tratamiento.SRA);
+//        cliente2.setNombres("Fernanda");
+//        cliente2.setApellidoPaterno("Soto");
+//        cliente2.setApellidoMaterno("Vega");
+//        sv.createCliente(
+//                new Rut(55555555, '5'),
+//                cliente1,
+//                "+56911111111",
+//                "carlos@gmail.com"
+//        );
+//        sv.createCliente(
+//                new Rut(66666666, '6'),
+//                cliente2,
+//                "+56922222222",
+//                "fernanda@gmail.com"
+//        );
+//        sv.createPasajero(
+//                new Rut(55555555, '5'),
+//                cliente1,
+//                "+56911111111",
+//                cliente2,
+//                "+56999999999"
+//        );
+//        sv.createPasajero(
+//                new Rut(66666666, '6'),
+//                cliente2,
+//                "+56922222222",
+//                cliente1,
+//                "+56988888888"
+//        );
+//        IdPersona[] tripulantes1 = {
+//                new Rut(11222333, '4'), // auxiliar
+//                new Rut(12345678, '9'),
+//                new Rut(87654321, 'K')
+//        };
+//
+//        String[] comunas1 = {
+//                "Chillan",
+//                "Concepcion"
+//        };
+//
+//        sv.createViaje(LocalDate.parse("01/01/2026", formatterDate),
+//                LocalTime.parse("10:30", formatterTime),
+//                12000,
+//                180,
+//                "AA1111",
+//                tripulantes1,
+//                comunas1
+//        );
+//        sv.iniciaVenta(
+//                "B001",
+//                TipoDocumento.BOLETA,
+//                LocalDate.parse("01/01/2026", formatterDate),
+//                new Rut(55555555, '5')
+//        );
+//
+//        sv.iniciaVenta(
+//                "F001",
+//                TipoDocumento.FACTURA,
+//                LocalDate.parse("01/01/2026", formatterDate),
+//                new Rut(66666666, '6')
+//        );
+//        sv.vendePasaje(
+//                "B001",
+//                LocalDate.parse("01/01/2026", formatterDate),
+//                LocalTime.parse("10:30", formatterTime),
+//                "AA1111",
+//                1,
+//                new Rut(55555555, '5'),
+//                TipoDocumento.BOLETA
+//        );
+//
+//        sv.vendePasaje(
+//                "F001",
+//                LocalDate.parse("01/01/2026", formatterDate),
+//                LocalTime.parse("10:30", formatterTime),
+//                "AA1111",
+//                2,
+//                new Rut(66666666, '6'),
+//                TipoDocumento.FACTURA
+//        );
+//    }
 
     private Rut registrarRut(String rut){
         try {
