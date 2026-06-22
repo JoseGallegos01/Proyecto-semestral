@@ -290,7 +290,7 @@ public class UISVP {
                 System.out.println("...::::Cliente guardado exitosamente::::...");
             } catch (SistemaVentaPasajesException e) {
                 System.out.println((e.getMessage()));
-                //throw new SistemaVentaPasajesException("...::::Ya existe un cliente con el mismo id::::...");
+                //throw new SVPException("...::::Ya existe un cliente con el mismo id::::...");
             }
         }catch (SistemaVentaPasajesException e){
             System.out.println(e.getMessage());
@@ -317,7 +317,7 @@ public class UISVP {
                 System.out.println("...::::Bus guardado exitosamente:::...");
             } catch (SistemaVentaPasajesException e) {
                 System.out.println((e.getMessage()));
-                //throw new SistemaVentaPasajesException("...::::Ya hay un bus con la misma patente registrada::...");
+                //throw new SVPException("...::::Ya hay un bus con la misma patente registrada::...");
             }
         }catch (SistemaVentaPasajesException e){
             System.out.println(e.getMessage());
@@ -401,7 +401,7 @@ public class UISVP {
                 System.out.println("...::::Viaje guardado exitosamente::::...");
             } catch (SistemaVentaPasajesException e) {
                 System.out.println((e.getMessage()));
-                // throw new SistemaVentaPasajesException("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
+                // throw new SVPException("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
             } catch (DateTimeParseException e) {
                 System.out.println("Formato de fecha/hora erroneoa");
             }
@@ -521,7 +521,7 @@ public class UISVP {
             pagaVentaPasajes(idDocumento,tipoDocumento);
         } catch (SistemaVentaPasajesException e) {
             System.out.println((e.getMessage()));
-            //throw new SistemaVentaPasajesException("...::::Cliente no existe o la venta ya existe::::...");
+            //throw new SVPException("...::::Cliente no existe o la venta ya existe::::...");
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage());
         }
@@ -632,13 +632,13 @@ public class UISVP {
 //                } else {
 //                    System.out.println("...::::No hay horarios para esa fecha::::...");
 //                }
-//            } catch (SistemaVentaPasajesException e) {
-//                System.out.println((e.getMessage()));
-//                //throw new SistemaVentaPasajesException("...::::Cliente no existe o la venta ya existe::::...");
+//            } catch (SVPException SVPException) {
+//                System.out.println((SVPException.getMessage()));
+//                //throw new SVPException("...::::Cliente no existe o la venta ya existe::::...");
 //            }
 //
-//        }catch (SistemaVentaPasajesException | InputMismatchException e){
-//            System.out.println(e.getMessage());
+//        }catch (SVPException | InputMismatchException SVPException){
+//            System.out.println(SVPException.getMessage());
 //        }
 //    }
 

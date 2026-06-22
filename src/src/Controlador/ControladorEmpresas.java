@@ -1,9 +1,9 @@
 package Controlador;
 
+import Excepciones.SVPException;
 import Modelo.Conductor;
 import Modelo.Empresa;
 import Modelo.Viaje;
-import Excepciones.SistemaVentaPasajesException;
 import utilidades.Direccion;
 import utilidades.IdPersona;
 import utilidades.Nombre;
@@ -13,8 +13,6 @@ import Modelo.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Optional;
 
     public class ControladorEmpresas implements Serializable {
@@ -41,7 +39,7 @@ import java.util.Optional;
 
         public void createEmpresa(Rut rut, String nombre, String url) {
             if(findEmpresa(rut).isPresent()) {
-                throw new SistemaVentaPasajesException("La empresa ya existe");
+                throw new SVPException("La empresa ya existe");
             }
             Empresa empresa = new Empresa(rut, nombre, url);
             Empresa.setUrl(url);
@@ -52,12 +50,12 @@ import java.util.Optional;
             Optional<Empresa> empresaOptional = findEmpresa(rutEmp);
 
             if(empresaOptional.isEmpty()){
-                throw new SistemaVentaPasajesException("No existe la empresa con el rut ingresado");
+                throw new SVPException("No existe la empresa con el rut ingresado");
 
             }
 
             if(findBus(patente).isPresent()){
-                throw new SistemaVentaPasajesException("El bus con la patente indicada ya existe");
+                throw new SVPException("El bus con la patente indicada ya existe");
             }
 
             Bus bus = new Modelo.Bus(patente, nroAsiento, empresaOptional.get());
@@ -69,10 +67,10 @@ import java.util.Optional;
 
         public void createTerminal(String nombre, Direccion direccion) {
             if (findTerminal(nombre).isPresent()) {
-                throw new SistemaVentaPasajesException("El terminal ya existe");
+                throw new SVPException("El terminal ya existe");
             }
             if(findTerminalPorComuna(direccion.getComuna()).isPresent()){
-                throw new SistemaVentaPasajesException("El terminal de la comuna indicada ya existe");
+                throw new SVPException("El terminal de la comuna indicada ya existe");
             }
 
             Modelo.Terminal terminal = new Modelo.Terminal(nombre, direccion);
@@ -82,12 +80,12 @@ import java.util.Optional;
         public void hireConductor(Rut rutEmp, IdPersona idPersona, Nombre nombre, Direccion direccion) {
             Optional<Empresa> empresaOptional = findEmpresa(rutEmp);
             if(empresaOptional.isEmpty()) {
-                throw new SistemaVentaPasajesException("No existe la empresa con el rut ingresado");
+                throw new SVPException("No existe la empresa con el rut ingresado");
             }
 
             boolean contratado = empresaOptional.get().addConductor(idPersona, nombre, direccion);
             if(!contratado){
-                throw new SistemaVentaPasajesException("Ya esta contratado el Conductor/Auxiliar con el id otorgado");
+                throw new SVPException("Ya esta contratado el Conductor/Auxiliar con el id otorgado");
             }
 
         }
@@ -95,11 +93,11 @@ import java.util.Optional;
         public void hireAuxiliarForEmpresa(Rut rutEmp, IdPersona idPersona, Nombre nombre, Direccion direccion) {
             Optional<Empresa> empresaOptional = findEmpresa(rutEmp);
             if(empresaOptional.isEmpty()) {
-                throw new SistemaVentaPasajesException("No existe el empresa con el rut ingresado");
+                throw new SVPException("No existe el empresa con el rut ingresado");
             }
             boolean contratado = empresaOptional.get().addAuxiliar(idPersona, nombre, direccion);
             if (!contratado){
-                throw new SistemaVentaPasajesException("Ya esta contratado el Auxiliar/Conductor con el id otorgado ");
+                throw new SVPException("Ya esta contratado el Auxiliar/Conductor con el id otorgado ");
             }
         }
 
@@ -126,7 +124,7 @@ import java.util.Optional;
         public String[][] listLlegadaSalidaTerminal(String nombre, LocalDate fecha) {
             Optional<Terminal> terminalOptional = findTerminal(nombre);
             if (terminalOptional.isEmpty()) {
-                throw new SistemaVentaPasajesException("No existe el terminal con el nombre ingresado");
+                throw new SVPException("No existe el terminal con el nombre ingresado");
             }
             Terminal terminal = terminalOptional.get();
             ArrayList<String[]> lista = new ArrayList<>();
@@ -169,7 +167,7 @@ import java.util.Optional;
         public String[][] listVentasEmpresa(Rut rut) {
             Optional<Empresa> empresaOptional = findEmpresa(rut);
             if(empresaOptional.isEmpty()) {
-                throw new SistemaVentaPasajesException("No existe la empresa con el rut ingresado");
+                throw new SVPException("No existe la empresa con el rut ingresado");
             }
 
             Venta[] ventas = empresaOptional.get().getVentas();
