@@ -468,4 +468,16 @@ public class PersistenciaClase implements Serializable {
         }
         return Optional.empty();
     }
+
+    public void savePasajesDeVenta(ArrayList<Pasaje> pasajes, String nombreArchivo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            for (Pasaje pasaje : pasajes) {
+                writer.write(pasaje.toString());
+                writer.newLine();
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new SistemaVentaPasajesException("No es posible abrir, crear o grabar en el archivo: " + nombreArchivo);
+        }
+    }
 }
