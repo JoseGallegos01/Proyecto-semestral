@@ -147,7 +147,7 @@ public class UISVP {
                     System.out.println("Se ha ingresado un caracter invalido");
                     sc.nextLine();
                 }
-            } while (opcion != 15);
+            } while (opcion != 18);
     }
 
     private void createEmpresa(){
@@ -645,7 +645,7 @@ public class UISVP {
     private void listPasajerosViaje(){
         try {
             System.out.println("...::::Listado de pasajeros de un viaje:::");
-            System.out.println("Fecha del viaje [dd/MM/yyy] :");
+            System.out.println("Fecha del viaje [dd/MM/yyyy] :");
             String fecha = sc.nextLine();
             System.out.println("Hora [hh:mm] :");
             String hora = sc.nextLine();
@@ -665,7 +665,7 @@ public class UISVP {
         }catch (SVPException e) {
             System.out.println((e.getMessage()));
         }catch (DateTimeParseException e){
-            System.out.println("Formato de fecha erroneoa");
+            System.out.println("Error: " + e.getMessage());
         }catch (InputMismatchException e){
             System.out.println("Se ha ingresado un caracter invalido");
             sc.nextLine();
@@ -737,30 +737,39 @@ public class UISVP {
 
     }
     private void listLlegadasSalidasTerminal(){
-        System.out.println("...:::: Listado de llegadas y salidas de un terminal ::::...");
-        System.out.println("Nombre terminal:");
-        String nombre = sc.nextLine();
-        System.out.println("Fecha: [dd/mm/yyyy]");
-        String fecha = sc.nextLine();
-        LocalDate fechaTerminal = LocalDate.parse(fecha, formatterDate);
-        LocalDate fechaLlegadasSalidas = Date.valueOf(fechaTerminal).toLocalDate();
-        String[][] llegadasSalidasTerminal = ce.listLlegadaSalidaTerminal(nombre, fechaLlegadasSalidas);
-        System.out.printf(
-                "| %-10s | %-8s | %-10s | %-20s | %-10s |%n",
-                "TIPO",
-                "HORA",
-                "PATENTE",
-                "EMPRESA",
-                "PASAJEROS");
-        for (String[] l : llegadasSalidasTerminal) {
+        try {
+            System.out.println("...:::: Listado de llegadas y salidas de un terminal ::::...");
+            System.out.println("Nombre terminal:");
+            String nombre = sc.nextLine();
+            System.out.println("Fecha: [dd/mm/yyyy]");
+            String fecha = sc.nextLine();
+            LocalDate fechaTerminal = LocalDate.parse(fecha, formatterDate);
+            LocalDate fechaLlegadasSalidas = Date.valueOf(fechaTerminal).toLocalDate();
+            String[][] llegadasSalidasTerminal = ce.listLlegadaSalidaTerminal(nombre, fechaLlegadasSalidas);
             System.out.printf(
                     "| %-10s | %-8s | %-10s | %-20s | %-10s |%n",
-                    l[0],
-                    l[1],
-                    l[2],
-                    l[3],
-                    l[4]
-            );
+                    "TIPO",
+                    "HORA",
+                    "PATENTE",
+                    "EMPRESA",
+                    "PASAJEROS");
+            for (String[] l : llegadasSalidasTerminal) {
+                System.out.printf(
+                        "| %-10s | %-8s | %-10s | %-20s | %-10s |%n",
+                        l[0],
+                        l[1],
+                        l[2],
+                        l[3],
+                        l[4]
+                );
+            }
+        }catch (SVPException e) {
+            System.out.println((e.getMessage()));
+        }catch (DateTimeParseException e){
+            System.out.println("Formato de fecha erroneoa");
+        }catch (InputMismatchException e){
+            System.out.println("Se ha ingresado un caracter invalido");
+            sc.nextLine();
         }
     }
     private void listVentasEmpresas(){

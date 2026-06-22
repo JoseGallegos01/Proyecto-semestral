@@ -199,8 +199,9 @@ public class SistemaVentaPasajes implements Serializable {
 
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patenteBus) {
         Optional<Viaje> viajeListarPasajeros = findViaje(fecha.toString(), hora.toString(), patenteBus);
-        if (viajeListarPasajeros.isPresent()) return viajeListarPasajeros.get().getListaPasajeros();
-        else throw new SVPException("No existe viaje con la fecha, hora y patente de bus indicados");
+        if (viajeListarPasajeros.isEmpty()) throw new SVPException("No existe viaje con la fecha, hora y patente de bus indicados");
+        if (viajeListarPasajeros.get().getListaPasajeros().length == 0) throw new SVPException("No hay pasajeros para el viaje");
+        return viajeListarPasajeros.get().getListaPasajeros();
     }
 
     public void readDatosIniciales() {
@@ -296,12 +297,15 @@ public class SistemaVentaPasajes implements Serializable {
     }
 
     private Optional<Viaje> findViaje(String fecha, String hora, String patenteBus) {
-        Optional<Viaje> viajeOptional = viajes.stream()
-                .filter(viaje -> viaje.getFecha()
-                        .equals(LocalDate.parse(fecha, formatterDate)))
-                .filter(viaje -> viaje.getHora()
-                        .equals(LocalTime.parse(hora, formatterTime)))
-                .filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
+//        Optional<Viaje> viajeOptional = viajes.stream()
+//                .filter(viaje -> viaje.getFecha()
+//                        .equals(LocalDate.parse(fecha, formatterDate)))
+//                .filter(viaje -> viaje.getHora()
+//                        .equals(LocalTime.parse(hora, formatterTime)))
+//                .filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
+
+        Optional<Viaje> viajeOptional = viajes.stream().filter(viaje -> viaje.getFecha().equals(fecha))
+                .filter(viaje -> viaje.getHora().equals(hora)).filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
         return viajeOptional;
 //        for (Viaje v : viajes) {
 //            if (v.getFecha().toString().equals(fecha)

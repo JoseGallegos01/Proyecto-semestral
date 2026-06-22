@@ -376,7 +376,6 @@ public class PersistenciaClase implements Serializable {
                 precio, duracion, findBus(patenteBus).get(),
                 findAuxiliar(tripulantes[0]).get(), conductores, terminales[0], terminales[1]
                 );
-        System.out.println("5");
         lista.add(viaje);
     }
 
