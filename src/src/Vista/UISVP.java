@@ -17,7 +17,7 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
-import Excepciones.SistemaVentaPasajesException;
+import Excepciones.SVPException;
 import Modelo.*;
 import utilidades.*;
 import Controlador.*;
@@ -140,7 +140,7 @@ public class UISVP {
                             System.out.println("Opcion invalida");
                     }
 
-                }catch (SistemaVentaPasajesException e){
+                }catch (SVPException e){
                     System.out.println((e.getMessage()));
                     sc.nextLine();
                 }catch (InputMismatchException e){
@@ -160,7 +160,7 @@ public class UISVP {
         String url =  sc.nextLine();
         try {
             ce.createEmpresa(registrarRut(rutEmpresa), nombre, url);
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }
     }
@@ -217,10 +217,10 @@ public class UISVP {
             try {
                 if (opcionAuxOCond == 1) ce.hireAuxiliarForEmpresa(registrarRut(rutEmpresa), id, nombre, direccion);
                 if (opcionAuxOCond == 2) ce.hireConductor(registrarRut(rutEmpresa), id, nombre, direccion);
-            }catch (SistemaVentaPasajesException e){
+            }catch (SVPException e){
                 System.out.println((e.getMessage()));
             }
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }catch (InputMismatchException e){
             System.out.println("Se ha ingresado un caracter invalido");
@@ -241,7 +241,7 @@ public class UISVP {
         String comuna = sc.nextLine();
         Direccion direccion = new Direccion(calle, numero, comuna);
             ce.createTerminal(nombre, direccion);
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println((e.getMessage()));
         }catch (InputMismatchException e){
             System.out.println("Se ha ingresado un caracter invalido");
@@ -288,11 +288,11 @@ public class UISVP {
             try {
                 sv.createCliente(id, nombre, telefono_movil, email);
                 System.out.println("...::::Cliente guardado exitosamente::::...");
-            } catch (SistemaVentaPasajesException e) {
+            } catch (SVPException e) {
                 System.out.println((e.getMessage()));
                 //throw new SVPException("...::::Ya existe un cliente con el mismo id::::...");
             }
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }catch (InputMismatchException e){
             System.out.println("Se ha ingresado un caracter invalido");
@@ -315,11 +315,11 @@ public class UISVP {
             try {
                 ce.createBus(patente, marca, modelo, asientos, registrarRut(rutEmpresa));
                 System.out.println("...::::Bus guardado exitosamente:::...");
-            } catch (SistemaVentaPasajesException e) {
+            } catch (SVPException e) {
                 System.out.println((e.getMessage()));
                 //throw new SVPException("...::::Ya hay un bus con la misma patente registrada::...");
             }
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }catch (DateTimeParseException e){
             System.out.println("Formato de fecha erroneoa");
@@ -399,13 +399,13 @@ public class UISVP {
             try {
                 sv.createViaje(LocalDate.parse(fecha, formatterDate), LocalTime.parse(hora, formatterTime), precio, duracion, patenteBus, tripulantes, comunas);
                 System.out.println("...::::Viaje guardado exitosamente::::...");
-            } catch (SistemaVentaPasajesException e) {
+            } catch (SVPException e) {
                 System.out.println((e.getMessage()));
                 // throw new SVPException("...::::No se ha podido crear el viaje, no existe el bus o ya hay un viaje registrado con el mismo bus::::...");
             } catch (DateTimeParseException e) {
                 System.out.println("Formato de fecha/hora erroneoa");
             }
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }catch (InputMismatchException e){
             System.out.println("Se ha ingresado un caracter invalido");
@@ -454,7 +454,7 @@ public class UISVP {
             System.out.println("Fecha del viaje:");
             String fechaViaje = sc.nextLine();
             if (sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate), origen, destino, cantidadPasajes).length == 0)
-                throw new SistemaVentaPasajesException("No se encontraron viajes disponibles");
+                throw new SVPException("No se encontraron viajes disponibles");
             System.out.println("...::::Listado de horarios disponibles: ");
             String[][] horarios= sv.getHorariosDisponibles(LocalDate.parse(fechaViaje, formatterDate), origen, destino, cantidadPasajes);
             System.out.printf("%-3s %-10s %-8s %-8s %-10s%n",
@@ -519,7 +519,7 @@ public class UISVP {
                 }
             }
             pagaVentaPasajes(idDocumento,tipoDocumento);
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println((e.getMessage()));
             //throw new SVPException("...::::Cliente no existe o la venta ya existe::::...");
         } catch (InputMismatchException e) {
@@ -662,7 +662,7 @@ public class UISVP {
                     System.out.println(pasajero[0] + " | " + pasajero[1] + " | " + pasajero[2] + " | " + pasajero[3]);
                 }
             }
-        }catch (SistemaVentaPasajesException e) {
+        }catch (SVPException e) {
             System.out.println((e.getMessage()));
         }catch (DateTimeParseException e){
             System.out.println("Formato de fecha erroneoa");
@@ -807,7 +807,7 @@ public class UISVP {
     private void saveControladores(){
         try {
             sv.saveDatosSistema();
-        }catch(SistemaVentaPasajesException e){
+        }catch(SVPException e){
             System.out.println("No se puede abrir o crear el archivo SVPObjetos.obj");
         }
         catch (Exception e){
@@ -1017,15 +1017,21 @@ public class UISVP {
 
     private Rut registrarRut(String rut){
         try {
-            Rut rutRegistrado;
-            String rutCompleto = rut;
-            rutCompleto = rutCompleto.replace(".", "");
-            String[] partes = rutCompleto.split("-");
+            String rutLimpio = rut.replace(".", "").replace(" ", "").toUpperCase();
+
+            if (!rutLimpio.contains("-")) {
+                throw new SVPException("El RUT debe contener un guion (-)");
+            }
+
+            String[] partes = rutLimpio.split("-");
             int numero = Integer.parseInt(partes[0]);
             char dv = partes[1].charAt(0);
-            return rutRegistrado = new Rut(numero, dv);
-        }catch (Exception e){
-            throw new SistemaVentaPasajesException(("formato de rut incorrecto, debe ser xx.xxx.xxx-x"));
+            return new Rut(numero, dv);
+
+        } catch (NumberFormatException e) {
+            throw new SVPException("El formato numerico del RUT es incorrecto.");
+        } catch (Exception e){
+            throw new SVPException("Formato de RUT incorrecto, use el formato 12345678-9");
         }
     }
 

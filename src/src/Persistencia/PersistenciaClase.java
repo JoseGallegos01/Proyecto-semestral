@@ -2,7 +2,7 @@ package Persistencia;
 
 import Controlador.ControladorEmpresas;
 import Controlador.SistemaVentaPasajes;
-import Excepciones.SistemaVentaPasajesException;
+import Excepciones.SVPException;
 import Modelo.Cliente;
 import Modelo.Pasajero;
 import Modelo.Persona;
@@ -144,7 +144,7 @@ public class PersistenciaClase implements Serializable {
 //        }
 //    }
 
-    public Object[] readDatosIniciales() throws SistemaVentaPasajesException {
+    public Object[] readDatosIniciales() throws SVPException {
         String nombreArchivo = "SVPDatosIniciales.txt"; //Asi se llama la vainaen el moodle
         List<Object> lista = new ArrayList<>();
 
@@ -193,7 +193,7 @@ public class PersistenciaClase implements Serializable {
 
             }
         }catch (IOException e){
-            throw new SistemaVentaPasajesException(("Error en la lectura del archivo"));
+            throw new SVPException(("Error en la lectura del archivo"));
         }
         return lista.toArray();
     }
@@ -207,11 +207,11 @@ public class PersistenciaClase implements Serializable {
             inCE.close();
             return controladores;
         } catch (FileNotFoundException e) {
-            throw new SistemaVentaPasajesException("No se encontro el archivo de los controladores");
+            throw new SVPException("No se encontro el archivo de los controladores");
         } catch (IOException e) {
-            throw new SistemaVentaPasajesException("No se pudo leer los controladores");
+            throw new SVPException("No se pudo leer los controladores");
         } catch (ClassNotFoundException e) {
-            throw new SistemaVentaPasajesException("No se encontraron el controlador");
+            throw new SVPException("No se encontraron el controlador");
         }
     }
 
@@ -226,7 +226,7 @@ public class PersistenciaClase implements Serializable {
             outSVP.close();
             outCE.close();
         }catch (IOException e){
-            throw new SistemaVentaPasajesException(e.getMessage());
+            throw new SVPException(e.getMessage());
         }
     }
 
@@ -388,7 +388,7 @@ public class PersistenciaClase implements Serializable {
                 writer.newLine();
             }
         } catch (IOException e) {
-            throw new SistemaVentaPasajesException("No es posible abrir, crear o grabar en el archivo: " + nombreArchivo);
+            throw new SVPException("No es posible abrir, crear o grabar en el archivo: " + nombreArchivo);
         }
     }
 
@@ -419,7 +419,7 @@ public class PersistenciaClase implements Serializable {
             char dv = partes[1].charAt(0);
             return rutRegistrado = new Rut(numero, dv);
         }catch (Exception e){
-            throw new SistemaVentaPasajesException(("formato de rut incorrecto, debe ser xx.xxx.xxx-x"));
+            throw new SVPException(("formato de rut incorrecto, debe ser xx.xxx.xxx-x"));
         }
     }
 
