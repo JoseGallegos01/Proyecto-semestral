@@ -21,9 +21,7 @@ public class SistemaVentaPasajes implements Serializable {
     ArrayList<Bus> buses = new ArrayList<>();
     ArrayList<Venta> ventas = new ArrayList<>();
     ArrayList<Viaje> viajes = new ArrayList<>();
-    ArrayList<Empresa> empresas;
-    ArrayList<Modelo.Terminal> terminales;
-    static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     static DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     ControladorEmpresas ce = ControladorEmpresas.getInstance();
 
@@ -69,8 +67,6 @@ public class SistemaVentaPasajes implements Serializable {
         viajes.add(new Viaje(fecha, hora, precio, duracion, ce.findBus(patenteBus).get(), auxiliarViaje, conductores, terminalSalida, terminalLlegada));
     }
 
-    //creo que al metodo tengo que agregarle las comunas de llegada y salida
-    //tengo que agregarle weas, debo revisar el uml
     public void iniciaVenta(String idDoc, TipoDocumento tipo,
                             LocalDate fechaVenta, IdPersona idCliente, LocalDate fechaViaje, String comunaLLegada, String comunaSalida, int nroPasajeros) {
         if (findVenta(idDoc, tipo).isPresent())
@@ -251,6 +247,20 @@ public class SistemaVentaPasajes implements Serializable {
         }
     }
 
+    public void generatePasajesVenta(String idDocumento, TipoDocumento tipo){
+        if (findVenta(idDocumento, tipo).isEmpty()) throw new SistemaVentaPasajesException("No existe el venta con el identificador " + idDocumento);
+        Pasaje[] pasajes = findVenta(idDocumento, tipo).get().getPasajes();
+        String nombreArchivo = idDocumento + tipo.toString().toLowerCase() + ".txt";
+        for (Pasaje pasaje : pasajes) {
+            System.out.println(pasaje.toString());
+        }
+        try {
+            PersistenciaClase.getInstance().savePasajesDeVenta(pasajes, nombreArchivo);
+        }catch (SistemaVentaPasajesException e) {
+            e.getMessage();
+        }
+    }
+
     private Optional<Cliente> findCliente(IdPersona id) {
         Optional<Cliente> clienteEncontrado = clientes.stream().filter(c -> c.getIdPersona().equals(id)).findFirst();
         return clienteEncontrado;
@@ -308,11 +318,8 @@ public class SistemaVentaPasajes implements Serializable {
         Optional<Pasajero> pasajeroEncontrado = pasajeros.stream()
                 .filter(pasajero -> pasajero
                         .getIdPersona().equals(idPersona)).findAny();
-        if (pasajeroEncontrado.isPresent()) {
-            return pasajeroEncontrado;
-        }
-        return Optional.empty();
-//        for (Pasajero p : pasajeros) {
+        return pasajeroEncontrado;
+        //        for (Pasajero p : pasajeros) {
 //            if (p.getIdPersona().equals(idPersona)) {
 //                return Optional.of(p);
 //            }

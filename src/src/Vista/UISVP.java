@@ -31,7 +31,7 @@ public class UISVP {
     IdPersona id = null;
     Tratamiento tratamiento = null;
     TipoDocumento tipoDocumento = null;
-    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private static UISVP instance = null;
@@ -56,17 +56,16 @@ public class UISVP {
                     System.out.println("6) Crear viaje");
                     System.out.println("7) Vender pasajes");
                     System.out.println("8) Listar ventas");
-                    System.out.println("9) Pagar ventas");
-                    System.out.println("10) Listar viajes");
-                    System.out.println("11) Listar pasajeros de viaje");
-                    System.out.println("12) Listar empresas");
-                    System.out.println("13) Listar llegadas/salidas del terminal");
-                    System.out.println("14) Listar ventas de empresa");
-                    System.out.println("15) Generar pasajes venta");
-                    System.out.println("16) Leer datos iniciales");
-                    System.out.println("17) Guardar datos sistema");
-                    System.out.println("18) Cargar datos sistema");
-                    System.out.println("19) salir");
+                    System.out.println("9) Listar viajes");
+                    System.out.println("10) Listar pasajeros de viaje");
+                    System.out.println("11) Listar empresas");
+                    System.out.println("12) Listar llegadas/salidas del terminal");
+                    System.out.println("13) Listar ventas de empresa");
+                    System.out.println("14) Generar pasajes venta");
+                    System.out.println("15) Leer datos iniciales");
+                    System.out.println("16) Guardar datos sistema");
+                    System.out.println("17) Cargar datos sistema");
+                    System.out.println("18) salir");
 
                     //creo que la opcion de viajes sera borrada pues no esta en la pauta del avance dos
                     //System.out.println("X) Consulta viajes disponible por fecha");
@@ -100,41 +99,41 @@ public class UISVP {
                         case 8:
                             listVentas();
                             break;
-                        case 10:
+                        case 9:
                             listViajes();
                             break;
-                        case 11:
+                        case 10:
                             listPasajerosViaje();
                             break;
                         //case 8:
                         // consultarViajesPorFecha();
                         // break;
-                        case 12:
+                        case 11:
                             listEmpresas();
                             break;
-                        case 13:
+                        case 12:
                             listLlegadasSalidasTerminal();
                             break;
-                        case 14:
+                        case 13:
                             listVentasEmpresas();
                             break;
-                        case 15:
-                            System.out.println("Por implementar...");
+                        case 14:
+                            generatePasajesVenta();
                             break;
-                        case 16:
+                        case 15:
                             cargarDatosIniciales();
                             break;
-                        case 17:
+                        case 16:
                             saveControladores();
                             break;
-                        case 18:
+                        case 17:
                             try {
                                 loadControladores();
                             } catch (FileNotFoundException e) {
                                 System.out.println("No se encontro el controlador");
                             }
                             break;
-                        case 19:
+                        case 18:
                             System.out.println("Saliendo...");
                             break;
                         default:
@@ -387,7 +386,7 @@ public class UISVP {
                     String nacionalidadPasaporteConductor = sc.nextLine();
                     tripulantes[i + 1] = registrarPasaporte(String.valueOf(numeroPasaporteConductor), nacionalidadPasaporteConductor);
                 }
-                else{
+                if (idConductor!=1 && idConductor!=2){
                     System.out.println("Opcion invalida");
                     i--;
                 }
@@ -519,6 +518,7 @@ public class UISVP {
                     System.out.println("Ya existe un pasajero registrado con esa id");
                 }
             }
+            pagaVentaPasajes(idDocumento,tipoDocumento);
         } catch (SistemaVentaPasajesException e) {
             System.out.println((e.getMessage()));
             //throw new SistemaVentaPasajesException("...::::Cliente no existe o la venta ya existe::::...");
@@ -795,6 +795,12 @@ public class UISVP {
             long numeroTarjeta = sc.nextLong();
             sc.nextLine();
             sv.pagaVenta(idDoc, tipo, numeroTarjeta);
+        }
+    }
+    private void generatePasajesVenta(){
+        String[][] ventas = sv.listVentas();
+        for (String[] venta : ventas) {
+            sv.generatePasajesVenta(venta[0], TipoDocumento.valueOf(venta[1]));
         }
     }
 
