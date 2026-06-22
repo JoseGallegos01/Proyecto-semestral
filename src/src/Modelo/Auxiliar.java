@@ -11,19 +11,16 @@ public class Auxiliar extends Tripulante implements Serializable {
 
     public Auxiliar(IdPersona id, Nombre nom, Direccion dir){
         super(id, nom, dir);
-        this.viajes = new ArrayList<Viaje>();
-    }
-
-    public void addViaje(Viaje viaje) {
         this.viajes = new ArrayList<>();
     }
 
     @Override
-    public int getNroViajes() {
-        return viajes.size();
+    public void addViaje(Viaje viaje) {
+        this.viajes.add(viaje);
     }
 
-    public int getNroViaje() {
+    @Override
+    public int getNroViajes() {
         return this.viajes.size();
     }
 }
