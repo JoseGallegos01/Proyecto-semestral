@@ -1,6 +1,9 @@
 package Modelo;
+import utilidades.*;
 
-public  class Tripulante extends Persona {
+import java.io.Serializable;
+
+public abstract class Tripulante extends Persona implements Serializable {
 
     private Direccion direccion;
 
@@ -20,4 +23,5 @@ public  class Tripulante extends Persona {
     public abstract void addViaje(Viaje viaje);
 
     public abstract int getNroViajes();
+
 }

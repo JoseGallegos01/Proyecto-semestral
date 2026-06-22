@@ -1,10 +1,12 @@
 package utilidades;
 
-public class Pasaporte implements IdPersona {
+import java.io.Serializable;
+
+public class Pasaporte implements IdPersona, Serializable {
     //Cristobal Jeldres
     private String numero;
     private String nacionalidad;
-    //En teoria esta listo
+    //En teoria no esta listo
 
     public Pasaporte(String numero, String nacionalidad) {
         this.numero = numero;

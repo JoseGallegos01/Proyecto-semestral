@@ -1,9 +1,11 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import utilidades.*;
 
-public class Auxiliar extends Tripulante {
+public class Auxiliar extends Tripulante implements Serializable {
 
     private List<Viaje> viajes;
 
@@ -14,6 +16,11 @@ public class Auxiliar extends Tripulante {
 
     public void addViaje(Viaje viaje) {
         this.viajes = new ArrayList<>();
+    }
+
+    @Override
+    public int getNroViajes() {
+        return viajes.size();
     }
 
     public int getNroViaje() {

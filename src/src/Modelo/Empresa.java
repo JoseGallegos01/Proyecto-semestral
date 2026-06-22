@@ -5,20 +5,24 @@ import utilidades.Nombre;
 import utilidades.Direccion;
 import utilidades.Rut;
 
-public class Empresa {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Empresa implements Serializable {
     private Rut rut;
     private String nombre;
     private String url;
 
-    private java.util.ArrayList<modelo.Bus> buses;
+    private java.util.ArrayList<Modelo.Bus> buses;
     private java.util.ArrayList<Tripulante> tripulantes;
 
-    public Empresa(Rut rut, String nombre, String url) {
+    public Empresa(Rut rut, String url, String nombre) {
         this.rut = rut;
         this.nombre = nombre;
-        this.buses = new java.util.ArrayList<>();
         this.url = url;
-        this.tripulantes = new java.util.ArrayList<>();
+        this.buses = new ArrayList<>();
+        this.url = url;
+        this.tripulantes = new ArrayList<>();
     }
 
     public Rut getRut() {
@@ -33,18 +37,18 @@ public class Empresa {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public static String setUrl(String url) {
+        return url = url;
     }
 
-    public void addBus(modelo.Bus bus) {
+    public void addBus(Bus bus) {
         if (bus != null) {
             this.buses.add(bus);
         }
     }
 
-    public modelo.Bus[] getBuses() {
-        return this.buses.toArray(new modelo.Bus[0]);
+    public Bus[] getBuses() {
+        return this.buses.toArray(new Bus[0]);
     }
 
     public boolean addConductor(IdPersona id, Nombre nom, Direccion dir) {
@@ -53,7 +57,7 @@ public class Empresa {
         }
 
         for (Tripulante tripulante : tripulantes) {
-            if (tripulante.getId().equals(id)) {
+            if(tripulante.getIdPersona().equals(id) && tripulante.getDireccion().equals(dir)) {
                 return false;
             }
         }
@@ -62,56 +66,35 @@ public class Empresa {
         return this.tripulantes.add(nuevoConductor);
     }
 
-    public boolean addAuxiliar (IdPersona id, Nombre nom, Direccion dir){
+    public boolean addAuxiliar (IdPersona id, Nombre nom, Direccion dir) {
         if (id == null || nom == null || dir == null) {
             return false;
         }
         for (Tripulante tripulante : tripulantes) {
-            if (tripulante.getId().equals(id)) {
+            if (tripulante.getIdPersona().equals(id) && tripulante.getDireccion().equals(dir)) {
                 return false;
             }
         }
 
-        Auxiliar nuevoAuxiliar = new Auxiliar(id,nom,dir);
+        Auxiliar nuevoAuxiliar = new Auxiliar(id, nom, dir);
         return this.tripulantes.add(nuevoAuxiliar);
-
-
     }
     public Tripulante[] getTripulantes() {
         return this.tripulantes.toArray(new Tripulante[0]);
     }
 
-    public modelo.Venta[] getVentas(){
-
-        java.util.ArrayList<modelo.Venta> ventas = new java.util.ArrayList<>();
-
-        for (modelo.Bus bus : buses) {
-
-            Viaje[] viajes = bus.getViajes();
-
-            for (Viaje viaje : viajes) {
-
-                modelo.Venta[] ventasViaje = viaje.getVentas();
-
-                for (modelo.Venta venta : ventasViaje) {
-
-                    boolean existe = false;
-
-                    for (modelo.Venta v : ventas) {
-
-                        if (v.equals(venta)) {
-                            existe = true;
-                        }
-                    }
-
-                    if (!existe) {
+    public Venta[] getVentas(){
+        ArrayList<Venta> ventas = new java.util.ArrayList<>();
+        for (Bus bus : buses) {
+            for (Viaje viaje : bus.getViajes()) {
+                for (Venta venta : viaje.getVentas()) {
+                    if (!ventas.contains(venta)) {
                         ventas.add(venta);
                     }
                 }
             }
         }
 
-        return ventas.toArray(new modelo.Venta[0]);
+        return ventas.toArray(new Venta[0]);
     }
-
 }
