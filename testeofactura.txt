@@ -1,0 +1,28 @@
+------------------------- PASAJE ELECTRONICO -------------------------
+Nombre Empresa                 Numero de pasaje
+BUSES ÑUBLE                    0
+
+Nombre Pasajero                               RUT/Pasaporte
+SR JOHN TEST TESTEO TESTING                   67.420.777-K
+
+Patente bus     Asiento              Valor Pagado
+EFGH34          10                   3500
+
+Terminal origen           Terminal destino          Fecha           Hora
+EL NEVADO ALTO            EL PINAR                  15/12/2024      08:00
+----------------------------------------------------------------------
+
+------------------------- PASAJE ELECTRONICO -------------------------
+Nombre Empresa                 Numero de pasaje
+BUSES ÑUBLE                    0
+
+Nombre Pasajero                               RUT/Pasaporte
+SRA JANE TEST TESTEO TESTING                  34.420.666-K
+
+Patente bus     Asiento              Valor Pagado
+EFGH34          12                   3500
+
+Terminal origen           Terminal destino          Fecha           Hora
+EL NEVADO ALTO            EL PINAR                  15/12/2024      08:00
+----------------------------------------------------------------------
+

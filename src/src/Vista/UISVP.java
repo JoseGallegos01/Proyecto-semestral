@@ -688,7 +688,7 @@ public class UISVP {
     }
     private void listVentas(){
         String[][] listaVentas = sv.listVentas();
-        if(listaVentas.length == 0) {
+        if(listaVentas.length != 0) {
             System.out.printf("| %-10s | %-10s | %-12s | %-15s | %-30s | %-12s | %-12s |\n",
                     "ID DOC", "TIPO DOC", "FECHA", "RUT", "CLIENTE", "CANT", "TOTAL");
             for (String[] venta : listaVentas) {
