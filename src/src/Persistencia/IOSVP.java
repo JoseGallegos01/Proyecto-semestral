@@ -5,7 +5,6 @@ import Controlador.SistemaVentaPasajes;
 import Excepciones.SVPException;
 import Modelo.Cliente;
 import Modelo.Pasajero;
-import Modelo.Persona;
 import Modelo.Terminal;
 import utilidades.*;
 import Modelo.*;
@@ -16,7 +15,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class PersistenciaClase implements Serializable {
+public class IOSVP implements Serializable {
     ArrayList<Pasajero> listaPasajeros;
     ArrayList<Cliente> listaClientes;
     ArrayList<Empresa> listaEmpresas = new ArrayList<>();
@@ -27,11 +26,11 @@ public class PersistenciaClase implements Serializable {
     DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
 
-    static PersistenciaClase instance = null;
+    static IOSVP instance = null;
 
-    public static PersistenciaClase getInstance() {
+    public static IOSVP getInstance() {
         if (instance==null){
-            instance = new PersistenciaClase();
+            instance = new IOSVP();
         }
         return instance;
     }
@@ -199,14 +198,22 @@ public class PersistenciaClase implements Serializable {
     }
 
     public Object[] readControladores() {
+        ObjectInputStream inSVPObjetos = null;
+        ArrayList<Object> listaControladores = new ArrayList<>();
         try {
-            ObjectInputStream inSV = new ObjectInputStream(new FileInputStream("SistemaVentasPasajes.obj"));
-            ObjectInputStream inCE = new ObjectInputStream(new FileInputStream("ControladorEmpresas.obj"));
-            Object[] controladores = {inSV.readObject(), inCE.readObject()};
-            inSV.close();
-            inCE.close();
-            return controladores;
-        } catch (FileNotFoundException e) {
+            inSVPObjetos = new ObjectInputStream(new FileInputStream("SVPObjectos.obj"));
+            while (true) {
+                listaControladores.add(inSVPObjetos.readObject());
+            }
+        }catch (EOFException e){
+            try {
+                inSVPObjetos.close();
+            }catch (IOException ex){
+                throw new SVPException("Error al cerrar el archivo del controlador");
+            }
+            return listaControladores.toArray(new Object[0]);
+        }
+        catch (FileNotFoundException e) {
             throw new SVPException("No se encontro el archivo de los controladores");
         } catch (IOException e) {
             throw new SVPException("No se pudo leer los controladores");
@@ -217,14 +224,11 @@ public class PersistenciaClase implements Serializable {
 
     public void saveControladores(Object[] controladores){
         try{
-            ObjectOutputStream outSVP = new ObjectOutputStream(new FileOutputStream("SistemaVentasPasajes.obj"));
-            ObjectOutputStream outCE = new ObjectOutputStream(new FileOutputStream("ControladorEmpresas.obj"));
+            ObjectOutputStream SVPObjetos = new ObjectOutputStream(new FileOutputStream("SVPObjectos.obj"));
             for (Object c : controladores) {
-                if (c instanceof SistemaVentaPasajes) outSVP.writeObject(c);
-                if (c instanceof ControladorEmpresas) outCE.writeObject(c);
+                SVPObjetos.writeObject(c);
             }
-            outSVP.close();
-            outCE.close();
+            SVPObjetos.close();
         }catch (IOException e){
             throw new SVPException(e.getMessage());
         }

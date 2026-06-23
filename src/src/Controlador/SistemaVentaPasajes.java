@@ -2,7 +2,7 @@ package Controlador;
 
 import Excepciones.SVPException;
 import Modelo.*;
-import Persistencia.PersistenciaClase;
+import Persistencia.IOSVP;
 import Vista.UISVP;
 import utilidades.*;
 
@@ -207,7 +207,7 @@ public class SistemaVentaPasajes implements Serializable {
     }
 
     public void readDatosIniciales() {
-        Object[] listaDatos = PersistenciaClase.getInstance().readDatosIniciales();
+        Object[] listaDatos = IOSVP.getInstance().readDatosIniciales();
         ArrayList<Object> objetosDeControladorEmpresas = new ArrayList<>();
         for (Object l : listaDatos) {
             if (l instanceof Cliente) clientes.add((Cliente) l);
@@ -227,12 +227,12 @@ public class SistemaVentaPasajes implements Serializable {
         ControladorEmpresas  ControladorEmpresas = Controlador.ControladorEmpresas.getInstance();
         System.out.println("se guardo el controlador");
         Object[] controladores = {this, ce};
-        PersistenciaClase.getInstance().saveControladores(controladores);
+        IOSVP.getInstance().saveControladores(controladores);
     }
 
     public void readDatosSistema() throws FileNotFoundException {
         try {
-            Object[] controladores = PersistenciaClase.getInstance().readControladores();
+            Object[] controladores = IOSVP.getInstance().readControladores();
             UISVP.getInstance().setControladores(controladores);
             for (Object c : controladores) {
                 if (c instanceof SistemaVentaPasajes) {
@@ -254,7 +254,7 @@ public class SistemaVentaPasajes implements Serializable {
         Pasaje[] pasajes = findVenta(idDocumento, tipo).get().getPasajes();
         String nombreArchivo = idDocumento + tipo.toString().toLowerCase() + ".txt";
         try {
-            PersistenciaClase.getInstance().savePasajesDeVenta(pasajes, nombreArchivo);
+            IOSVP.getInstance().savePasajesDeVenta(pasajes, nombreArchivo);
         }catch (SVPException e) {
             throw new SVPException(e.getMessage());
         }
