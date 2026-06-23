@@ -304,8 +304,9 @@ public class SistemaVentaPasajes implements Serializable {
 //                        .equals(LocalTime.parse(hora, formatterTime)))
 //                .filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
 
-        Optional<Viaje> viajeOptional = viajes.stream().filter(viaje -> viaje.getFecha().equals(fecha))
-                .filter(viaje -> viaje.getHora().equals(hora)).filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
+        Optional<Viaje> viajeOptional = viajes.stream().filter(viaje -> viaje.getFecha().toString().equals(fecha))
+                .filter(viaje -> viaje.getHora().toString().equals(hora)).filter(viaje -> viaje.getBus().
+                        equals(findBus(patenteBus).get())).findFirst();
         return viajeOptional;
 //        for (Viaje v : viajes) {
 //            if (v.getFecha().toString().equals(fecha)
