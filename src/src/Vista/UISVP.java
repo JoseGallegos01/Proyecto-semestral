@@ -688,20 +688,28 @@ public class UISVP {
     }
     private void listVentas(){
         String[][] listaVentas = sv.listVentas();
-        System.out.printf("| %-10s | %-10s | %-12s | %-15s | %-30s | %-12s | %-12s |\n",
-                "ID DOC", "TIPO DOC", "FECHA", "RUT", "CLIENTE", "CANT", "TOTAL");
-        for (String[] venta : listaVentas) {
+        if(listaVentas.length == 0) {
             System.out.printf("| %-10s | %-10s | %-12s | %-15s | %-30s | %-12s | %-12s |\n",
-                    venta[0], venta[1], venta[2], venta[3], venta[4], venta[5], venta[6]);
+                    "ID DOC", "TIPO DOC", "FECHA", "RUT", "CLIENTE", "CANT", "TOTAL");
+            for (String[] venta : listaVentas) {
+                System.out.printf("| %-10s | %-10s | %-12s | %-15s | %-30s | %-12s | %-12s |\n",
+                        venta[0], venta[1], venta[2], venta[3], venta[4], venta[5], venta[6]);
+            }
+        }else{
+            System.out.println("No existen ventas");
         }
     }
     private void listViajes(){
         String[][] listaViajes = sv.listViajes();
-        System.out.printf("| %s | %s | %s | %s | %s |\n",
-                "FECHA", "HORA", "PRECIO", "DISPONIBILIDAD", "PATENTE");
-        for (String[] viaje : listaViajes) {
+        if(listaViajes.length != 0) {
             System.out.printf("| %s | %s | %s | %s | %s |\n",
-                    viaje[0], viaje[1], viaje[2], viaje[3], viaje[4]);
+                    "FECHA", "HORA", "PRECIO", "DISPONIBILIDAD", "PATENTE");
+            for (String[] viaje : listaViajes) {
+                System.out.printf("| %s | %s | %s | %s | %s |\n",
+                        viaje[0], viaje[1], viaje[2], viaje[3], viaje[4]);
+            }
+        }else {
+            System.out.println("No existen viajes");
         }
     }
 //    public void consultarViajesPorFecha() {
@@ -792,34 +800,42 @@ public class UISVP {
         System.out.println("R.U.T");
         String rut = sc.nextLine();
         String[][] listVentasEmpresas = ce.listVentasEmpresa(registrarRut(rut));
-        System.out.printf(
-                "| %-10s | %-10s | %-14s | %-14s |%n",
-                "FECHA",
-                "TIPO",
-                "MONTO PAGADO",
-                "TIPO PAGO"
-        );
-        for (String[] venta : listVentasEmpresas) {
-            System.out.printf("| %-10s | %-10s | %-14s | %-14s |%n", venta[0], venta[1], venta[2],
-                    venta[3]
+        if (listVentasEmpresas.length != 0) {
+            System.out.printf(
+                    "| %-10s | %-10s | %-14s | %-14s |%n",
+                    "FECHA",
+                    "TIPO",
+                    "MONTO PAGADO",
+                    "TIPO PAGO"
             );
-        }
+            for (String[] venta : listVentasEmpresas) {
+                System.out.printf("| %-10s | %-10s | %-14s | %-14s |%n", venta[0], venta[1], venta[2],
+                        venta[3]
+                );
+            }
+        } else System.out.println("La empresa no registra ventas");
     }
 
-    //dado a como esta el uml tengo dudas sobre en que momento se pagan los pasajes ahora, pues parece que no se llama desde el menu
     private void pagaVentaPasajes(String idDoc, TipoDocumento tipo){
         System.out.println("Monto total de la venta: " + sv.getMontoVenta(idDoc, tipo));
-        System.out.println("...::::Pago de la venta: ");
-        System.out.println("Efectivo [1] o tarjeta[2]");
-        int opcionManeraDePagar = sc.nextInt();
-        sc.nextLine();
-        if (opcionManeraDePagar == 1) sv.pagaVenta(idDoc, tipo);
-        if (opcionManeraDePagar == 2){
-            System.out.println("Ingrese su numero de tarjeta");
-            long numeroTarjeta = sc.nextLong();
+        boolean pagado = false;
+        do {
+            System.out.println("...::::Pago de la venta: ");
+            System.out.println("Efectivo [1] o tarjeta[2]");
+            int opcionManeraDePagar = sc.nextInt();
             sc.nextLine();
-            sv.pagaVenta(idDoc, tipo, numeroTarjeta);
-        }
+            if (opcionManeraDePagar == 1){
+                sv.pagaVenta(idDoc, tipo);
+                pagado = true;
+            }
+            if (opcionManeraDePagar == 2) {
+                System.out.println("Ingrese su numero de tarjeta");
+                long numeroTarjeta = sc.nextLong();
+                sc.nextLine();
+                sv.pagaVenta(idDoc, tipo, numeroTarjeta);
+                pagado = true;
+            }
+        }while (!pagado);
     }
     private void generatePasajesVenta(){
         String[][] ventas = sv.listVentas();
