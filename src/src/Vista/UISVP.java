@@ -470,11 +470,11 @@ public class UISVP {
             String hora = horarios[numViaje - 1][1];
             String valor = horarios[numViaje - 1][2];
             String asientos = horarios[numViaje - 1][3];
-            String listaAsientos[][] = sv.listAsientosDelViaje(LocalDate.parse(fechaViaje, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
+            String[][] listaAsientos = sv.listAsientosDelViaje(LocalDate.parse(fechaViaje, formatterDate), LocalTime.parse(hora, formatterTime), patenteBus);
             for (String[] listaAsiento : listaAsientos) {
                 System.out.println(listaAsiento[0] + " | " + listaAsiento[1] + " | " + listaAsiento[3] + " | " + listaAsiento[2]);
             }
-            if (cantidadPasajes > 1) System.out.println("Ingrese sus asientos [separe por ,]");
+            if (cantidadPasajes > 1) System.out.println("Ingrese sus asientos [separe por ,] (Sin espacio) ");
             if (cantidadPasajes == 1) System.out.println("Seleccione su asiento");
             String asientosComprados = sc.nextLine();
             String[] listaAsientosComprados = asientosComprados.split(",");
@@ -504,6 +504,19 @@ public class UISVP {
                     Nombre contactoNombrePasajero = new Nombre();
                     System.out.println("Ingrese nombres: ");
                     nombrePasajero.setNombres(sc.nextLine());
+                    System.out.println("Ingrese apellido paterno: ");
+                    nombrePasajero.setApellidoPaterno(sc.nextLine());
+                    System.out.println("Ingrese apellido materno: ");
+                    nombrePasajero.setApellidoMaterno(sc.nextLine());
+                    int decisionTratamiento = 0;
+                    do {
+                        System.out.println("Tratamiento: Sr[1] o Sra[2]");
+                        decisionTratamiento = sc.nextInt();
+                        sc.nextLine();
+                        if (decisionTratamiento != 1 && decisionTratamiento != 2) System.out.println("Opcion invalida, intente de nuevo");
+                    }while (decisionTratamiento < 1 || decisionTratamiento > 2);
+                    if (decisionTratamiento == 1) nombrePasajero.setTratamiento(Tratamiento.SR);
+                    if (decisionTratamiento == 2) nombrePasajero.setTratamiento(Tratamiento.SRA);
                     System.out.println("Nombre contacto del pasajero: ");
                     contactoNombrePasajero.setNombres(sc.nextLine());
                     System.out.println("Telefono del pasejero: ");
@@ -524,6 +537,8 @@ public class UISVP {
             //throw new SVPException("...::::Cliente no existe o la venta ya existe::::...");
         } catch (InputMismatchException e) {
             System.out.println(e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Para seleccionar los asientos debe ser sin espacio, ej: (1,2)");
         }
     }
 
@@ -728,8 +743,8 @@ public class UISVP {
         for (String[] e : listaEmpresas) {
             System.out.printf("| %-12s | %-20s | %-30s | %-15s | %-12s | %-12s |%n",
                     e[0],
-                    e[2],
                     e[1],
+                    e[2],
                     e[3],
                     e[4],
                     e[5]);

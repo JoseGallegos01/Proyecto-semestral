@@ -106,20 +106,22 @@ public class SistemaVentaPasajes implements Serializable {
     public String[][] listAsientosDelViaje(LocalDate fecha, LocalTime hora, String patenteBus) {
         if (findViaje(fecha, hora, patenteBus).isPresent()) {
             int cantidadasientos = findViaje(fecha, hora, patenteBus).get().getBus().getNroAsientos();
-            int contador = 0;
-            cantidadasientos = (int) Math.ceil(cantidadasientos / 4.0);
+            int contador = 1;
+            int filas = (int) Math.ceil(cantidadasientos / 4.0);
             //saque eso de arriba de https://www.w3schools.com/java/ref_math_ceil.asp buscando como hacer lo de las filas
-            String[][] asientos = new String[cantidadasientos][4];
-            for (int i = 0; i < cantidadasientos; i++) {
-                if (contador <= cantidadasientos) asientos[i][0] = String.valueOf(contador++);
-                else asientos[i][0] = "";
-                if (contador <= cantidadasientos) asientos[i][1] = String.valueOf(contador++);
-                else asientos[i][1] = "";
-                if (contador <= cantidadasientos) asientos[i][3] = String.valueOf(contador++);
-                else asientos[i][3] = "";
-                if (contador <= cantidadasientos) asientos[i][2] = String.valueOf(contador++);
-                else asientos[i][2] = "";
-            }
+            String[][] asientos = new String[filas][4];
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < 4; j++) {
+
+                    if (contador <= cantidadasientos) {
+                        asientos[i][j] = String.valueOf(contador);
+                    } else {
+                        asientos[i][j] = "";
+                    }
+
+                    contador++;
+                }
+                }
             return asientos;
         }
         return new String[0][0];
@@ -131,7 +133,7 @@ public class SistemaVentaPasajes implements Serializable {
     }
 
     public String getNombrePasajero(IdPersona idPasajero) {
-        if (findPasajero(idPasajero).isEmpty()) return null;
+        if (findPasajero(idPasajero).isEmpty()) return "";
         return findPasajero(idPasajero).get().getNombreCompleto().toString();
     }
 
@@ -257,7 +259,7 @@ public class SistemaVentaPasajes implements Serializable {
         try {
             PersistenciaClase.getInstance().savePasajesDeVenta(pasajes, nombreArchivo);
         }catch (SVPException e) {
-            e.getMessage();
+            throw new SVPException(e.getMessage());
         }
     }
 

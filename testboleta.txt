@@ -1,0 +1,14 @@
+------------------------- PASAJE ELECTRONICO -------------------------
+Nombre Empresa                 Numero de pasaje
+Buses Ñuble     0
+
+Nombre Pasajero                               RUT/Pasaporte
+SR JUANITO JUAN PAPELLIDO MAPELLIDO           67.420.777-K
+
+Patente bus     Asiento              Valor Pagado
+EFGH34          1                    3500
+
+Terminal origen           Terminal destino          Fecha           Hora
+EL NEVADO ALTO            EL PINAR                  15/12/2024      08:00
+----------------------------------------------------------------------
+
