@@ -13,6 +13,7 @@ import Modelo.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
     public class ControladorEmpresas implements Serializable {
@@ -187,71 +188,55 @@ import java.util.Optional;
             return lista;
         }
 
-        protected Optional<Empresa> findEmpresa(Rut rut) {
-            for (Empresa emp : empresas) {
-                if (emp.getRut().equals(rut)) {
-                    return Optional.of(emp);
-                }
-            }
-            return Optional.empty();
+        protected Optional<Empresa> findEmpresa(Rut rut ) {
+            return empresas.stream()
+                    .filter(emp ->emp.getRut().equals(rut))
+                    .findFirst();
+        }
+        protected Optional<Terminal> findTerminal(String nombre) {
+            return terminales.stream()
+                    .filter(term->term.getNombre().equalsIgnoreCase(nombre))
+                    .findFirst();
         }
 
-        protected Optional<Terminal> findTerminal(String nombre) {
-            for (Modelo.Terminal term : terminales) {
-                if (term.getNombre().equalsIgnoreCase(nombre)) {
-                    return Optional.of(term);
-                }
-            }
-            return Optional.empty();
-        }
 
         protected Optional<Terminal> findTerminalPorComuna(String comuna) {
-            for (Modelo.Terminal term : terminales) {
-                if (term.getDireccion().getComuna().equalsIgnoreCase(comuna)) {
-                    return Optional.of(term);
-                }
-            }
-            return Optional.empty();
+            return terminales.stream()
+                    .filter(term -> term.getDireccion().getComuna().equalsIgnoreCase(comuna))
+                    .findFirst();
         }
 
         protected Optional<Modelo.Bus> findBus(String patente) {
-            for (Modelo.Bus b : bus) {
-                if (b.getPatente().equalsIgnoreCase(patente)) {
-                    return Optional.of(b);
-                }
-            }
-            return Optional.empty();
+            return bus.stream()
+                    .filter(b -> b.getPatente().equalsIgnoreCase(patente))
+                    .findFirst();
         }
+
 
         protected Optional<Conductor> findConductor(IdPersona id, Rut rutEmpresa) {
             Optional<Empresa> emp = findEmpresa(rutEmpresa);
-            if (emp.isPresent()) {
-                for (Tripulante t : emp.get().getTripulantes()) {
-                    if (t instanceof Conductor
-                            && t.getIdPersona().equals(id)) {
-                        return Optional.of((Conductor) t);
-                    }
-                }
+            if (emp.isEmpty()) {
+                return Optional.empty();
+
             }
-            return Optional.empty();
+            return Arrays.stream(emp.get().getTripulantes())
+                    .filter(t -> t instanceof Conductor && t.getIdPersona().equals(id))
+                    .map(t -> (Conductor) t)
+                    .findFirst();
         }
 
+
         protected Optional<Auxiliar> findAuxiliar(IdPersona id, Rut rutEmpresa) {
-//            Optional<Auxiliar> auxiliarEncontrado = null;
-//            if  (empresas.stream().anyMatch(empresa -> empresa.getRut().equals(rutEmpresa))) {
-//                empresas.stream().findFirst().filter(empresa -> empresa.getTripulantes()).stream().filter()
-//            }
+
             Optional<Empresa> emp = findEmpresa(rutEmpresa);
-            if (emp.isPresent()) {
-                for (Tripulante t : emp.get().getTripulantes()) {
-                    if (t instanceof Auxiliar
-                            && t.getIdPersona().equals(id)) {
-                        return Optional.of((Auxiliar) t);
-                    }
-                }
+            if (emp.isEmpty()) {
+                return Optional.empty();
+
             }
-            return Optional.empty();
-//            return auxiliarEncontrado;
+            return Arrays.stream(emp.get().getTripulantes())
+                    .filter(t -> t instanceof Auxiliar && t.getIdPersona().equals(id))
+                    .map(t -> (Auxiliar) t)
+                    .findFirst();
         }
 
         public static void loadControlador(ControladorEmpresas controlador){

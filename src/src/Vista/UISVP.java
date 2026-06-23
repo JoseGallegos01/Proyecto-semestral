@@ -823,6 +823,7 @@ public class UISVP {
     }
     private void generatePasajesVenta(){
         String[][] ventas = sv.listVentas();
+        if (sv.listVentas().length == 0) System.out.println("No hay ventas para guardar");
         for (String[] venta : ventas) {
             sv.generatePasajesVenta(venta[0], TipoDocumento.valueOf(venta[1]));
         }

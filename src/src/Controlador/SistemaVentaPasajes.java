@@ -253,9 +253,6 @@ public class SistemaVentaPasajes implements Serializable {
         if (findVenta(idDocumento, tipo).isEmpty()) throw new SVPException("No existe el venta con el identificador " + idDocumento);
         Pasaje[] pasajes = findVenta(idDocumento, tipo).get().getPasajes();
         String nombreArchivo = idDocumento + tipo.toString().toLowerCase() + ".txt";
-        for (Pasaje pasaje : pasajes) {
-            System.out.println(pasaje.toString());
-        }
         try {
             PersistenciaClase.getInstance().savePasajesDeVenta(pasajes, nombreArchivo);
         }catch (SVPException e) {
