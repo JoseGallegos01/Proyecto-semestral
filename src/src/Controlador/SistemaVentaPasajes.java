@@ -47,7 +47,6 @@ public class SistemaVentaPasajes implements Serializable {
             throw new SVPException("Ya existe pasajero con el id indicado");
         pasajeros.add(new Pasajero(id, nom, nombreContacto, fono));
         findPasajero(id).get().setFonoContacto(fonoContacto);
-
     }
 
     public void createViaje(LocalDate fecha, LocalTime hora, int precio, int duracion, String patenteBus, IdPersona[] tripulantes, String[] nomComunas) {

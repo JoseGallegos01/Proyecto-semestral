@@ -517,7 +517,17 @@ public class UISVP {
                     }while (decisionTratamiento < 1 || decisionTratamiento > 2);
                     if (decisionTratamiento == 1) nombrePasajero.setTratamiento(Tratamiento.SR);
                     if (decisionTratamiento == 2) nombrePasajero.setTratamiento(Tratamiento.SRA);
-                    System.out.println("Nombre contacto del pasajero: ");
+                    System.out.println("Tratamiento de el/la contacto del pasajero");
+                    int decisionTratamientoContacto = 0;
+                    do {
+                        System.out.println("Tratamiento: Sr[1] o Sra[2]");
+                        decisionTratamientoContacto = sc.nextInt();
+                        sc.nextLine();
+                        if (decisionTratamientoContacto != 1 && decisionTratamientoContacto != 2) System.out.println("Opcion invalida, intente de nuevo");
+                    }while (decisionTratamientoContacto < 1 || decisionTratamientoContacto > 2);
+                    if (decisionTratamientoContacto == 1) contactoNombrePasajero.setTratamiento(Tratamiento.SR);
+                    if (decisionTratamientoContacto == 2) contactoNombrePasajero.setTratamiento(Tratamiento.SRA);
+                    System.out.println("Nombres contacto del pasajero: ");
                     contactoNombrePasajero.setNombres(sc.nextLine());
                     System.out.println("Telefono del pasejero: ");
                     String telefonoPasajero = sc.nextLine();
