@@ -21,8 +21,6 @@ public class VentanaVentadePasajes extends JDialog {
     private SistemaVentaPasajes sv = SistemaVentaPasajes.getInstance();
     private DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
-
-    // Estado de la venta
     private String idDocumentoActual;
     private TipoDocumento tipoDocumentoActual;
     private String fechaViajeSeleccionada;
@@ -102,13 +100,12 @@ public class VentanaVentadePasajes extends JDialog {
     private void initComponents() {
         setLayout(new BorderLayout(10, 10));
 
-        // Título
         JLabel titulo = new JLabel("VENTA DE PASAJES", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 20));
         titulo.setForeground(Color.WHITE);
         add(titulo, BorderLayout.NORTH);
 
-        // Panel principal con CardLayout
+
         cardLayout = new CardLayout();
         panelPrincipal = new JPanel(cardLayout);
         panelPrincipal.setBackground(new Color(30, 30, 40));
@@ -127,7 +124,7 @@ public class VentanaVentadePasajes extends JDialog {
 
         add(panelPrincipal, BorderLayout.CENTER);
 
-        // Botón Volver
+
         JPanel panelNavegacion = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panelNavegacion.setBackground(new Color(30, 30, 40));
         JButton btnVolver = new JButton("Volver al Menú");
@@ -510,10 +507,6 @@ public class VentanaVentadePasajes extends JDialog {
         panelPago.add(btnPanel);
     }
 
-    // ============================================================
-    // MÉTODOS DE LÓGICA
-    // ============================================================
-
     private void iniciarVenta() {
         try {
             idDocumentoActual = txtIdDocumento.getText().trim();
@@ -825,18 +818,16 @@ public class VentanaVentadePasajes extends JDialog {
         cardLayout.show(panelPrincipal, "INICIO");
     }
 
-    // ============================================================
-    // MAIN PARA EJECUTAR LA VENTANA
-    // ============================================================
+
     public static void main(String[] args) {
         try {
-            // Usar el look and feel del sistema
+
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Ejecutar la ventana en el hilo de eventos de Swing
+
         SwingUtilities.invokeLater(() -> {
             VentanaVentadePasajes ventana = new VentanaVentadePasajes();
             ventana.setVisible(true);
