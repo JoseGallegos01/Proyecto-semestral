@@ -199,7 +199,6 @@ import java.util.Optional;
                     .findFirst();
         }
 
-
         protected Optional<Terminal> findTerminalPorComuna(String comuna) {
             return terminales.stream()
                     .filter(term -> term.getDireccion().getComuna().equalsIgnoreCase(comuna))
@@ -265,6 +264,27 @@ import java.util.Optional;
             for (Bus b : bus) {
                 b.getEmpresa().addBus(b);
             }
+        }
+
+        //dado que no hay UML esta vez, me tome una libertad y agregue esto para poder hacer mi parte del gui como quiero
+        public Object[][] listEmpresasGUI() {
+            if (empresas.size() == 0) {
+                return new String[0][0];
+            }
+            Object[][] lista = new Object[empresas.size()][6];
+
+            for (int i = 0; i < empresas.size(); i++) {
+                Empresa empresa = empresas.get(i);
+
+                lista[i][0] = empresa.getRut().toString();
+                lista[i][1] = empresa.getNombre();
+                lista[i][2] = empresa.getUrl();
+                lista[i][3] = empresa.getTripulantes();
+                lista[i][4] = empresa.getBuses();
+                lista[i][5] = empresa.getVentas();
+            }
+
+            return lista;
         }
     }
 
