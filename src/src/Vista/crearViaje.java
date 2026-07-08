@@ -10,27 +10,30 @@ import Modelo.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class crearViaje extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField fechaViajeTexto;
-    private JComboBox horaComboBox;
-    private JComboBox minutoComboBox;
     private JTextField textField1;
     private JComboBox patenteBusComboBox;
     private JComboBox primerConductor;
     private JComboBox segundoConductor;
     private JComboBox listaEmpresas;
     private JComboBox listaAuxiliares;
+    private JTextField horaViaje;
+    private JTextField minutoViaje;
 
     //DEBO BORRAR LA LLAMADA AL METODO DE READ DATOS INICIALES CUANDO EL GUI ESTE LISTO
     public crearViaje() throws FileNotFoundException {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        primerConductor.addItem("N/A");
+        segundoConductor.addItem("N/A");
+        listaAuxiliares.addItem("N/A");
+        patenteBusComboBox.addItem("N/A");
         SistemaVentaPasajes.getInstance().readDatosIniciales();
         cargarEmpresas();
         truquito();
@@ -74,6 +77,7 @@ public class crearViaje extends JDialog {
     }
 
     public void cargarEmpresas(){
+        listaEmpresas.addItem("N/A");
         Object[][] empresas = ControladorEmpresas.getInstance().listEmpresasGUI();
         for (int i = 0; i<empresas.length;i++){
             System.out.println("empresas: "+empresas[i][0]);
@@ -96,6 +100,10 @@ public class crearViaje extends JDialog {
         segundoConductor.removeAllItems();
         listaAuxiliares.removeAllItems();
         patenteBusComboBox.removeAllItems();
+        primerConductor.addItem("N/A");
+        segundoConductor.addItem("N/A");
+        listaAuxiliares.addItem("N/A");
+        patenteBusComboBox.addItem("N/A");
         Object[][] array = ControladorEmpresas.getInstance().listEmpresasGUI();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
