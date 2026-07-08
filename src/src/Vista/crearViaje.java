@@ -26,14 +26,14 @@ public class crearViaje extends JDialog {
     private JComboBox listaEmpresas;
     private JComboBox listaAuxiliares;
 
+    //DEBO BORRAR LA LLAMADA AL METODO DE READ DATOS INICIALES CUANDO EL GUI ESTE LISTO
     public crearViaje() throws FileNotFoundException {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         SistemaVentaPasajes.getInstance().readDatosIniciales();
-        System.out.println("e");
         cargarEmpresas();
-        System.out.println("e");
+        truquito();
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -74,9 +74,7 @@ public class crearViaje extends JDialog {
     }
 
     public void cargarEmpresas(){
-        System.out.println("r");
         Object[][] empresas = ControladorEmpresas.getInstance().listEmpresasGUI();
-        System.out.println("t");
         for (int i = 0; i<empresas.length;i++){
             System.out.println("empresas: "+empresas[i][0]);
             System.out.println(empresas[i][1].toString());
@@ -85,32 +83,43 @@ public class crearViaje extends JDialog {
     }
 
     public void truquito(){
-        listaEmpresas.addFocusListener(new FocusAdapter() {
-            private void actualizarTablas(){
-                Object[][] array = ControladorEmpresas.getInstance().listEmpresasGUI();
-                if (array != null){
-                    for (int i = 0; i<array.length;i++){
-                        if (array[i][1] == listaEmpresas.getSelectedItem()){
-                            rellenarTablas(i, array);
-                        }
-                    }
-
-                }
+        listaEmpresas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarTablas();
             }
         });
     }
 
-    private void rellenarTablas(int i, Object[][] array){
-        ArrayList<Object> listas = new ArrayList<>();
-        listas.add(array[i][3]);
-        listas.add(array[i][4]);
-        for (Object l : listas) {
-            if (l instanceof Conductor){
-                primerConductor.addItem(l.toString());
-                segundoConductor.addItem(l.toString());
+    private void actualizarTablas(){
+        primerConductor.removeAllItems();
+        segundoConductor.removeAllItems();
+        listaAuxiliares.removeAllItems();
+        patenteBusComboBox.removeAllItems();
+        Object[][] array = ControladorEmpresas.getInstance().listEmpresasGUI();
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                System.out.println(i);
+                if (array[i][1].equals(listaEmpresas.getSelectedItem())) {
+                    rellenarTablas(i, array);
+                }
             }
-            if (l instanceof Auxiliar) listaAuxiliares.addItem(l.toString());
-            if (l instanceof Bus) patenteBusComboBox.addItem(((Bus) l).getPatente());
+        }
+    }
+
+    private void rellenarTablas(int i, Object[][] array){
+        Tripulante[] tripulantes = (Tripulante[]) array[i][3];
+        Bus[] buses = (Bus[]) array[i][4];
+        for (Tripulante t : tripulantes){
+            System.out.println(t.toString());
+            if (t instanceof Conductor){
+                primerConductor.addItem(t.getNombreCompleto().toString());
+                segundoConductor.addItem(t.getNombreCompleto().toString());
+            }
+            if (t instanceof Auxiliar) listaAuxiliares.addItem(t.getNombreCompleto().toString());
+        }
+        for (Bus b : buses){
+            patenteBusComboBox.addItem(b.getPatente().toString());
         }
     }
 
