@@ -77,49 +77,61 @@ public class crearViaje extends JDialog {
 
     private void onOK() {
         // add your code here
-        String fechaViaje = fechaViajeTexto.getText();
-        String tiempoViaje = horaViaje.getText() + ":" + minutoViaje.getText();
-        String precio = textField1.getText().toString();
-        String duracion = duracionViaje.getText().toString();
-        String patenteBus = patenteBusComboBox.getSelectedItem().toString();
-        String nombrePrimer = primerConductor.getSelectedItem().toString();
-        String nombreSegundo = segundoConductor.getSelectedItem().toString();
-        String nombreAuxiliar = listaAuxiliares.getSelectedItem().toString();
-        String comunaDestino = comunaDestinoNombre.getText().toString();
-        String comunaOrigen = comunaOrigenNombre.getText().toString();
-        String[] comunas = {comunaOrigen, comunaDestino};
-        IdPersona[] idPersonas;
-        if (!nombreSegundo.equals("N/A")) idPersonas = new IdPersona[3];
-        else idPersonas = new IdPersona[2];
-        Object[][] array = ControladorEmpresas.getInstance().listEmpresasGUI();
-        Tripulante[] tripulantes = new Tripulante[0];
-        for (int i = 0; i < array.length; i++) {
-            if (array[i][1].equals(listaEmpresas.getSelectedItem().toString())) {
-                tripulantes = (Tripulante[]) array[i][3];
+        String[] datos = new String[10];
+        boolean hayDatosVacios = false;
+        datos[0] = fechaViajeTexto.getText();
+        datos[1] = horaViaje.getText() + ":" + minutoViaje.getText();
+        datos[2] = textField1.getText().toString();
+        datos[3]= duracionViaje.getText().toString();
+        datos[4] = patenteBusComboBox.getSelectedItem().toString();
+        datos[5] = primerConductor.getSelectedItem().toString();
+        datos[6] = segundoConductor.getSelectedItem().toString();
+        datos[7] = listaAuxiliares.getSelectedItem().toString();
+        datos[8] = comunaDestinoNombre.getText().toString();
+        datos[9] = comunaOrigenNombre.getText().toString();
+        for (int i = 0; i < 10; i++) {
+            if (datos[i].equals("N/A")) {
+                JOptionPane.showMessageDialog
+                        (null,
+                                "Se dejo un dato vacio (N/A)","Problema con la creacion de viaje",
+                                JOptionPane.ERROR_MESSAGE);
+                hayDatosVacios = true;
+                i = 10;
             }
         }
-        for (Tripulante t : tripulantes) {
-            if (idPersonas.length == 2) {
-                if (t.getNombreCompleto().toString().equals(nombreAuxiliar)) idPersonas[0] = t.getIdPersona();
-                if (t.getNombreCompleto().toString().equals(nombrePrimer)) idPersonas[1] = t.getIdPersona();
+        if (!hayDatosVacios) {
+            String[] comunas = {datos[9], datos[8]};
+            IdPersona[] idPersonas;
+            if (!datos[6].equals("N/A")) idPersonas = new IdPersona[3];
+            else idPersonas = new IdPersona[2];
+            Object[][] array = ControladorEmpresas.getInstance().listEmpresasGUI();
+            Tripulante[] tripulantes = new Tripulante[0];
+            for (int i = 0; i < array.length; i++) {
+                if (array[i][1].equals(listaEmpresas.getSelectedItem().toString())) {
+                    tripulantes = (Tripulante[]) array[i][3];
+                }
             }
-            if (idPersonas.length == 3) {
-                if (t.getNombreCompleto().toString().equals(nombreAuxiliar)) idPersonas[0] = t.getIdPersona();
-                if (t.getNombreCompleto().toString().equals(nombreSegundo)) idPersonas[2] = t.getIdPersona();
-                if (t.getNombreCompleto().toString().equals(nombrePrimer)) idPersonas[1] = t.getIdPersona();
+            for (Tripulante t : tripulantes) {
+                if (idPersonas.length == 2) {
+                    if (t.getNombreCompleto().toString().equals(datos[7])) idPersonas[0] = t.getIdPersona();
+                    if (t.getNombreCompleto().toString().equals(datos[5])) idPersonas[1] = t.getIdPersona();
+                }
+                if (idPersonas.length == 3) {
+                    if (t.getNombreCompleto().toString().equals(datos[7])) idPersonas[0] = t.getIdPersona();
+                    if (t.getNombreCompleto().toString().equals(datos[6])) idPersonas[2] = t.getIdPersona();
+                    if (t.getNombreCompleto().toString().equals(datos[5])) idPersonas[1] = t.getIdPersona();
+                }
             }
+
+
+            SistemaVentaPasajes.getInstance()
+                    .createViaje(LocalDate.parse(datos[0], formatterDate),
+                            LocalTime.parse(datos[1], formatterTime),
+                            Integer.parseInt(datos[2]),
+                            Integer.parseInt(datos[3]), datos[4], idPersonas, comunas
+                    );
+
         }
-
-
-
-        SistemaVentaPasajes.getInstance()
-                .createViaje(LocalDate.parse(fechaViaje, formatterDate),
-                        LocalTime.parse(tiempoViaje, formatterTime),
-                        Integer.parseInt(precio),
-                        Integer.parseInt(duracion), patenteBus, idPersonas, comunas
-                        );
-
-
         dispose();
     }
 
@@ -127,6 +139,7 @@ public class crearViaje extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
 
     public void cargarEmpresas(){
         listaEmpresas.addItem("N/A");
