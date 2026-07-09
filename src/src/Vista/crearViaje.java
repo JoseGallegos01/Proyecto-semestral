@@ -90,10 +90,10 @@ public class crearViaje extends JDialog {
         datos[8] = comunaDestinoNombre.getText().toString();
         datos[9] = comunaOrigenNombre.getText().toString();
         for (int i = 0; i < 10; i++) {
-            if (datos[i].equals("N/A")) {
+            if (datos[i].equals("N/A") || datos[i].isEmpty()) {
                 JOptionPane.showMessageDialog
                         (null,
-                                "Se dejo un dato vacio (N/A)","Problema con la creacion de viaje",
+                                "Se dejo un dato sin completar","Problema con la creacion de viaje",
                                 JOptionPane.ERROR_MESSAGE);
                 hayDatosVacios = true;
                 i = 10;
