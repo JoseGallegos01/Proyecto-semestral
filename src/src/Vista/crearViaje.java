@@ -6,10 +6,14 @@ import Modelo.Auxiliar;
 import Modelo.Bus;
 import Modelo.Conductor;
 import Modelo.*;
+import utilidades.IdPersona;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class crearViaje extends JDialog {
     private JPanel contentPane;
@@ -24,6 +28,11 @@ public class crearViaje extends JDialog {
     private JComboBox listaAuxiliares;
     private JTextField horaViaje;
     private JTextField minutoViaje;
+    private JTextField duracionViaje;
+    private JTextField comunaOrigenNombre;
+    private JTextField comunaDestinoNombre;
+    DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
 
     //DEBO BORRAR LA LLAMADA AL METODO DE READ DATOS INICIALES CUANDO EL GUI ESTE LISTO
     public crearViaje() throws FileNotFoundException {
@@ -68,6 +77,49 @@ public class crearViaje extends JDialog {
 
     private void onOK() {
         // add your code here
+        String fechaViaje = fechaViajeTexto.getText();
+        String tiempoViaje = horaViaje.getText() + ":" + minutoViaje.getText();
+        String precio = textField1.getText().toString();
+        String duracion = duracionViaje.getText().toString();
+        String patenteBus = patenteBusComboBox.getSelectedItem().toString();
+        String nombrePrimer = primerConductor.getSelectedItem().toString();
+        String nombreSegundo = segundoConductor.getSelectedItem().toString();
+        String nombreAuxiliar = listaAuxiliares.getSelectedItem().toString();
+        String comunaDestino = comunaDestinoNombre.getText().toString();
+        String comunaOrigen = comunaOrigenNombre.getText().toString();
+        String[] comunas = {comunaOrigen, comunaDestino};
+        IdPersona[] idPersonas;
+        if (!nombreSegundo.equals("N/A")) idPersonas = new IdPersona[3];
+        else idPersonas = new IdPersona[2];
+        Object[][] array = ControladorEmpresas.getInstance().listEmpresasGUI();
+        Tripulante[] tripulantes = new Tripulante[0];
+        for (int i = 0; i < array.length; i++) {
+            if (array[i][1].equals(listaEmpresas.getSelectedItem().toString())) {
+                tripulantes = (Tripulante[]) array[i][3];
+            }
+        }
+        for (Tripulante t : tripulantes) {
+            if (idPersonas.length == 2) {
+                if (t.getNombreCompleto().toString().equals(nombreAuxiliar)) idPersonas[0] = t.getIdPersona();
+                if (t.getNombreCompleto().toString().equals(nombrePrimer)) idPersonas[1] = t.getIdPersona();
+            }
+            if (idPersonas.length == 3) {
+                if (t.getNombreCompleto().toString().equals(nombreAuxiliar)) idPersonas[0] = t.getIdPersona();
+                if (t.getNombreCompleto().toString().equals(nombreSegundo)) idPersonas[2] = t.getIdPersona();
+                if (t.getNombreCompleto().toString().equals(nombrePrimer)) idPersonas[1] = t.getIdPersona();
+            }
+        }
+
+
+
+        SistemaVentaPasajes.getInstance()
+                .createViaje(LocalDate.parse(fechaViaje, formatterDate),
+                        LocalTime.parse(tiempoViaje, formatterTime),
+                        Integer.parseInt(precio),
+                        Integer.parseInt(duracion), patenteBus, idPersonas, comunas
+                        );
+
+
         dispose();
     }
 
