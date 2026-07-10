@@ -2,7 +2,7 @@ package Controlador;
 
 import Excepciones.SVPException;
 import Modelo.*;
-import Persistencia.PersistenciaClase;
+import Persistencia.IOSVP;
 import Vista.UISVP;
 import utilidades.*;
 
@@ -51,7 +51,7 @@ public class SistemaVentaPasajes implements Serializable {
     }
 
     public void createViaje(LocalDate fecha, LocalTime hora, int precio, int duracion, String patenteBus, IdPersona[] tripulantes, String[] nomComunas) {
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus).isPresent()) throw new SVPException("Ya existe viaje con fecha, hora y patente de bus indicados");
+        if (findViaje(fecha, hora, patenteBus).isPresent()) throw new SVPException("Ya existe viaje con fecha, hora y patente de bus indicados");
         if (ce.findBus(patenteBus).isEmpty()) throw new SVPException("No existe bus con la patente indicada");
         if (ce.findTerminalPorComuna(nomComunas[0]).isEmpty()) throw new SVPException("No existe terminal de salida en la comuna indicada");
         if (ce.findTerminalPorComuna(nomComunas[1]).isEmpty()) throw new SVPException("No existe terminal de llegada en la comuna indicada");
@@ -104,22 +104,24 @@ public class SistemaVentaPasajes implements Serializable {
     }
 
     public String[][] listAsientosDelViaje(LocalDate fecha, LocalTime hora, String patenteBus) {
-        if (findViaje(fecha.toString(), hora.toString(), patenteBus).isPresent()) {
-            int cantidadasientos = findViaje(fecha.toString(), hora.toString(), patenteBus).get().getBus().getNroAsientos();
-            int contador = 0;
-            cantidadasientos = (int) Math.ceil(cantidadasientos / 4.0);
+        if (findViaje(fecha, hora, patenteBus).isPresent()) {
+            int cantidadasientos = findViaje(fecha, hora, patenteBus).get().getBus().getNroAsientos();
+            int contador = 1;
+            int filas = (int) Math.ceil(cantidadasientos / 4.0);
             //saque eso de arriba de https://www.w3schools.com/java/ref_math_ceil.asp buscando como hacer lo de las filas
-            String[][] asientos = new String[cantidadasientos][4];
-            for (int i = 0; i < cantidadasientos; i++) {
-                if (contador <= cantidadasientos) asientos[i][0] = String.valueOf(contador++);
-                else asientos[i][0] = "";
-                if (contador <= cantidadasientos) asientos[i][1] = String.valueOf(contador++);
-                else asientos[i][1] = "";
-                if (contador <= cantidadasientos) asientos[i][3] = String.valueOf(contador++);
-                else asientos[i][3] = "";
-                if (contador <= cantidadasientos) asientos[i][2] = String.valueOf(contador++);
-                else asientos[i][2] = "";
-            }
+            String[][] asientos = new String[filas][4];
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < 4; j++) {
+
+                    if (contador <= cantidadasientos) {
+                        asientos[i][j] = String.valueOf(contador);
+                    } else {
+                        asientos[i][j] = "";
+                    }
+
+                    contador++;
+                }
+                }
             return asientos;
         }
         return new String[0][0];
@@ -131,12 +133,12 @@ public class SistemaVentaPasajes implements Serializable {
     }
 
     public String getNombrePasajero(IdPersona idPasajero) {
-        if (findPasajero(idPasajero).isEmpty()) return null;
+        if (findPasajero(idPasajero).isEmpty()) return "";
         return findPasajero(idPasajero).get().getNombreCompleto().toString();
     }
 
     public void vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patenteBus, int asiento, IdPersona idPasajero, TipoDocumento tipo) {
-        Optional<Viaje> viajeVenta = findViaje(fecha.toString(), hora.toString(), patenteBus);
+        Optional<Viaje> viajeVenta = findViaje(fecha, hora, patenteBus);
         Optional<Venta> ventaViaje = findVenta(idDoc, tipo);
         Optional<Pasajero> pasajeroVenta = findPasajero(idPasajero);
         if (viajeVenta.isEmpty())
@@ -198,13 +200,14 @@ public class SistemaVentaPasajes implements Serializable {
 
 
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patenteBus) {
-        Optional<Viaje> viajeListarPasajeros = findViaje(fecha.toString(), hora.toString(), patenteBus);
-        if (viajeListarPasajeros.isPresent()) return viajeListarPasajeros.get().getListaPasajeros();
-        else throw new SVPException("No existe viaje con la fecha, hora y patente de bus indicados");
+        Optional<Viaje> viajeListarPasajeros = findViaje(fecha, hora, patenteBus);
+        if (viajeListarPasajeros.isEmpty()) throw new SVPException("No existe viaje con la fecha, hora y patente de bus indicados");
+        if (viajeListarPasajeros.get().getListaPasajeros().length == 0) throw new SVPException("No hay pasajeros para el viaje");
+        return viajeListarPasajeros.get().getListaPasajeros();
     }
 
     public void readDatosIniciales() {
-        Object[] listaDatos = PersistenciaClase.getInstance().readDatosIniciales();
+        Object[] listaDatos = IOSVP.getInstance().readDatosIniciales();
         ArrayList<Object> objetosDeControladorEmpresas = new ArrayList<>();
         for (Object l : listaDatos) {
             if (l instanceof Cliente) clientes.add((Cliente) l);
@@ -224,12 +227,12 @@ public class SistemaVentaPasajes implements Serializable {
         ControladorEmpresas  ControladorEmpresas = Controlador.ControladorEmpresas.getInstance();
         System.out.println("se guardo el controlador");
         Object[] controladores = {this, ce};
-        PersistenciaClase.getInstance().saveControladores(controladores);
+        IOSVP.getInstance().saveControladores(controladores);
     }
 
     public void readDatosSistema() throws FileNotFoundException {
         try {
-            Object[] controladores = PersistenciaClase.getInstance().readControladores();
+            Object[] controladores = IOSVP.getInstance().readControladores();
             UISVP.getInstance().setControladores(controladores);
             for (Object c : controladores) {
                 if (c instanceof SistemaVentaPasajes) {
@@ -250,20 +253,22 @@ public class SistemaVentaPasajes implements Serializable {
         if (findVenta(idDocumento, tipo).isEmpty()) throw new SVPException("No existe el venta con el identificador " + idDocumento);
         Pasaje[] pasajes = findVenta(idDocumento, tipo).get().getPasajes();
         String nombreArchivo = idDocumento + tipo.toString().toLowerCase() + ".txt";
-        for (Pasaje pasaje : pasajes) {
-            System.out.println(pasaje.toString());
-        }
         try {
-            PersistenciaClase.getInstance().savePasajesDeVenta(pasajes, nombreArchivo);
+            IOSVP.getInstance().savePasajesDeVenta(pasajes, nombreArchivo);
         }catch (SVPException e) {
-            e.getMessage();
+            throw new SVPException(e.getMessage());
         }
     }
 
     private Optional<Cliente> findCliente(IdPersona id) {
         Optional<Cliente> clienteEncontrado = clientes.stream().filter(c -> c.getIdPersona().equals(id)).findFirst();
         return clienteEncontrado;
-
+//        for (Cliente c : clientes) {
+//            if (c.getIdPersona().equals(id)) {
+//                return Optional.of(c);
+//            }
+//        }
+//        return Optional.empty();
     }
 
     private Optional<Venta> findVenta(String idDocumento, TipoDocumento tipoDocumento) {
@@ -271,24 +276,45 @@ public class SistemaVentaPasajes implements Serializable {
                 filter(v -> v.getIdDocumento().equals(idDocumento)).findFirst().
                 filter(venta -> venta.getTipo().equals(tipoDocumento));
         return ventaEncontrada;
-
+//        for (Venta v : ventas) {
+//            if (v.getIdDocumento().equals(idDocumento) && v.getTipo().equals(tipoDocumento)) {
+//                return Optional.of(v);
+//            }
+//        }
+//        return Optional.empty();
     }
 
     private Optional<Bus> findBus(String patente) {
         Optional<Bus> busEncontrado = buses.stream().filter(b -> b.getPatente().equals(patente)).findFirst();
         return busEncontrado;
-
+//        for (Bus b : buses) {
+//            if (b.getPatente().equals(patente)) {
+//                return Optional.of(b);
+//            }
+//        }
+//        return Optional.empty();
     }
 
-    private Optional<Viaje> findViaje(String fecha, String hora, String patenteBus) {
-        Optional<Viaje> viajeOptional = viajes.stream()
-                .filter(viaje -> viaje.getFecha()
-                        .equals(LocalDate.parse(fecha, formatterDate)))
-                .filter(viaje -> viaje.getHora()
-                        .equals(LocalTime.parse(hora, formatterTime)))
-                .filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
-        return viajeOptional;
+    private Optional<Viaje> findViaje(LocalDate fecha, LocalTime hora, String patenteBus) {
+//        Optional<Viaje> viajeOptional = viajes.stream()
+//                .filter(viaje -> viaje.getFecha()
+//                        .equals(LocalDate.parse(fecha, formatterDate)))
+//                .filter(viaje -> viaje.getHora()
+//                        .equals(LocalTime.parse(hora, formatterTime)))
+//                .filter(viaje -> viaje.getBus().equals(findBus(patenteBus).get())).findFirst();
 
+        Optional<Viaje> viajeOptional = viajes.stream().filter(viaje -> viaje.getFecha().equals(fecha))
+                .filter(viaje -> viaje.getHora().equals(hora)).filter(viaje ->
+                        viaje.getBus().getPatente().equals(patenteBus)).findFirst();
+        return viajeOptional;
+//        for (Viaje v : viajes) {
+//            if (v.getFecha().toString().equals(fecha)
+//                    && v.getHora().toString().equals(hora)
+//                    && v.getBus().getPatente().equals(patenteBus)) {
+//                return Optional.of(v);
+//            }
+//        }
+//        return Optional.empty();
     }
 
     private Optional<Pasajero> findPasajero(IdPersona idPersona) {
@@ -296,5 +322,11 @@ public class SistemaVentaPasajes implements Serializable {
                 .filter(pasajero -> pasajero
                         .getIdPersona().equals(idPersona)).findAny();
         return pasajeroEncontrado;
+        //        for (Pasajero p : pasajeros) {
+//            if (p.getIdPersona().equals(idPersona)) {
+//                return Optional.of(p);
+//            }
+//        }
+//        return Optional.empty();
     }
 }

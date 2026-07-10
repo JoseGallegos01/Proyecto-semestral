@@ -138,3 +138,9 @@ public class Viaje implements Serializable {
         return ventasUnicas.toArray(new Venta[0]);
     }
 }
+
+
+
+
+
+

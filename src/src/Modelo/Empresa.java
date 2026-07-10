@@ -16,7 +16,7 @@ public class Empresa implements Serializable {
     private java.util.ArrayList<Modelo.Bus> buses;
     private java.util.ArrayList<Tripulante> tripulantes;
 
-    public Empresa(Rut rut, String url, String nombre) {
+    public Empresa(Rut rut, String nombre, String url) {
         this.rut = rut;
         this.nombre = nombre;
         this.url = url;
@@ -80,21 +80,22 @@ public class Empresa implements Serializable {
         return this.tripulantes.add(nuevoAuxiliar);
     }
     public Tripulante[] getTripulantes() {
-        return this.tripulantes.toArray(new Tripulante[0]);
-    }
+            return this.tripulantes.toArray(new Tripulante[0]);
+        }
 
-    public Venta[] getVentas(){
-        ArrayList<Venta> ventas = new java.util.ArrayList<>();
-        for (Bus bus : buses) {
-            for (Viaje viaje : bus.getViajes()) {
-                for (Venta venta : viaje.getVentas()) {
-                    if (!ventas.contains(venta)) {
-                        ventas.add(venta);
+        public Venta[] getVentas(){
+            ArrayList<Venta> ventas = new java.util.ArrayList<>();
+            for (Bus bus : buses) {
+                for (Viaje viaje : bus.getViajes()) {
+                    for (Venta venta : viaje.getVentas()) {
+                        if (!ventas.contains(venta)) {
+                            ventas.add(venta);
+                        }
                     }
                 }
             }
-        }
 
-        return ventas.toArray(new Venta[0]);
+            return ventas.toArray(new Venta[0]);
+        }
     }
-}
+
