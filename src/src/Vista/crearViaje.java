@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class crearViaje extends JDialog {
     private JPanel contentPane;
@@ -85,20 +86,19 @@ public class crearViaje extends JDialog {
         datos[3]= duracionViaje.getText().toString();
         datos[4] = patenteBusComboBox.getSelectedItem().toString();
         datos[5] = primerConductor.getSelectedItem().toString();
-        datos[6] = segundoConductor.getSelectedItem().toString();
+        datos[6] = ".";
         datos[7] = listaAuxiliares.getSelectedItem().toString();
         datos[8] = comunaDestinoNombre.getText().toString();
         datos[9] = comunaOrigenNombre.getText().toString();
-        for (int i = 0; i < 10; i++) {
-            if (datos[i].equals("N/A") || datos[i].isEmpty()) {
+        if (Arrays.stream(datos).anyMatch(d -> d.equals("N/A") || d.isEmpty())) hayDatosVacios = true;
+        datos[6] = segundoConductor.getSelectedItem().toString();
+        if (hayDatosVacios) {
                 JOptionPane.showMessageDialog
                         (null,
                                 "Se dejo un dato sin completar","Problema con la creacion de viaje",
                                 JOptionPane.ERROR_MESSAGE);
-                hayDatosVacios = true;
-                i = 10;
             }
-        }
+//        }
         if (!hayDatosVacios) {
             String[] comunas = {datos[9], datos[8]};
             IdPersona[] idPersonas;
@@ -122,8 +122,6 @@ public class crearViaje extends JDialog {
                     if (t.getNombreCompleto().toString().equals(datos[5])) idPersonas[1] = t.getIdPersona();
                 }
             }
-
-
             SistemaVentaPasajes.getInstance()
                     .createViaje(LocalDate.parse(datos[0], formatterDate),
                             LocalTime.parse(datos[1], formatterTime),
@@ -201,6 +199,7 @@ public class crearViaje extends JDialog {
         dialog.pack();
         dialog.setTitle("Creacion de un Viaje");
         dialog.setVisible(true);
+        dialog.setAlwaysOnTop(true);
         System.exit(0);
         SistemaVentaPasajes.getInstance().readDatosSistema();
     }
