@@ -246,11 +246,9 @@ public class SistemaVentaPasajes implements Serializable {
             for (Object c : controladores) {
                 if (c instanceof SistemaVentaPasajes) {
                     instance = (SistemaVentaPasajes) c;
-                    System.out.println("1");
                 }
                 if (c instanceof ControladorEmpresas) {
                     ControladorEmpresas.loadControlador((ControladorEmpresas) c);
-                    System.out.println("2");
                 }
             }
         }catch (SVPException SVPException) {

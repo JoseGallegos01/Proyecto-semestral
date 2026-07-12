@@ -79,8 +79,7 @@ public class MenuDeOpciones extends JFrame {
 
     private void guardarDatosSistema() {
         try {
-            Object[] controladores = {SistemaVentaPasajes.getInstance(), ControladorEmpresas.getInstance()};
-            PersistenciaClase.getInstance().saveControladores(controladores);
+            SistemaVentaPasajes.getInstance().saveDatosSistema();
             JOptionPane.showMessageDialog(this, "Datos guardados exitosamente.", "Persistencia", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al guardar datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -92,6 +91,7 @@ public class MenuDeOpciones extends JFrame {
             Object[] controladoresLeidos = PersistenciaClase.getInstance().readControladores();
             if (controladoresLeidos != null) {
                 JOptionPane.showMessageDialog(this, "Datos recuperados exitosamente.", "Persistencia", JOptionPane.INFORMATION_MESSAGE);
+                SistemaVentaPasajes.getInstance().readDatosSistema();
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se pudieron recuperar los datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
