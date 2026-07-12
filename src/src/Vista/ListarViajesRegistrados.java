@@ -18,6 +18,9 @@ public class ListarViajesRegistrados extends JDialog {
         setModal(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        setSize(900, 600);
+        setLocationRelativeTo(null);
+
         Ok.addActionListener(e -> dispose());
 
         cargarTabla();
