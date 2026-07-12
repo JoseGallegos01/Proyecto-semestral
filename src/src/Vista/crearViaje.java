@@ -45,7 +45,6 @@ public class crearViaje extends JDialog {
         segundoConductor.addItem("N/A");
         listaAuxiliares.addItem("N/A");
         patenteBusComboBox.addItem("N/A");
-        SistemaVentaPasajes.getInstance().readDatosIniciales();
         cargarEmpresas();
         truquito();
 
@@ -206,13 +205,11 @@ public class crearViaje extends JDialog {
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void display() throws FileNotFoundException {
         crearViaje dialog = new crearViaje();
         dialog.pack();
         dialog.setTitle("Creacion de un Viaje");
         dialog.setVisible(true);
         dialog.setAlwaysOnTop(true);
-        System.exit(0);
-        SistemaVentaPasajes.getInstance().readDatosSistema();
     }
 }
