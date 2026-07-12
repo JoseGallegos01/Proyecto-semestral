@@ -568,11 +568,20 @@ public class VentanaVentadePasajes extends JDialog {
             LocalDate fecha = LocalDate.parse(fechaStr, formatterDate);
             fechaViajeSeleccionada = fechaStr;
 
-            String[][] viajes = sv.getHorariosDisponibles(fecha);
+            String origen = (String) cmbOrigen.getSelectedItem();
+            String destino = (String) cmbDestino.getSelectedItem();
+
+            if (origen.equals("Seleccione...") || destino.equals("Seleccione...")) {
+                throw new SVPException("Debe seleccionar una comuna de origen y destino");
+            }
+
+            int pasajerosMinimos = 1;
+
+            String[][] viajes = sv.getHorariosDisponibles(fecha, origen, destino, pasajerosMinimos);
             modelViajes.setRowCount(0);
 
             if (viajes.length == 0) {
-                JOptionPane.showMessageDialog(this, "No hay viajes para esta fecha");
+                JOptionPane.showMessageDialog(this, "No hay viajes para esta fecha y ruta");
                 return;
             }
 

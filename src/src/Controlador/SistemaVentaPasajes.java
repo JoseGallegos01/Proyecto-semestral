@@ -79,6 +79,16 @@ public class SistemaVentaPasajes implements Serializable {
         ventas.add(new Venta(idDoc, tipo, fechaVenta, clienteVenta.get()));
     }
 
+    public void iniciaVenta(String idDoc, TipoDocumento tipo, LocalDate fechaVenta, IdPersona idCliente) {
+        if (findVenta(idDoc, tipo).isPresent())
+            throw new SVPException("Ya existe venta con el id y tipo de documento indicados");
+        if (findCliente(idCliente).isEmpty())
+            throw new SVPException("No existe cliente con el id indicado");
+
+        Optional<Cliente> clienteVenta = findCliente(idCliente);
+        ventas.add(new Venta(idDoc, tipo, fechaVenta, clienteVenta.get()));
+    }
+
     public String[][] getHorariosDisponibles(LocalDate fechaViaje, String comunaSalida, String comunaLlegada, int nroPasajeros) {
         int cantidadHorariosDisponibles = 0;
         if (ce.findTerminalPorComuna(comunaLlegada).isEmpty()) throw new SVPException("No hay terminal en la comuna de destino indicada");

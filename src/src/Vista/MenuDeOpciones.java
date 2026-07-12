@@ -12,7 +12,6 @@ import java.awt.event.*;
 public class MenuDeOpciones extends JFrame {
 
     private JPanel contentPane;
-    private JPanel Menu;
     private JButton btnVentaPasajes;
     private JButton btnCrearViaje;
     private JButton btnListarEmpresas;
