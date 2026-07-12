@@ -17,7 +17,7 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
-import Excepciones.SistemaVentaPasajesException;
+import Excepciones.SVPException;
 import Modelo.*;
 import utilidades.*;
 import Controlador.*;
