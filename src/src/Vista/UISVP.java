@@ -44,7 +44,8 @@ public class UISVP {
     SistemaVentaPasajes sv = SistemaVentaPasajes.getInstance();
     ControladorEmpresas ce = ControladorEmpresas.getInstance();
     public void menu() {
-            do {
+        MenuDeOpciones.mostrar();
+        do {
                 try {
                     System.out.println("==================================================");
                     System.out.println("...:::Menú principal:::...");

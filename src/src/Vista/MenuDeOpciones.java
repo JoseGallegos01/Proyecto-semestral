@@ -46,7 +46,6 @@ public class MenuDeOpciones extends JFrame {
     }
 
     private void abrirVentanaVentaPasajes() {
-
         try {
             VentanaVentadePasajes dialog = new VentanaVentadePasajes();
             dialog.setVisible(true);
@@ -114,16 +113,11 @@ public class MenuDeOpciones extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            PersistenciaClase.getInstance().readDatosIniciales();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "No se pudo cargar la data inicial: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
+    public static void mostrar() {
         SwingUtilities.invokeLater(() -> {
             MenuDeOpciones frame = new MenuDeOpciones();
             frame.setVisible(true);
+            frame.setAlwaysOnTop(true);
         });
     }
 }

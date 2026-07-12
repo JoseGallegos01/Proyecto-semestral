@@ -828,7 +828,7 @@ public class VentanaVentadePasajes extends JDialog {
     }
 
 
-    public static void main(String[] args) {
+    public static void mostrar() {
         try {
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
