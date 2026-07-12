@@ -8,7 +8,10 @@ public abstract class Tripulante extends Persona implements Serializable {
     private Direccion direccion;
 
     public Tripulante(IdPersona id, Nombre nom, Direccion dir) {
-        super(id, nom); // Llama al constructor de la clase padre (Persona)
+        super(id, nom);
+        if (dir == null) {
+            throw new IllegalArgumentException("La direccion del tripulante no puede ser nula.");
+        }
         this.direccion = dir;
     }
 
@@ -17,11 +20,13 @@ public abstract class Tripulante extends Persona implements Serializable {
     }
 
     public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
+        if (direccion != null) {
+            this.direccion = direccion;
+        } else {
+            System.out.println("Error: Se intento asignar una direccion nula.");
+        }
     }
 
     public abstract void addViaje(Viaje viaje);
-
     public abstract int getNroViajes();
-
 }
