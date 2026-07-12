@@ -18,6 +18,7 @@ public class ListarVentasRealizadas extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         setSize(900, 600);
+        setLocationRelativeTo(null);
 
         Ok.addActionListener(e -> dispose());
 
