@@ -25,7 +25,7 @@ public class MenuDeOpciones extends JFrame {
         setTitle("SVP - MENU DE OPCIONES");
         setContentPane(contentPane);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setSize(900, 600);
+        setSize(300, 350);
         setLocationRelativeTo(null);
 
         addWindowListener(new WindowAdapter() {
