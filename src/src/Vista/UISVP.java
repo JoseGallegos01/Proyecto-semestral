@@ -1011,21 +1011,15 @@ public class UISVP {
 
     private Rut registrarRut(String rut){
         try {
-            String rutLimpio = rut.replace(".", "").replace(" ", "").toUpperCase();
-
-            if (!rutLimpio.contains("-")) {
-                throw new SistemaVentaPasajesException("El RUT debe contener un guion (-)");
-            }
-
-            String[] partes = rutLimpio.split("-");
+            Rut rutRegistrado;
+            String rutCompleto = rut;
+            rutCompleto = rutCompleto.replace(".", "");
+            String[] partes = rutCompleto.split("-");
             int numero = Integer.parseInt(partes[0]);
             char dv = partes[1].charAt(0);
-            return new Rut(numero, dv);
-
-        } catch (NumberFormatException e) {
-            throw new SistemaVentaPasajesException("El formato numerico del RUT es incorrecto.");
-        } catch (Exception e){
-            throw new SistemaVentaPasajesException("Formato de RUT incorrecto, use el formato 12345678-9");
+            return rutRegistrado = new Rut(numero, dv);
+        }catch (Exception e){
+            throw new SistemaVentaPasajesException(("formato de rut incorrecto, debe ser xx.xxx.xxx-x"));
         }
     }
 

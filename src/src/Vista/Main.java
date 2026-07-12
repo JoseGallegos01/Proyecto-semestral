@@ -1,12 +1,12 @@
 package Vista;
 
-import Excepciones.SistemaVentaPasajesException;
+import Excepciones.SVPException;
 
 public class Main {
-    public static void main(String[] args) throws SistemaVentaPasajesException {
+    public static void main(String[] args) throws SVPException {
         try {
             UISVP.getInstance().menu();
-        }catch (SistemaVentaPasajesException e) {
+        }catch (SVPException e) {
             throw e;
         }
     }

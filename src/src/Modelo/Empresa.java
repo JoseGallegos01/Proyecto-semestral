@@ -16,7 +16,7 @@ public class Empresa implements Serializable {
     private java.util.ArrayList<Modelo.Bus> buses;
     private java.util.ArrayList<Tripulante> tripulantes;
 
-    public Empresa(Rut rut, String url, String nombre) {
+    public Empresa(Rut rut, String nombre, String url) {
         this.rut = rut;
         this.nombre = nombre;
         this.url = url;

@@ -95,14 +95,14 @@ public class Viaje implements Serializable {
         return tripulantes;
     }
     public String [][]getAsientos(){
-        int total =bus.getNroAsientos();
+        int total = bus.getNroAsientos();
         String [][] asientos = new String [total][2];
 
         for (int i =0; i<total; i++){
             asientos[i][0]=(i+1)+"";
             asientos[i][1]="Libre";
         }
-        for (Pasaje p:pasajes){
+        for (Pasaje p : pasajes){
             int asiento =p.getAsiento();
             asientos[asiento-1][1]="Ocupado";
         }
@@ -116,7 +116,7 @@ public class Viaje implements Serializable {
             Pasajero p = pasajes.get(i).getPasajero();
             lista[i][0] = p.getIdPersona().toString();
             lista[i][1] = p.getNombreCompleto().toString();
-            lista[i][2] = String.valueOf(p.getNomContacto());
+            lista[i][2] = p.getNomContacto().toString();
             lista[i][3] = p.getFonoContacto();
         }
         return lista;
