@@ -272,7 +272,6 @@ import java.util.Optional;
                 return new String[0][0];
             }
             Object[][] lista = new Object[empresas.size()][6];
-
             for (int i = 0; i < empresas.size(); i++) {
                 Empresa empresa = empresas.get(i);
 
@@ -283,7 +282,6 @@ import java.util.Optional;
                 lista[i][4] = empresa.getBuses();
                 lista[i][5] = empresa.getVentas();
             }
-
             return lista;
         }
     }
