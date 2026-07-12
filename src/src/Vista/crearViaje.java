@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
 public class crearViaje extends JDialog {
@@ -21,7 +22,7 @@ public class crearViaje extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField fechaViajeTexto;
-    private JTextField textField1;
+    private JTextField precioViaje;
     private JComboBox patenteBusComboBox;
     private JComboBox primerConductor;
     private JComboBox segundoConductor;
@@ -79,10 +80,10 @@ public class crearViaje extends JDialog {
     private void onOK() {
         // add your code here
         String[] datos = new String[10];
-        boolean hayDatosVacios = false;
+        boolean noCrearViaje = false;
         datos[0] = fechaViajeTexto.getText();
         datos[1] = horaViaje.getText() + ":" + minutoViaje.getText();
-        datos[2] = textField1.getText().toString();
+        datos[2] = precioViaje.getText().toString();
         datos[3]= duracionViaje.getText().toString();
         datos[4] = patenteBusComboBox.getSelectedItem().toString();
         datos[5] = primerConductor.getSelectedItem().toString();
@@ -90,16 +91,28 @@ public class crearViaje extends JDialog {
         datos[7] = listaAuxiliares.getSelectedItem().toString();
         datos[8] = comunaDestinoNombre.getText().toString();
         datos[9] = comunaOrigenNombre.getText().toString();
-        if (Arrays.stream(datos).anyMatch(d -> d.equals("N/A") || d.isEmpty())) hayDatosVacios = true;
+        if (Arrays.stream(datos).anyMatch(d -> d.equals("N/A") || d.isEmpty())) noCrearViaje = true;
         datos[6] = segundoConductor.getSelectedItem().toString();
-        if (hayDatosVacios) {
+        if (noCrearViaje) {
                 JOptionPane.showMessageDialog
                         (null,
                                 "Se dejo un dato sin completar","Problema con la creacion de viaje",
                                 JOptionPane.ERROR_MESSAGE);
-            }
-//        }
-        if (!hayDatosVacios) {
+        }
+
+        try {
+            LocalDate.parse(datos[0], formatterDate);
+            LocalTime.parse(datos[1], formatterTime);
+            Integer.parseInt(datos[2]);
+            Integer.parseInt(datos[3]);
+        }catch (Exception e){
+            noCrearViaje = true;
+            JOptionPane.showMessageDialog
+                    (null, "Se ingreso un caracter invalido",
+                            "Error creando el viaje", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (!noCrearViaje) {
             String[] comunas = {datos[9], datos[8]};
             IdPersona[] idPersonas;
             if (!datos[6].equals("N/A")) idPersonas = new IdPersona[3];
@@ -128,9 +141,8 @@ public class crearViaje extends JDialog {
                             Integer.parseInt(datos[2]),
                             Integer.parseInt(datos[3]), datos[4], idPersonas, comunas
                     );
-
+            dispose();
         }
-        dispose();
     }
 
     private void onCancel() {
