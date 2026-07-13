@@ -4,7 +4,7 @@ package Vista;
 import Controlador.ControladorEmpresas;
 import Controlador.SistemaVentaPasajes;
 import Modelo.*;
-import Persistencia.PersistenciaClase;
+import Persistencia.IOSVP;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -88,7 +88,7 @@ public class MenuDeOpciones extends JFrame {
 
     private void cargarDatosSistema() {
         try {
-            Object[] controladoresLeidos = PersistenciaClase.getInstance().readControladores();
+            Object[] controladoresLeidos = IOSVP.getInstance().readControladores();
             if (controladoresLeidos != null) {
                 JOptionPane.showMessageDialog(this, "Datos recuperados exitosamente.", "Persistencia", JOptionPane.INFORMATION_MESSAGE);
                 SistemaVentaPasajes.getInstance().readDatosSistema();
@@ -103,7 +103,7 @@ public class MenuDeOpciones extends JFrame {
         if (respuesta == JOptionPane.YES_OPTION) {
             try {
                 Object[] controladores = {SistemaVentaPasajes.getInstance(), ControladorEmpresas.getInstance()};
-                PersistenciaClase.getInstance().saveControladores(controladores);
+                IOSVP.getInstance().saveControladores(controladores);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }

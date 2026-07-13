@@ -95,7 +95,7 @@ public class crearViaje extends JDialog {
         datos[6] = segundoConductor.getSelectedItem().toString();
         if (noCrearViaje) {
                 JOptionPane.showMessageDialog
-                        (null,
+                        (this,
                                 "Se dejo un dato sin completar","Problema con la creacion de viaje",
                                 JOptionPane.ERROR_MESSAGE);
         }
@@ -108,7 +108,7 @@ public class crearViaje extends JDialog {
         }catch (Exception e){
             noCrearViaje = true;
             JOptionPane.showMessageDialog
-                    (null, "Se ingreso un caracter invalido",
+                    (this, "Se ingreso un caracter invalido",
                             "Error creando el viaje", JOptionPane.ERROR_MESSAGE);
         }
 
@@ -142,8 +142,9 @@ public class crearViaje extends JDialog {
                                 Integer.parseInt(datos[2]),
                                 Integer.parseInt(datos[3]), datos[4], idPersonas, comunas
                         );
+                JOptionPane.showMessageDialog(this, "Viaje creado exitosamente");
             }catch (SVPException e){
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error creando el viaje", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error creando el viaje", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
