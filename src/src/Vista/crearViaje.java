@@ -184,7 +184,6 @@ public class crearViaje extends JDialog {
         Object[][] array = ControladorEmpresas.getInstance().listEmpresasGUI();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
-                System.out.println(i);
                 if (array[i][1].equals(listaEmpresas.getSelectedItem())) {
                     rellenarTablas(i, array);
                 }
