@@ -234,7 +234,6 @@ public class SistemaVentaPasajes implements Serializable {
 
     public void saveDatosSistema(){
         ControladorEmpresas  ControladorEmpresas = Controlador.ControladorEmpresas.getInstance();
-        System.out.println("se guardo el controlador");
         Object[] controladores = {this, ce};
         IOSVP.getInstance().saveControladores(controladores);
     }

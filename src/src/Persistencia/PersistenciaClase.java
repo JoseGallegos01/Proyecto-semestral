@@ -338,7 +338,6 @@ public class PersistenciaClase implements Serializable {
 
     private void procesarBus(String linea, List<Object> lista){
         String[] datos = linea.split(";");
-
         String patente = datos[0].trim();
         String marca = datos[1].trim();
         String modelo = datos[2].trim();
@@ -376,7 +375,6 @@ public class PersistenciaClase implements Serializable {
                 precio, duracion, findBus(patenteBus).get(),
                 findAuxiliar(tripulantes[0]).get(), conductores, terminales[0], terminales[1]
         );
-        System.out.println("5");
         lista.add(viaje);
     }
 

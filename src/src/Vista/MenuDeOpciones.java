@@ -120,4 +120,5 @@ public class MenuDeOpciones extends JFrame {
             frame.setAlwaysOnTop(true);
         });
     }
+
 }

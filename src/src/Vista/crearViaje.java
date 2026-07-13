@@ -2,6 +2,7 @@ package Vista;
 
 import Controlador.ControladorEmpresas;
 import Controlador.SistemaVentaPasajes;
+import Excepciones.SVPException;
 import Modelo.Auxiliar;
 import Modelo.Bus;
 import Modelo.Conductor;
@@ -134,13 +135,16 @@ public class crearViaje extends JDialog {
                     if (t.getNombreCompleto().toString().equals(datos[5])) idPersonas[1] = t.getIdPersona();
                 }
             }
-            SistemaVentaPasajes.getInstance()
-                    .createViaje(LocalDate.parse(datos[0], formatterDate),
-                            LocalTime.parse(datos[1], formatterTime),
-                            Integer.parseInt(datos[2]),
-                            Integer.parseInt(datos[3]), datos[4], idPersonas, comunas
-                    );
-            dispose();
+            try {
+                SistemaVentaPasajes.getInstance()
+                        .createViaje(LocalDate.parse(datos[0], formatterDate),
+                                LocalTime.parse(datos[1], formatterTime),
+                                Integer.parseInt(datos[2]),
+                                Integer.parseInt(datos[3]), datos[4], idPersonas, comunas
+                        );
+            }catch (SVPException e){
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error creando el viaje", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -154,8 +158,6 @@ public class crearViaje extends JDialog {
         listaEmpresas.addItem("N/A");
         Object[][] empresas = ControladorEmpresas.getInstance().listEmpresasGUI();
         for (int i = 0; i<empresas.length;i++){
-            System.out.println("empresas: "+empresas[i][0]);
-            System.out.println(empresas[i][1].toString());
             listaEmpresas.addItem(empresas[i][1]);
         }
     }
@@ -193,7 +195,6 @@ public class crearViaje extends JDialog {
         Tripulante[] tripulantes = (Tripulante[]) array[i][3];
         Bus[] buses = (Bus[]) array[i][4];
         for (Tripulante t : tripulantes){
-            System.out.println(t.toString());
             if (t instanceof Conductor){
                 primerConductor.addItem(t.getNombreCompleto().toString());
                 segundoConductor.addItem(t.getNombreCompleto().toString());
@@ -210,6 +211,5 @@ public class crearViaje extends JDialog {
         dialog.pack();
         dialog.setTitle("Creacion de un Viaje");
         dialog.setVisible(true);
-        dialog.setAlwaysOnTop(true);
     }
 }
